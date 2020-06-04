@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/search",
+    "pages/rankingList/rankingList",
+    "pages/StatementOfAccount/StatementOfAccount",
+    "pages/me/me",
+    "pages/list/list",
+    "pages/details_list/details_list"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#007AFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#FF0000",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/home.png",
+        "selectedIconPath": "static/home_active.png"
+      },
+      {
+        "pagePath": "pages/search/search",
+        "text": "订单列表",
+        "iconPath": "static/search.png",
+        "selectedIconPath": "static/search_active.png"
+      },
+      {
+        "pagePath": "pages/rankingList/rankingList",
+        "text": "售后列表",
+        "iconPath": "static/rankingList.png",
+        "selectedIconPath": "static/rankingList_active.png"
+      },
+      {
+        "pagePath": "pages/StatementOfAccount/StatementOfAccount",
+        "text": "对账管理",
+        "iconPath": "static/qiang.png",
+        "selectedIconPath": "static/qiang_active.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "static/me.png",
+        "selectedIconPath": "static/me_active.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap36.json"
+}
