@@ -2,6 +2,7 @@
   "navigationBarTitleText": "订单列表",
   "navigationBarBackgroundColor": "#007AFF",
   "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
     "uni-tag": "/components/uni-tag/uni-tag"
   }
 }

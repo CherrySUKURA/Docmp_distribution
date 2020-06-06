@@ -1,7 +1,7 @@
 <template>
 	<view class="StatementOfAccount-content">
 		<view class="pos-top">
-			<view v-if="usernameid" class="condition-content">
+			<view class="condition-content">
 				<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
 				<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
 					<view class="condition-lee">
@@ -21,8 +21,8 @@
 							<view class="title">结束时间</view>
 						</view>
 						<view class="condition-select">
-							<picker mode="date" @change="bindDateChange" :value="date" fields="month">
-								<view class="condition-uni-input">{{date}}</view>
+							<picker mode="date" @change="bindDateChange" :value="date2" fields="month">
+								<view class="condition-uni-input">{{date2}}</view>
 							</picker>
 						</view>
 						<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
@@ -36,7 +36,6 @@
 
 		<view>
 			<view v-for="(item,index) in items" v-show="current === index">
-				<!-- <scroll-view class="all-box"  :scroll-top="scrollTop" @scroll="scroll" scroll-y="true"> -->
 					<view class="box"  v-for="(item,index) in lists" >
 						<view class="box-left">
 							{{item.Code}}
@@ -68,7 +67,6 @@
 							<view class="download-btn" @click="b()">导出明细</view>
 						</view>
 					</view>
-				<!-- </scroll-view> -->
 			</view>
 		</view>
 		<view class="pos-bottom">
@@ -90,17 +88,11 @@
 				format: true
 			})
 			return {
-				usernameid: true,
-				index: 0,
 				maskClick: false,
 				date: currentDate,
-				startEndDate: [],
+				date2: currentDate,
 				items: ['全部','员工内购','花田社区','广州农博','饼饼精选','小乔店铺','小乔店铺','小乔店铺','小乔店铺'],
 				current: 0,
-				scrollTop: 0,
-				old: {
-					scrollTop: 0
-				},
 				lists: [
 					{
 						"Code": "2020-3-31",
@@ -161,8 +153,7 @@
 		},
 		methods: {
 			bindDateChange(e) {//选择器选择后的回调函数
-				this.startEndDate.push( e.target.value)
-				console.log(this.startEndDate)
+				console.log(this.date,this.date2)
 			},
 			getDate(type) {//时间
 				const date = new Date();
@@ -186,8 +177,7 @@
 				this.canvasStyle = ''
 			},
 			condition_click() {//搜索button点击事件
-				alert(this.array[this.index])
-				alert(this.date)
+				console.log(this.date,this.date2)
 				this.$refs.popup.close()
 			},
 			onClickItem(e) {
@@ -200,9 +190,6 @@
 			},
 			b() {
 				
-			},
-			scroll(e){
-				this.old.scrollTop += e.detail.scrollTop
 			},
 		}
 	}

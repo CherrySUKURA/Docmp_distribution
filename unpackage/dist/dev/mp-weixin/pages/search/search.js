@@ -94,16 +94,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return __webpack_require__.e(/*! import() | components/uni-popup/uni-popup */ "components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
   },
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 78))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 87))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 85))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 94))
   },
   uniBadge: function() {
-    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 92))
+    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 101))
   }
 }
 var render = function() {
@@ -144,6 +144,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
 
 
 
@@ -232,7 +234,10 @@ var _search = _interopRequireDefault(__webpack_require__(/*! ../../store/search.
 //
 //
 //
-var _default = { data: function data() {return { index: 0, array: ['完成', '售后'], maskClick: false, order: [{ "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "花田社区", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "广州农博", "OrderQuantity": "35",
+//
+//
+var _default = { data: function data() {var currentDate = this.getDate({ format: true });return { date: currentDate, date2: currentDate, maskClick: false, order: [{ "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "花田社区", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "广州农博",
+        "OrderQuantity": "35",
         "ParcelNumber": "53",
         "OrderAmount": "3,030.00",
         "ExtraFreight": "0.00",
@@ -263,8 +268,7 @@ var _default = { data: function data() {return { index: 0, array: ['完成', '�
 
 
 
-      inputValue: "",
-      getDate: [
+      OrderDate: [
       {
         Date: "2020-05-04",
         badgetext: "12",
@@ -294,6 +298,22 @@ var _default = { data: function data() {return { index: 0, array: ['完成', '�
 
   },
   methods: {
+    bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
+      console.log(this.date, this.date2);
+    },
+    getDate: function getDate(type) {//时间
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+
+      // if (type === 'start') {
+      // 	year = year - 60;
+      // } else if (type === 'end') {
+      // 	year = year + 60;
+      // }
+      month = month > 9 ? month : '0' + month;
+      return "".concat(year, "-").concat(month);
+    },
     open: function open() {
       this.$refs.popup.open();
     },
@@ -301,11 +321,8 @@ var _default = { data: function data() {return { index: 0, array: ['完成', '�
       this.$refs.popup.close();
     },
     condition_click: function condition_click() {
-      alert(this.array[this.index]);
+      console.log(this.date, this.date2);
       this.$refs.popup.close();
-    },
-    bindPickerChange: function bindPickerChange() {
-
     },
     a: function a(i) {
       this.$store.commit("Value", i);

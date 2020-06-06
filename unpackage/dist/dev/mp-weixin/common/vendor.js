@@ -2717,7 +2717,40 @@ store;exports.default = _default;
 
 /***/ }),
 
-/***/ 132:
+/***/ 14:
+/*!*****************************************************************************!*\
+  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/store/rankingList.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var state = {
+  rankingList: {
+    DDZT: "" } };
+
+
+var mutations = {
+  Value: function Value(state, newVal) {
+    state.rankingList.DDZT = newVal;
+  } };
+
+
+var store = new _vuex.default.Store({
+  state: state,
+  mutations: mutations });var _default =
+
+
+store;exports.default = _default;
+
+/***/ }),
+
+/***/ 141:
 /*!**************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-icons/icons.js ***!
   \**************************************************************************************/
@@ -2859,39 +2892,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
-/***/ 14:
-/*!*****************************************************************************!*\
-  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/store/rankingList.js ***!
-  \*****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var state = {
-  rankingList: {
-    DDZT: "" } };
-
-
-var mutations = {
-  Value: function Value(state, newVal) {
-    state.rankingList.DDZT = newVal;
-  } };
-
-
-var store = new _vuex.default.Store({
-  state: state,
-  mutations: mutations });var _default =
-
-
-store;exports.default = _default;
-
-/***/ }),
-
 /***/ 15:
 /*!*****************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/common/js/public_.js ***!
@@ -2900,23 +2900,36 @@ store;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  ajax: function ajax(url, methods, data) {
-    return new Promise(function (resolve, reject) {
-      uni.request({
-        url: url,
-        method: methods,
-        data: data,
-        header: {
-          'Content-Type': 'application/x-www-form-urlencoded' },
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var url = "http://192.168.2.102:7002/";
 
-        success: function success(res) {
-          resolve(res);
-        },
-        fail: function fail(err) {
-          reject(err);
-        } });
+function ajax(DK, methods, data) {
+  return new Promise(function (resolve, reject) {
+    uni.request({
+      url: url + DK,
+      method: methods,
+      dataType: 'json',
+      data: data,
+      header: {
+        'Content-Type': 'application/json;charset=utf-8' },
 
+      success: function success(res) {
+        resolve(res);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
+}var _default =
+
+{
+  RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {//封装回调
+    ajax(url, method, data).then(
+    function (res) {
+      succeed(res);
+    }).catch(
+    function (err) {
+      defeated(err);
     });
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
@@ -14662,6 +14675,72 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 
+
+/***/ }),
+
+/***/ 76:
+/*!**************************************************************************************!*\
+  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/popup.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 77));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+// 定义 type 类型:弹出类型：top/bottom/center
+var config = {
+  // 顶部弹出
+  top: 'top',
+  // 底部弹出
+  bottom: 'bottom',
+  // 居中弹出
+  center: 'center',
+  // 消息提示
+  message: 'top',
+  // 对话框
+  dialog: 'center',
+  // 分享
+  share: 'bottom' };var _default =
+
+
+{
+  data: function data() {
+    return {
+      config: config };
+
+  },
+  mixins: [_message.default] };exports.default = _default;
+
+/***/ }),
+
+/***/ 77:
+/*!****************************************************************************************!*\
+  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/message.js ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  created: function created() {
+    if (this.type === 'message') {
+      // 不显示遮罩
+      this.maskShow = false;
+      // 获取子组件对象
+      this.childrenMsg = null;
+    }
+  },
+  methods: {
+    customOpen: function customOpen() {
+      if (this.childrenMsg) {
+        this.childrenMsg.open();
+      }
+    },
+    customClose: function customClose() {
+      if (this.childrenMsg) {
+        this.childrenMsg.close();
+      }
+    } } };exports.default = _default;
 
 /***/ })
 

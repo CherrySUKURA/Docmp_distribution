@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return __webpack_require__.e(/*! import() | components/uni-popup/uni-popup */ "components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
   }
 }
 var render = function() {
@@ -145,6 +145,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
 
 
 
@@ -251,107 +256,59 @@ var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-cha
 //
 //
 //
-var _self;var canvaPie = null;var _default = { data: function data() {var currentDate = this.getDate({ format: true });return { index: 0, array: [], date: currentDate, canvasStyle: "", order: [{ "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "花田社区", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "广州农博", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
+//
+//
+//
+//
+//
+var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 80));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
+      ChannelList: ["全部"], //渠道选择列表所有选项
+      date: '0000-00', //时间选择列表时间选项
+      canvasStyle: true, //控制饼图是否显示
+      OrderNumber: [], //订单数据
+      chartData: { //饼图数据
+        "series": [] }, cWidth: '', //饼图宽度
+      cHeight: '', //饼图高度
+      pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
+      OrderParameter: { "cus_id": '%', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '%' } };}, created: function created() {this.RequestData(this.OrderParameter, this.getDealerParameter); //请求数据
+  }, methods: { RequestData: function RequestData(OrderParameter, getDealerParameter) {this.$RequestHttp.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
+      this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
+    }, apply: function apply(e) {var _this = this; //回调
+      var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.ChannelList = Array.from(newArray);}, OrderCallBack: function OrderCallBack(e) {//回调
+      if (e.data.data[0] != null) {var data = e.data.data[0];var OrderNumber = [{ name: "订单金额", number: data.order_money }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: data.pay_to_account_success }, { name: "账户余额", number: data.this_month_balance }];
 
 
-      {
-        "Code": "10086",
-        "Place": "饼饼精选",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-
-      {
-        "Code": "10086",
-        "Place": "小乔店铺",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" }],
-
-
-
-      number: [
-      {
-        name: "订单金额",
-        number: "3,030.00" },
-
-      {
-        name: "订单数",
-        number: "35" },
-
-      {
-        name: "包裹数",
-        number: "53" },
-
-      {
-        name: "付款到账",
-        number: "3,030.00" },
-
-      {
-        name: "账户余额",
-        number: "0.00" }],
-
-
-      chartData: {
-        "series": [
+        var series = [
         {
-          "name": "一班",
-          "data": 50 },
+          "name": "三盒",
+          "data": data.gift_boxes },
 
         {
-          "name": "二班",
-          "data": 30 },
+          "name": "四盒",
+          "data": data.four_boxes_total },
 
         {
-          "name": "三班",
-          "data": 20 }] },
+          "name": "五盒",
+          "data": data.five_boxes_total }];
 
 
-
-      cWidth: '',
-      cHeight: '',
-      pixelRatio: 1,
-      serverData: '',
-      maskClick: false };
-
-  },
-  computed: {
-    //给一个可选的范围，开始时间和结束时间
-    // startDate() {
-    // 	return this.getDate('start');
-    // },
-    // endDate() {
-    // 	return this.getDate('end');
-    // }
-  },
-  components: {},
-
-
-  onLoad: function onLoad() {
-    _self = this;
-    this.cWidth = uni.upx2px(750);
-    this.cHeight = uni.upx2px(500);
-    this.showPie("canvasPie", this.chartData);
-    this.$ajax.ajax('http://jsonplaceholder.typicode.com/users', 'Get', {}).then(
-    function (res) {
-      console.log(res);
-    }).catch(
-    function (err) {
-      console.log(err);
-    });
-  },
-  methods: {
+        this.OrderNumber = OrderNumber;
+        this.chartData.series = series;
+        this.cWidth = uni.upx2px(750);
+        this.cHeight = uni.upx2px(500);
+        this.showPie("canvasPie", this.chartData);
+        return true;
+      }
+      this.$refs.TS.open();
+    },
+    defeat: function defeat(e) {
+      console.log(e);
+    },
     bindPickerChange: function bindPickerChange(e) {//选择器选择后的回调函数
-      this.index = e.target.value;
+      this.ChannelIndex = e.target.value;
+      if (this.ChannelIndex == 0) {
+        this.date = '0000-00';
+      }
     },
     bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
       this.date = e.target.value;
@@ -371,17 +328,17 @@ var _self;var canvaPie = null;var _default = { data: function data() {var curren
     },
     showPie: function showPie(canvasId, chartData) {//饼图实例
       canvaPie = new _uCharts.default({
-        $this: _self,
+        $this: this,
         canvasId: canvasId,
         type: 'pie',
         fontSize: 11,
         legend: { show: true },
         background: '#FFFFFF',
-        pixelRatio: _self.pixelRatio,
+        pixelRatio: this.pixelRatio,
         series: chartData.series,
         animation: true,
-        width: _self.cWidth * _self.pixelRatio,
-        height: _self.cHeight * _self.pixelRatio,
+        width: this.cWidth * this.pixelRatio,
+        height: this.cHeight * this.pixelRatio,
         dataLabel: true,
         extra: {
           pie: {
@@ -398,29 +355,31 @@ var _self;var canvaPie = null;var _default = { data: function data() {var curren
 
     },
     open: function open() {//开启弹出层
-      this.canvasStyle = 'show';
+      this.canvasStyle = false;
       this.$refs.popup.open();
     },
     close: function close() {//关闭弹出层
       this.$refs.popup.close();
-      this.canvasStyle = '';
+      this.canvasStyle = true;
     },
     condition_click: function condition_click() {//搜索button点击事件
-      alert(this.array[this.index]);
-      alert(this.date);
-      this.$refs.popup.close();
-    } },
+      var date = this.date.replace("-", "");
+      if (this.ChannelIndex != 0 || this.date != "0000-00") {
+        if (this.ChannelIndex == 0) {
+          this.OrderParameter.simplified = "";
+          this.OrderParameter.date = date;
+        } else {
+          this.OrderParameter.simplified = this.ChannelList[this.ChannelIndex];
+          this.OrderParameter.date = date;
+        }
+      } else {
+        this.OrderParameter.simplified = "";
+        this.OrderParameter.date = "";
+      }
 
-  created: function created() {var _this = this;
-    var arraies = new Array();
-    this.order.forEach(function (item) {
-      arraies.push(item.Place);
-    });
-    var newarray = new Set(arraies);
-    newarray.forEach(function (item) {
-      _this.array.push(item);
-    });
-  } };exports.default = _default;
+      this.RequestData(this.OrderParameter, this.getDealerParameter);
+      this.close();
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

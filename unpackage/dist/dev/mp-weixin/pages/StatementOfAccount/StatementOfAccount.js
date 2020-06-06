@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return __webpack_require__.e(/*! import() | components/uni-popup/uni-popup */ "components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
   },
   zzxTabs: function() {
-    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 99))
+    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 108))
   }
 }
 var render = function() {
@@ -218,8 +218,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-//
 var _default =
 {
   components: {},
@@ -229,17 +227,11 @@ var _default =
       format: true });
 
     return {
-      usernameid: true,
-      index: 0,
       maskClick: false,
       date: currentDate,
-      startEndDate: [],
+      date2: currentDate,
       items: ['全部', '员工内购', '花田社区', '广州农博', '饼饼精选', '小乔店铺', '小乔店铺', '小乔店铺', '小乔店铺'],
       current: 0,
-      scrollTop: 0,
-      old: {
-        scrollTop: 0 },
-
       lists: [
       {
         "Code": "2020-3-31",
@@ -300,8 +292,7 @@ var _default =
   },
   methods: {
     bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
-      this.startEndDate.push(e.target.value);
-      console.log(this.startEndDate);
+      console.log(this.date, this.date2);
     },
     getDate: function getDate(type) {//时间
       var date = new Date();
@@ -325,8 +316,7 @@ var _default =
       this.canvasStyle = '';
     },
     condition_click: function condition_click() {//搜索button点击事件
-      alert(this.array[this.index]);
-      alert(this.date);
+      console.log(this.date, this.date2);
       this.$refs.popup.close();
     },
     onClickItem: function onClickItem(e) {
@@ -339,9 +329,6 @@ var _default =
     },
     b: function b() {
 
-    },
-    scroll: function scroll(e) {
-      this.old.scrollTop += e.detail.scrollTop;
     } } };exports.default = _default;
 
 /***/ }),

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store/index.js'
-import ajax from './common/js/public_.js'
+import RequestHttp from './common/js/public_.js'
 Vue.prototype.$store = store
-Vue.prototype.$ajax = ajax
+Vue.prototype.$RequestHttp = RequestHttp
 
 Vue.config.productionTip = false
 

@@ -2,7 +2,7 @@
 	<view class="index-content">
 		<view class="condition-content">
 			<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
-			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
+			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
 				<view class="condition-lee">
 					<view class="block-view">
 						<view class="block_left" @click="close">取消</view>
@@ -12,8 +12,8 @@
 						<view class="title">供应商选择</view>
 					</view>
 					<view class="condition-select">
-						<picker mode="selector" @change="bindPickerChange" :value="index" :range="array">
-							<view class="condition-uni-input">{{array[index]}}</view>
+						<picker mode="selector" @change="bindPickerChange" :value="ChannelIndex" :range="ChannelList">
+							<view class="condition-uni-input">{{ChannelList[ChannelIndex]}}</view>
 						</picker>
 					</view>
 					<view class="title-content" >
@@ -31,10 +31,10 @@
 		</view>
 		<view class="number">
 			<view class="title-content" >
-				<view class="title">本月订单</view>
+				<view class="title">订单信息</view>
 			</view>
 			<view class="number-flex">
-				<view v-for="(item,index) in number" class="number-box">
+				<view v-for="(item,index) in OrderNumber" class="number-box">
 					<view>{{item.name}}</view>
 					<view>{{item.number}}</view>
 				</view>
@@ -45,167 +45,124 @@
 				<view class="title">饼状图</view>
 			</view>
 			<view class="qiun-charts">
-				<canvas canvas-id="canvasPie" id="canvasPie" :class="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
+				<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
 			</view>
+		</view>
+		<view class="TS">
+			<uni-popup ref="TS" type="message">
+				<uni-popup-message type="error" message="当日没有数据" :duration="2000" name="TS"></uni-popup-message>
+			</uni-popup>
 		</view>
 	</view>
 </template>
 
 <script>
-	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js'
-	let _self;
+	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js' 
+	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue'
 	let canvaPie=null;
 	export default {
+		components: {
+			uniPopupMessage
+		},
 		data() {
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
-				index: 0,
-				array:[],
-				date: currentDate,
-				canvasStyle: "",
-				order: [
-					{
-						"Code": "10086",
-						"Place": "员工内购",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					},
-					{
-						"Code": "10086",
-						"Place": "员工内购",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					},
-					{
-						"Code": "10086",
-						"Place": "花田社区",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					},
-					{
-						"Code": "10086",
-						"Place": "广州农博",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					},
-					{
-						"Code": "10086",
-						"Place": "饼饼精选",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					},
-					{
-						"Code": "10086",
-						"Place": "小乔店铺",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					
-					}
-				],
-				number:[
-					{
-						name: "订单金额",
-						number: "3,030.00"
-					},
-					{
-						name: "订单数",
-						number: "35"
-					},
-					{
-						name: "包裹数",
-						number: "53"
-					},
-					{
-						name: "付款到账",
-						number: "3,030.00"
-					},
-					{
-						name: "账户余额",
-						number: "0.00"
-					}
-				],
-				chartData: {
-				  "series": [
-					  {
-						"name": "一班",
-						"data": 50
-					  }, 
-					  {
-						"name": "二班",
-						"data": 30
-					  }, 
-					  {
-						"name": "三班",
-						"data": 20
-					  }
-				  ]
+				ChannelIndex: 0,   //渠道选择列表默认显示选项
+				ChannelList:["全部"],//渠道选择列表所有选项
+				date: '0000-00', //时间选择列表时间选项
+				canvasStyle: true, //控制饼图是否显示
+				OrderNumber: [],        //订单数据
+				chartData: {       //饼图数据
+				  "series": []
 				},
-				cWidth:'',
-				cHeight:'',
+				cWidth:'',         //饼图宽度
+				cHeight:'',        //饼图高度
 				pixelRatio:1,
-				serverData:'',
-				maskClick: false
+				maskClick: false,  //控制点击弹出层灰色部分是否关闭弹出层
+				OrderParameter: {
+					"cus_id":'%',
+					"date":"",
+					"simplified":"",
+				},
+				getDealerParameter: {
+					'cusId':'%'
+				}
 			}
 		},
-		computed: {
-			//给一个可选的范围，开始时间和结束时间
-			// startDate() {
-			// 	return this.getDate('start');
-			// },
-			// endDate() {
-			// 	return this.getDate('end');
-			// }
-		},
-		components: {
-			
-		},
-		onLoad() {
-			_self = this;
-			this.cWidth=uni.upx2px(750);
-			this.cHeight=uni.upx2px(500);
-			this.showPie("canvasPie",this.chartData)
-			this.$ajax.ajax('http://jsonplaceholder.typicode.com/users','Get',{}).then(
-				(res) => {
-					console.log(res)
-				}).catch(
-				(err) => {
-					console.log(err)
-				})
+		created() {
+			this.RequestData(this.OrderParameter,this.getDealerParameter)     //请求数据
 		},
 		methods: {
+			RequestData(OrderParameter,getDealerParameter){
+				this.$RequestHttp.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat)//请求首页订单数据
+				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat)//请求筛选渠道数据
+			},
+			apply(e){//回调
+				let order = e.data.data;
+				order.forEach( item => {
+					this.ChannelList.push(item)
+				})
+				let newArray = new Set(this.ChannelList)
+				this.ChannelList = Array.from(newArray)
+			},
+			OrderCallBack(e){//回调
+				if(e.data.data[0] != null){
+					let data = e.data.data[0]
+					let OrderNumber = [
+						{
+							name: "订单金额",
+							number: data.order_money
+						},
+						{
+							name: "订单数",
+							number: data.order_amount
+						},
+						{
+							name: "包裹数",
+							number: data.parcel_amount
+						},
+						{
+							name: "付款到账",
+							number: data.pay_to_account_success
+						},
+						{
+							name: "账户余额",
+							number: data.this_month_balance
+						}
+					]
+					let series = [
+						{
+							"name": "三盒",
+							"data": data.gift_boxes
+						}, 
+						{
+							"name": "四盒",
+							"data": data.four_boxes_total
+						}, 
+						{
+							"name": "五盒",
+							"data": data.five_boxes_total
+						}
+					]
+					this.OrderNumber = OrderNumber;
+					this.chartData.series = series
+					this.cWidth=uni.upx2px(750);
+					this.cHeight=uni.upx2px(500);
+					this.showPie("canvasPie",this.chartData)
+					return true
+				}
+				this.$refs.TS.open()
+			},
+			defeat(e){
+				console.log(e)
+			},
 			bindPickerChange(e){//选择器选择后的回调函数
-				this.index = e.target.value
+				this.ChannelIndex = e.target.value
+				if(this.ChannelIndex == 0){
+					this.date = '0000-00'
+				}
 			},
 			bindDateChange(e) {//选择器选择后的回调函数
 				this.date = e.target.value
@@ -225,17 +182,17 @@
 			},
 			showPie(canvasId,chartData){//饼图实例
 				canvaPie=new uCharts({
-					$this:_self,
+					$this:this,
 					canvasId: canvasId,
 					type: 'pie',
 					fontSize:11,
 					legend:{show:true},
 					background:'#FFFFFF',
-					pixelRatio:_self.pixelRatio,
+					pixelRatio:this.pixelRatio,
 					series: chartData.series,
 					animation: true,
-					width: _self.cWidth*_self.pixelRatio,
-					height: _self.cHeight*_self.pixelRatio,
+					width: this.cWidth*this.pixelRatio,
+					height: this.cHeight*this.pixelRatio,
 					dataLabel: true,
 					extra: {
 						pie: {
@@ -252,28 +209,31 @@
 				});
 			},
 			open() {//开启弹出层
-				this.canvasStyle = 'show';
+				this.canvasStyle = false;
 				this.$refs.popup.open()
 			},
 			close() {//关闭弹出层
 				this.$refs.popup.close()
-				this.canvasStyle = ''
+				this.canvasStyle = true
 			},
 			condition_click(){//搜索button点击事件
-				alert(this.array[this.index])
-				alert(this.date)
-				this.$refs.popup.close()
+				let date = this.date.replace("-","")
+                if(this.ChannelIndex != 0 || this.date != "0000-00"){
+					if(this.ChannelIndex == 0){
+						this.OrderParameter.simplified = "";
+						this.OrderParameter.date = date;
+					}else{
+						this.OrderParameter.simplified = this.ChannelList[this.ChannelIndex];
+						this.OrderParameter.date = date;
+					}
+				}else{
+					this.OrderParameter.simplified  = "";
+					this.OrderParameter.date = "";
+				}
+				
+				this.RequestData(this.OrderParameter,this.getDealerParameter) 
+				this.close()
 			}
-		},
-		created() {
-			let arraies = new Array()
-			this.order.forEach( item => {
-				arraies.push(item.Place)
-			})
-			let newarray = new Set(arraies)
-			newarray.forEach( item => {
-				this.array.push(item)
-			})
 		}
 	}
 </script>
@@ -389,8 +349,8 @@
 		width: 100%; 
 		height:500rpx;
 	}
-	.show{
+/* 	.show{
 		display: none;
-	}
+	} */
 	
 </style>

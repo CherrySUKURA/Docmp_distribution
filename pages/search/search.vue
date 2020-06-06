@@ -9,18 +9,20 @@
 						<view class="block-right" @click="condition_click">完成</view>
 					</view>
 					<view class="title-content" >
-						<view class="title">状态选择</view>
+						<view class="title">开始时间</view>
 					</view>
 					<view class="condition-select">
-						<picker mode="selector" @change="bindPickerChange" :value="index" :range="array">
-							<view class="condition-uni-input">{{array[index]}}</view>
+						<picker mode="date" @change="bindDateChange" :value="date" fields="month">
+							<view class="condition-uni-input">{{date}}</view>
 						</picker>
 					</view>
 					<view class="title-content" >
-						<view class="title">电话号码</view> 
+						<view class="title">结束时间</view>
 					</view>
 					<view class="condition-select">
-						<input value="" type="text" :value="inputValue" placeholder="请输入电话号码" />
+						<picker mode="date" @change="bindDateChange" :value="date2" fields="month">
+							<view class="condition-uni-input">{{date2}}</view>
+						</picker>
 					</view>
 					<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
 				</view>
@@ -28,7 +30,7 @@
 		</view>
 		<view class="list-content">
 			<uni-list class="list-content-list">
-				<uni-list-item v-for="(item,index) in getDate" @click="a(item.Date)" :title="item.Date" :key="index"  :show-badge="true" class="list-content-item">
+				<uni-list-item v-for="(item,index) in OrderDate" @click="a(item.Date)" :title="item.Date" :key="index"  :show-badge="true" class="list-content-item">
 					<template v-slot:right="">
 						<view  class="badge-content">
 							<uni-badge :text="item.badgetext" type="primary" class="list-content-badge" size="small"></uni-badge>
@@ -46,9 +48,12 @@
 	import searchs from '../../store/search.js'
 	export default {
 		data() {
+			const currentDate = this.getDate({
+				format: true
+			})
 			return {
-				index: 0,
-				array: ['完成','售后'],
+				date: currentDate,
+				date2: currentDate,
 				maskClick: false,
 				order: [
 					{
@@ -118,8 +123,7 @@
 					
 					}
 				],
-				inputValue: "",
-				getDate: [
+				OrderDate: [
 					{
 						Date: "2020-05-04",
 						badgetext: "12",
@@ -149,6 +153,22 @@
 			}
 		},
 		methods: {
+			bindDateChange(e) {//选择器选择后的回调函数
+				console.log(this.date,this.date2)
+			},
+			getDate(type) {//时间
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				
+				// if (type === 'start') {
+				// 	year = year - 60;
+				// } else if (type === 'end') {
+				// 	year = year + 60;
+				// }
+				month = month > 9 ? month : '0' + month;
+				return `${year}-${month}`;
+			},
 			open() {
 				this.$refs.popup.open()
 			},
@@ -156,11 +176,8 @@
 				this.$refs.popup.close()
 			},
 			condition_click() {
-				alert(this.array[this.index])
+				console.log(this.date,this.date2)
 				this.$refs.popup.close()
-			},
-			bindPickerChange(){
-				
 			},
 			a(i){
 				this.$store.commit("Value",i)
