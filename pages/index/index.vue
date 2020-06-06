@@ -91,7 +91,7 @@
 				}
 			}
 		},
-		created() {
+		onLoad() {
 			this.RequestData(this.OrderParameter,this.getDealerParameter)     //请求数据
 		},
 		methods: {

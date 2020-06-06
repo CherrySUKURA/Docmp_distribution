@@ -12,16 +12,16 @@
 						<view class="title">开始时间</view>
 					</view>
 					<view class="condition-select">
-						<picker mode="date" @change="bindDateChange" :value="date" fields="month">
-							<view class="condition-uni-input">{{date}}</view>
+						<picker mode="date" @change="StartDataTime" :value="startData" fields="day">
+							<view class="condition-uni-input">{{startData}}</view>
 						</picker>
 					</view>
 					<view class="title-content" >
 						<view class="title">结束时间</view>
 					</view>
 					<view class="condition-select">
-						<picker mode="date" @change="bindDateChange" :value="date2" fields="month">
-							<view class="condition-uni-input">{{date2}}</view>
+						<picker mode="date" @change="endDataTime" :value="endData" fields="day">
+							<view class="condition-uni-input">{{endData}}</view>
 						</picker>
 					</view>
 					<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
@@ -30,16 +30,21 @@
 		</view>
 		<view class="list-content">
 			<uni-list class="list-content-list">
-				<uni-list-item v-for="(item,index) in OrderDate" @click="a(item.Date)" :title="item.Date" :key="index"  :show-badge="true" class="list-content-item">
+				<uni-list-item v-for="(item,index) in OrderDate" @click="a(item.Date)" :title="item.Order_Date" :key="index"  :show-badge="true" class="list-content-item">
 					<template v-slot:right="">
 						<view  class="badge-content">
-							<uni-badge :text="item.badgetext" type="primary" class="list-content-badge" size="small"></uni-badge>
-							<uni-badge :text="item.badgetext" type="success" class="list-content-badge"size="small"></uni-badge>
+							<uni-badge :text="item.order_total_amount" type="primary" class="list-content-badge" size="small"></uni-badge>
+							<uni-badge :text="item.after_order_total_amount" type="success" class="list-content-badge"size="small"></uni-badge>
 						</view>
 					</template>
 					
 				</uni-list-item>
 			</uni-list>
+		</view>
+		<view class="TS">
+			<uni-popup ref="TS" type="message">
+				<uni-popup-message type="error" message="当日没有数据" :duration="2000" name="TS"></uni-popup-message>
+			</uni-popup>
 		</view>
 	</view>
 </template>
@@ -52,8 +57,8 @@
 				format: true
 			})
 			return {
-				date: currentDate,
-				date2: currentDate,
+				startData: currentDate,
+				endData: currentDate,
 				maskClick: false,
 				order: [
 					{
@@ -124,42 +129,48 @@
 					}
 				],
 				OrderDate: [
-					{
-						Date: "2020-05-04",
-						badgetext: "12",
-						badgetext2: "11",
-					},
-					{
-						Date: "2020-05-03",
-						badgetext: "12",
-						badgetext2: "11",
-					},
-					{
-						Date: "2020-05-02",
-						badgetext: "12",
-						badgetext2: "11",
-					},
-					{
-						Date: "2020-05-01",
-						badgetext: "12",
-						badgetext2: "11",
-					},
-					{
-						Date: "2020-04-30",
-						badgetext: "12",
-						badgetext2: "11",
-					}
-				]
+					
+				],
+				Parameter: {
+					"cus_id":"%",
+					"start_date":"",
+					"end_date":""
+				}
 			}
 		},
+		onLoad() {
+			this.RequestData(this.Parameter)     //请求数据
+		},
 		methods: {
-			bindDateChange(e) {//选择器选择后的回调函数
-				console.log(this.date,this.date2)
+			RequestData(Parameter,getDealerParameter){
+				this.$RequestHttp.RequestHttp('order/orderDay',"Post",Parameter,this.CallBack,this.defeat)//请求首页订单数据
+			},
+			CallBack(e){
+				if(e.data.data != null){
+					let data = e.data.data
+					this.OrderDate = data
+					console.log(this.OrderDate)
+					return true
+				}
+				this.$refs.TS.open()
+			},
+			defeat(e){
+				
+			},
+			StartDataTime(e) {//选择器选择后的回调函数
+			console.log(e)
+				this.Parameter.start_date = e.detail.value;
+				this.startData = e.detail.value;
+			},
+			endDataTime(e) {
+				this.Parameter.end_date = e.detail.value;
+				this.endData = e.detail.value;
 			},
 			getDate(type) {//时间
 				const date = new Date();
 				let year = date.getFullYear();
 				let month = date.getMonth() + 1;
+				let day = date.getDay()
 				
 				// if (type === 'start') {
 				// 	year = year - 60;
@@ -167,7 +178,8 @@
 				// 	year = year + 60;
 				// }
 				month = month > 9 ? month : '0' + month;
-				return `${year}-${month}`;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
 			},
 			open() {
 				this.$refs.popup.open()
@@ -176,7 +188,7 @@
 				this.$refs.popup.close()
 			},
 			condition_click() {
-				console.log(this.date,this.date2)
+				this.RequestData(this.Parameter) 
 				this.$refs.popup.close()
 			},
 			a(i){
