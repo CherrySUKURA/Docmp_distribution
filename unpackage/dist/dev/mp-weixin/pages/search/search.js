@@ -94,16 +94,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
   },
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 87))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 89))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 94))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 96))
   },
   uniBadge: function() {
-    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 101))
+    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 103))
   }
 }
 var render = function() {
@@ -144,6 +144,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -236,108 +245,47 @@ var _search = _interopRequireDefault(__webpack_require__(/*! ../../store/search.
 //
 //
 //
-var _default = { data: function data() {var currentDate = this.getDate({ format: true });return { date: currentDate, date2: currentDate, maskClick: false, order: [{ "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "员工内购", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "花田社区", "OrderQuantity": "35", "ParcelNumber": "53", "OrderAmount": "3,030.00", "ExtraFreight": "0.00", "Payment": "3,03.00", "AccountBalance": "0.00" }, { "Code": "10086", "Place": "广州农博",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-
-      {
-        "Code": "10086",
-        "Place": "饼饼精选",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-
-      {
-        "Code": "10086",
-        "Place": "小乔店铺",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" }],
-
-
-
-      OrderDate: [
-      {
-        Date: "2020-05-04",
-        badgetext: "12",
-        badgetext2: "11" },
-
-      {
-        Date: "2020-05-03",
-        badgetext: "12",
-        badgetext2: "11" },
-
-      {
-        Date: "2020-05-02",
-        badgetext: "12",
-        badgetext2: "11" },
-
-      {
-        Date: "2020-05-01",
-        badgetext: "12",
-        badgetext2: "11" },
-
-      {
-        Date: "2020-04-30",
-        badgetext: "12",
-        badgetext2: "11" }] };
-
-
-
-  },
-  methods: {
-    bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
-      console.log(this.date, this.date2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { startData: currentDate, endData: currentDate, maskClick: false, OrderAllDay: [], OrderAllAmount: [], OrderAllAfter: [], Parameter: { "cus_id": "%", "start_date": "", "end_date": "" } };}, onLoad: function onLoad() {this.RequestData(this.Parameter); //请求数据
+  }, methods: { RequestData: function RequestData(Parameter) {this.$RequestHttp.RequestHttp('order/orderAllDay', "Post", Parameter, this.DayCallBack, this.defeat); //请求订单列表订单天数数据
+      this.$RequestHttp.RequestHttp('order/orderAllAmount', "Post", Parameter, this.AmoutCallBack, this.defeat); //请求订单列表订数数据
+      this.$RequestHttp.RequestHttp('order/orderAllAfter', "Post", Parameter, this.AfterCallBack, this.defeat); //请求订单列表售后订单数数据
+    }, DayCallBack: function DayCallBack(e) {this.OrderAllDay = e.data.data;console.log(this.OrderAllDay);}, AmoutCallBack: function AmoutCallBack(e) {this.OrderAllAmount = e.data.data;}, AfterCallBack: function AfterCallBack(e) {this.OrderAllAfter = e.data.data;}, defeat: function defeat(e) {console.log(e);}, StartDataTime: function StartDataTime(e) {//选择器选择后的回调函数
+      this.startData = e.detail.value;}, endDataTime: function endDataTime(e) {//选择器选择后回调
+      this.endData = e.detail.value;}, condition_click: function condition_click(type) {if (type == 'all') {this.startData = this.getDate();this.endData = this.getDate();this.Parameter.start_date = "";this.Parameter.end_date = "";} else if (type == "time") {this.Parameter.start_date = this.startData;this.Parameter.end_date = this.endData;}
+      this.RequestData(this.Parameter);
+      this.$refs.popup.close();
     },
     getDate: function getDate(type) {//时间
       var date = new Date();
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
-
-      // if (type === 'start') {
-      // 	year = year - 60;
-      // } else if (type === 'end') {
-      // 	year = year + 60;
-      // }
+      var day = date.getDay();
       month = month > 9 ? month : '0' + month;
-      return "".concat(year, "-").concat(month);
+      day = day > 9 ? day : '0' + day;
+      return "".concat(year, "-").concat(month, "-").concat(day);
     },
-    open: function open() {
+    open: function open() {//打开弹出层
       this.$refs.popup.open();
     },
     close: function close() {//关闭弹出层
       this.$refs.popup.close();
     },
-    condition_click: function condition_click() {
-      console.log(this.date, this.date2);
-      this.$refs.popup.close();
-    },
-    a: function a(i) {
-      this.$store.commit("Value", i);
+    skip: function skip(i) {
+      this.$store.commit("Orderstatu", i);
+      this.$store.commit("publicstatu", 0);
       uni.navigateTo({
         url: '../../pages/list/list' });
 
-    } },
-
-  computed: {},
-
-
-  created: function created() {
-
-  },
-  components: {} };exports.default = _default;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

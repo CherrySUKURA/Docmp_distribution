@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
   },
   zzxTabs: function() {
-    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 108))
+    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 110))
   }
 }
 var render = function() {
@@ -137,90 +137,123 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
-  components: {},
+  components: {
+    uniPopupMessage: uniPopupMessage },
 
   data: function data() {
     var currentDate = this.getDate({
@@ -228,107 +261,101 @@ var _default =
 
     return {
       maskClick: false,
-      date: currentDate,
-      date2: currentDate,
-      items: ['全部', '员工内购', '花田社区', '广州农博', '饼饼精选', '小乔店铺', '小乔店铺', '小乔店铺', '小乔店铺'],
+      startDate: currentDate,
+      endDate: currentDate,
+      items: ['全部'],
       current: 0,
-      lists: [
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
+      lists: [],
+      accoutParam: {
+        "cus_id": "%",
+        "simplified": "",
+        "start_date": "",
+        "end_date": "",
+        "page_size": "10",
+        "page_no": "1" },
 
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" },
-
-      {
-        "Code": "2020-3-31",
-        "OrderQuantity": "35",
-        "ParcelNumber": "53",
-        "OrderAmount": "3,030.00",
-        "ExtraFreight": "0.00",
-        "Payment": "3,03.00",
-        "AccountBalance": "0.00" }] };
-
+      channelParam: {
+        "cusId": "%" } };
 
 
   },
+  onLoad: function onLoad() {
+    this.RequestData(this.accoutParam);
+    this.RequestDataOnce(this.channelParam);
+  },
   methods: {
-    bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
-      console.log(this.date, this.date2);
+    RequestData: function RequestData(accoutParam) {
+      this.$RequestHttp.RequestHttp("account/accountCheckList", "Post", accoutParam, this.accoutCallBack, this.defeat);
     },
-    getDate: function getDate(type) {//时间
-      var date = new Date();
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-
-      // if (type === 'start') {
-      // 	year = year - 60;
-      // } else if (type === 'end') {
-      // 	year = year + 60;
-      // }
-      month = month > 9 ? month : '0' + month;
-      return "".concat(year, "-").concat(month);
+    RequestDataOnce: function RequestDataOnce(channelParam) {
+      this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat);
     },
-    open: function open() {//开启弹出层
-      this.canvasStyle = 'show';
-      this.$refs.popup.open();
+    accoutCallBack: function accoutCallBack(e) {
+      if (e.data.data.length == 0) {
+        this.$refs.TS.open();
+      }
+      this.lists = e.data.data;
     },
-    close: function close() {//关闭弹出层
-      this.$refs.popup.close();
-      this.canvasStyle = '';
+    channelCallBack: function channelCallBack(e) {var _this = this;
+      var data = e.data.data;
+      data.forEach(function (item, index) {
+        _this.items.push(item);
+      });
     },
-    condition_click: function condition_click() {//搜索button点击事件
-      console.log(this.date, this.date2);
+    defeat: function defeat(e) {
+      console.log(e);
+    },
+    startDateChange: function startDateChange(e) {//选择器选择后的回调函数
+      this.startDate = e.detail.value;
+    },
+    endDateChange: function endDateChange(e) {
+      this.endDate = e.detail.value;
+    },
+    condition_click: function condition_click(type) {//搜索button点击事件
+      if (type == "all") {
+        this.startDate = this.getDate();
+        this.endDate = this.getDate();
+        this.accoutParam.start_date = "";
+        this.accoutParam.end_date = "";
+      } else {
+        this.accoutParam.start_date = this.startDate;
+        this.accoutParam.end_date = this.endDate;
+      }
+      this.RequestData(this.accoutParam);
       this.$refs.popup.close();
     },
     onClickItem: function onClickItem(e) {
       if (this.current !== e.currentIndex) {
         this.current = e.currentIndex;
       }
+      if (this.current == 0) {
+        this.accoutParam.simplified = "";
+      } else {
+        this.accoutParam.simplified = this.items[this.current];
+      }
+      this.RequestData(this.accoutParam);
     },
     a: function a() {
 
     },
     b: function b() {
 
+    },
+    getDate: function getDate(type) {//时间
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDay();
+
+      month = month > 9 ? month : '0' + month;
+      day = day > 9 ? day : '0' + day;
+      return "".concat(year, "-").concat(month, "-").concat(day);
+    },
+    open: function open() {//开启弹出层
+      this.$refs.popup.open();
+    },
+    close: function close() {//关闭弹出层
+      this.$refs.popup.close();
     } } };exports.default = _default;
 
 /***/ }),

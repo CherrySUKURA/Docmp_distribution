@@ -2,7 +2,10 @@
 	<view class="StatementOfAccount-content">
 		<view class="pos-top">
 			<view class="condition-content">
-				<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
+				<view class="flex">
+					<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
+					<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
+				</view>
 				<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
 					<view class="condition-lee">
 						<view class="block-view">
@@ -13,16 +16,16 @@
 							<view class="title">开始时间</view>
 						</view>
 						<view class="condition-select">
-							<picker mode="date" @change="bindDateChange" :value="date" fields="month">
-								<view class="condition-uni-input">{{date}}</view>
+							<picker mode="date" @change="startDateChange" :value="startDate" fields="day">
+								<view class="condition-uni-input">{{startDate}}</view>
 							</picker>
 						</view>
 						<view class="title-content" >
 							<view class="title">结束时间</view>
 						</view>
 						<view class="condition-select">
-							<picker mode="date" @change="bindDateChange" :value="date2" fields="month">
-								<view class="condition-uni-input">{{date2}}</view>
+							<picker mode="date" @change="endDateChange" :value="endDate" fields="day">
+								<view class="condition-uni-input">{{endDate}}</view>
 							</picker>
 						</view>
 						<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
@@ -35,31 +38,39 @@
 		</view>
 
 		<view>
-			<view v-for="(item,index) in items" v-show="current === index">
-					<view class="box"  v-for="(item,index) in lists" >
+			<view v-for="(item,index) in items" v-show="current === index" :key="index">
+					<view class="box"  v-for="(item,index) in lists" :key="index">
 						<view class="box-left">
-							{{item.Code}}
+							{{item.order_Date}}
 						</view>
 						<view class="box-center">
 							<view>
+								<view class="label">渠道名称</view>
+								<view class="item-body">{{item.simplified}}</view>
+							</view>
+							<view>
 								<view class="label">订单数</view>
-								<view class="item-body">{{item.OrderQuantity}}</view>
+								<view class="item-body">{{item.order_amount}}</view>
 							</view>
 							<view>
 								<view class="label">包裹数</view>
-								<view class="item-body">{{item.ParcelNumber}}</view>
+								<view class="item-body">{{item.parcel_amount}}</view>
 							</view>
 							<view>
 								<view class="label">订单金额</view>
-								<view class="item-body">{{item.OrderAmount}}</view>
+								<view class="item-body">{{item.order_total_money}}</view>
 							</view>
 							<view>
 								<view class="label">额外运费</view>
-								<view class="item-body">{{item.ExtraFreight}}</view>
+								<view class="item-body">{{item.extra_freight}}</view>
 							</view>
 							<view>
-								<view class="label">收款</view>
-								<view class="item-body">{{item.Payment}}</view>
+								<view class="label">应收到账</view>
+								<view class="item-body">{{item.tax_receivable_success_total_money}}</view>
+							</view>
+							<view>
+								<view class="label">应收余额</view>
+								<view class="item-body">{{item.receivable_balance}}</view>
 							</view>
 						</view>
 						<view class="box-right">
@@ -71,17 +82,27 @@
 		</view>
 		<view class="pos-bottom">
 			<view class="tale">
-				<view class="tale-box">总金额</view>
-				<view class="tale-box">总付款</view>
-				<view class="tale-box">余额</view>
+				<view class="tale-box" v-for="(item,index) in sum" :key="index">
+					<navigator :url="item.money_name == '总付款' ? '../../pages/dayAccout/dayAccout' : ''">
+						<view class="monay-class" :class="item.money_name == '总付款' ? 'active' : ''">{{item.money}}</view>
+						<view class="monay">{{item.money_name}}</view>
+					</navigator>
+				</view>
 			</view>
+		</view>
+		<view class="TS">
+			<uni-popup ref="TS" type="message">
+				<uni-popup-message type="error" message="没有数据" :duration="2000"></uni-popup-message>
+			</uni-popup>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	export default {
 		components: {
+			uniPopupMessage
 		},
 		data() {
 			const currentDate = this.getDate({
@@ -89,101 +110,100 @@
 			})
 			return {
 				maskClick: false,
-				date: currentDate,
-				date2: currentDate,
-				items: ['全部','员工内购','花田社区','广州农博','饼饼精选','小乔店铺','小乔店铺','小乔店铺','小乔店铺'],
+				startDate: currentDate,
+				endDate: currentDate,
+				items: ['全部'],
 				current: 0,
-				lists: [
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					},
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					},
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					},
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					},
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					},
-					{
-						"Code": "2020-3-31",
-						"OrderQuantity": "35",
-						"ParcelNumber": "53",
-						"OrderAmount": "3,030.00",
-						"ExtraFreight": "0.00",
-						"Payment": "3,03.00",
-						"AccountBalance": "0.00"
-					}
-				]
+				lists: [],
+				sum:[],
+				accoutParam: {
+					"cus_id":"%",
+					"simplified":"",
+					"start_date":"",
+					"end_date":"",
+					"page_size":"10",
+					"page_no":"1"
+				},
+				channelParam: {
+					"cusId": "%"
+				}
 			}
 		},
+		onLoad(){
+			this.RequestData(this.accoutParam);
+			this.RequestDataOnce(this.channelParam);
+		},
 		methods: {
-			bindDateChange(e) {//选择器选择后的回调函数
-				console.log(this.date,this.date2)
+			RequestData(accoutParam){
+				this.$RequestHttp.RequestHttp("account/accountCheckList","Post",accoutParam,this.accoutCallBack,this.defeat);
+				this.$RequestHttp.RequestHttp("account/accountCheckAllAmount","Post",accoutParam,this.accountAmountCallBack,this.defeat);
 			},
-			getDate(type) {//时间
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
+			RequestDataOnce(channelParam){
+				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",channelParam,this.channelCallBack,this.defeat);
+			},
+			accoutCallBack(e){
+				if(e.data.data.length == 0){
+					this.$refs.TS.open()
+				}
+				this.lists = e.data.data
+			},
+			accountAmountCallBack(e){
+				let data = e.data.data
+				this.sum = [
+					{
+						"money_name": '总金额',
+						"money": data.order_money_total
+					},
+					{
+						"money_name": '总付款',
+						"money": data.buy_money_total
+					},
+					{
+						"money_name": '余额',
+						"money": data.receivable_balance_total
+					}
+				]
 				
-				// if (type === 'start') {
-				// 	year = year - 60;
-				// } else if (type === 'end') {
-				// 	year = year + 60;
-				// }
-				month = month > 9 ? month : '0' + month;
-				return `${year}-${month}`;
+				
 			},
-			open() {//开启弹出层
-				this.canvasStyle = 'show';
-				this.$refs.popup.open()
+			channelCallBack(e){
+				let data = e.data.data
+				data.forEach( (item,index) => {
+					this.items.push(item)
+				})
 			},
-			close() {//关闭弹出层
-				this.$refs.popup.close()
-				this.canvasStyle = ''
+			defeat(e){
+				console.log(e)
 			},
-			condition_click() {//搜索button点击事件
-				console.log(this.date,this.date2)
-				this.$refs.popup.close()
+			startDateChange(e) {//选择器选择后的回调函数
+				this.startDate = e.detail.value
+			},
+			endDateChange(e) {
+				this.endDate = e.detail.value
+			},
+			condition_click(type) {//搜索button点击事件
+				if(type == "all"){
+					this.startDate = this.getDate();
+					this.endDate = this.getDate();
+					this.accoutParam.start_date = "";
+					this.accoutParam.end_date = "";
+				}else{
+					this.accoutParam.start_date = this.startDate;
+					this.accoutParam.end_date = this.endDate;
+				}
+				this.RequestData(this.accoutParam)
+				this.$refs.popup.close();
 			},
 			onClickItem(e) {
 				if(this.current !== e.currentIndex) {
 					this.current = e. currentIndex;
 				}
+				if(this.current == 0){
+					this.accoutParam.simplified = ""
+				}else{
+					this.accoutParam.simplified = this.items[this.current]
+				}
+				this.RequestData(this.accoutParam)
 			},
 			a() {
 				
@@ -191,6 +211,22 @@
 			b() {
 				
 			},
+			getDate(type) {//时间
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDay();
+				
+				month = month > 9 ? month : '0' + month;
+				day = day > 9 ? day : '0' + day
+				return `${year}-${month}-${day}`;
+			},
+			open() {//开启弹出层
+				this.$refs.popup.open()
+			},
+			close() {//关闭弹出层
+				this.$refs.popup.close()
+			}
 		}
 	}
 </script>
@@ -198,9 +234,17 @@
 <style scoped>
 	.StatementOfAccount-content{
 		width: 100%;
-		/* height: 100%; */
 		box-sizing: border-box;
-		padding: 230rpx 20rpx 100rpx 20rpx;
+		padding: 230rpx 20rpx 120rpx 20rpx;
+	}
+	.flex{
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-around;
+	}
+	.condition-btn{
+		width: 100%;
+		margin: 0 10rpx;
 	}
 	.pos-top{
 		padding:20rpx;
@@ -212,25 +256,9 @@
 		left: 0;
 		width: 100%;
 		background-color: #FFFFFF;
-		/* height: 200rpx; */
 		z-index: 100;
-/* 		padding: 20rpx; */
-		/* padding: 100rpx 20rpx 0 20rpx; */
 		box-sizing: border-box;
 
-	}
-	.pos-bottom{
-		padding:20rpx;
-		/* #ifdef H5 */
-		padding: 0 20rpx 100rpx 20rpx;
-		/* #endif */
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		width: 100%;
-		z-index:99;
-		background-color: #FFFFFF;
-		/* padding: 0 20rpx 100rpx 20rpx; */
 	}
 	.condition-lee{
 		width: 100%;
@@ -287,13 +315,9 @@
 	}
 	.StatementOfAccount-content-list{
 		width: 100%;
-		height: 100rpx;
+		height: 80rpx;
 		margin-top: 20rpx;
 	}
-/* 	.all-box{
-		width: 100%;
-		height: calc(100vh - 300rpx);
-	} */
 	.box{
 		width: 100%;
 		display: flex;
@@ -302,16 +326,14 @@
 		border: 1rpx solid rgba(0,0,0,0.1);
 		padding: 20rpx;
 		box-sizing: border-box;
+		font-size: 25rpx;
 	}
 	.box-left{
 		width: 200rpx;
-		/* height: 160rpx; */
 		line-height: 160rpx;
-		/* border-right:1rpx solid rgba(0,0,0,0.1); */
 	}
 	.box-center{
 		width: 400rpx;
-		/* height: 160rpx; */
 	}
 	.box-right{
 	}
@@ -353,16 +375,47 @@
 		margin-top: 10rpx;
 		font-size: 20rpx;
 	}
+	.pos-bottom{
+		padding:20rpx;
+		/* #ifdef H5 */
+		padding: 20rpx 20rpx 120rpx 20rpx;
+		/* #endif */
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		z-index:99;
+		background-color: #FFFFFF;
+		box-shadow: 20rpx 20px 20px 20px rgba(0,0,0,0.2);
+		box-sizing: border-box;
+
+	}
 	.tale{
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-around;
 		width: 100%;
-		height: 80rpx;
+		height: 100rpx;
 	}
 	.tale-box{
-		width: 33.3%;
+		width: 100%;
 		height: 100%;
 		text-align: center;
+		line-height: 50rpx;
+	}
+	.monay{
+		font-size: 30rpx;
+		font-weight: 1000;
+		color: #007AFF;
+	}
+	.monay-class{
+		font-size: 30rpx;
+		font-weight: 1000rpx;
+	}
+	.active{
+		color: blue;
+	}
+	.TS{
+		z-index: 10000;
 	}
 </style>

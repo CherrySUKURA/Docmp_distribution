@@ -69,7 +69,7 @@
 		},
 		computed: {
 			iwidth() {
-				const num = 5;
+				const num = 3;
 				let w = '100%';
 				if (num > 0) {
 					w = (100 / num) + '%';
@@ -135,7 +135,7 @@
 		flex-flow: row nowrap;
 		justify-content: space-around;
 		white-space: nowrap;
-		font-size: 14rpx;
+		font-size: 25rpx;
 		box-sizing: border-box;
 		height: 60rpx;
 		line-height: 60rpx;

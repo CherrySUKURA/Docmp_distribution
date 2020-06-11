@@ -19,13 +19,13 @@
 						<label class="uni-list-cell-pd" v-for="(item,index) in list" :key="index">
 							<view class="my-order">
 								<view>
-									<checkbox :value="item.HH" :checked="checkedAll.includes((item.HH))" :disabled="DJZT?true:false"></checkbox>
+									<checkbox :value="String(item.lineNo)" :checked="checkedAll.includes(String(item.lineNo))" :disabled="DJZT?true:false"></checkbox>
 								</view>
-								<view class="left-content">{{item.HH}}</view>
+								<view class="left-content">{{String(item.lineNo)}}</view>
 								<view class="right-content">
-									<view>{{item.PP}}|{{item.PM}}</view>
-									<view>{{item.SKU}}</view>
-									<view>{{item.WLGS}}</view>
+									<view>{{item.brand}} | {{item.brandName}}</view>
+									<view>{{item.sellSku}}</view>
+									<view>{{item.ForwarderName == null ? '无物流信息' : item.ForwarderName }}</view>
 									<button @click="open(index)" :hover-stop-propagation="true" class="WLXX_BTN"></button>
 								</view>
 							</view>
@@ -43,8 +43,7 @@
 							<image src="../../static/close.png" @click="close"></image>
 						</view>
 					</view>
-					<scroll-view class="logistics" :scroll-top="scrollTop" scroll-y="true" @scrolltoupper="upper" @scrolltolower="lower"
-                @scroll="scroll">
+					<scroll-view class="logistics" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll">
 				<!-- <view class="logistics"> -->
 					<logistics :wlInfo="wlInfo"></logistics>
 				<!-- </view> -->
@@ -57,142 +56,114 @@
 </template>
 
 <script>
+	import { mapState,mapAction,mapGetter,mapMutations } from 'vuex';
 	import logistics from '../../components/xinyu-logistics/xinyu-logistics.vue'
 	export default {
+		components: {
+			logistics
+		},
 		data() {
 			return {
 				allChecked:false,//是否被选中
 				checkedAll:[], //复选框选中的值
 				"DJZT": false,
-				details_list: [
-						{
-							name: "单证号",
-							ZD: "SO202005270564"
-						},
-						{
-							name: "单据类型",
-							ZD: "正常销售单"
-						},
-						{
-							name: "单据状态",
-							ZD: '物流单号已返回 | 未发货'
-						},
-						{
-							name: "设计包裹数",
-							ZD: "1"
-						},
-						{
-							name: "渠道商",
-							ZD: "适盒"
-						},
-						{
-							name: "收件人",
-							ZD: "阮蓉 1588884895"
-						},
-						{
-							name: "省市区",
-							ZD: "浙江省 杭州市 临安区"
-						},
-						{
-							name: "地址",
-							ZD: "绿城玉兰花园锦城街道玉兰花园6幢三单元605室"
-						}
-				],
+				details_list: [],
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
 				},
-				list:[
-					{
-						"HH": '1',
-						"SKU": 'RL0061',
-						"PP": "空刻AirMeter",
-						"PM": "烛光意面四盒装（2番茄2奶油)",
-						"WLGS": "嘉兴--申通"
-					},
-					{
-						"HH": '2',
-						"SKU": 'RL0061',
-						"PP": "空刻AirMeter",
-						"PM": "烛光意面四盒装（2番茄2奶油)",
-						"WLGS": "嘉兴--申通"
-					},
-					{
-						"HH": '3',
-						"SKU": 'RL0061',
-						"PP": "空刻AirMeter",
-						"PM": "烛光意面四盒装（2番茄2奶油)",
-						"WLGS": "嘉兴--申通"
-					},
-					{
-						"HH": '4',
-						"SKU": 'RL0061',
-						"PP": "空刻AirMeter",
-						"PM": "烛光意面四盒装（2番茄2奶油)",
-						"WLGS": "嘉兴--申通"
-					}
-				],
+				list:[],
 				wlInfo: {
-				    delivery_status: 0, //快递状态 1已签收 2配送中
-				    post_name: '韵达快递', //快递名称
+				    delivery_status: "", //快递状态 1已签收 2配送中
+				    post_name: '', //快递名称
 				    logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
-				    exp_phone: '95546', //快递电话
-				    post_no: '4304678557725', //快递单号
-				    addr: '江西省南昌市青云谱区', //收货地址
+				    // exp_phone: '95546', //快递电话
+				    post_no: '', //快递单号
+				    addr: '', //收货地址
 				    //物流信息
-				    list: [{
-				            "time": "2020-04-12 13:00:57",
-				            "timeArr": ['2020-04-12', '13:00:57'],
-				            "context": "江西南昌青云谱区 快件已被 丰巢智能柜 代签收。",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-12 12:58:53",
-				            "timeArr": ['2020-04-12', '12:58:53'],
-				            "context": "江西南昌青云谱区 进行派件扫描；派送业务员：张三；联系电话：88888888888",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-11 15:45:44",
-				            "timeArr": ['2020-04-11', '15:45:44'],
-				            "context": "江西南昌分拨中心 从站点发出，本次转运目的地：江西南昌青云谱区",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-11 15:08:45",
-				            "timeArr": ['2020-04-11', '15:08:45'],
-				            "context": "江西南昌分拨中心 在分拨中心进行卸车扫描",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-10 17:42:41",
-				            "timeArr": ['2020-04-10', '17:42:41'],
-				            "context": "浙江义乌分拨中心 进行装车扫描，发往：江西南昌分拨中心",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-10 17:39:38",
-				            "timeArr": ['2020-04-10', '17:39:38'],
-				            "context": "浙江义乌分拨中心 在分拨中心进行称重扫描",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-10 16:02:46",
-				            "timeArr": ['2020-04-10', '16:02:46'],
-				            "context": "浙江义乌城西公司 进行下级地点扫描，发往：江西南昌地区包",
-				            "location": ""
-				        },
-				        {
-				            "time": "2020-04-10 15:48:42",
-				            "timeArr": ['2020-04-10', '15:48:42'],
-				            "context": "浙江义乌城西公司城西营销部 进行揽件扫描",
-				            "location": ""
-				        }
-				    ]
+				    list: []
+				},
+				Parameter: {
+					"salesOrderNo": ""
 				}
 			}
 		},
+		onLoad() {
+			this.Parameter.salesOrderNo = this.OrderNumbers
+			this.RequestData(this.Parameter)
+		},
 		methods: {
+			RequestData(Parameter){
+				this.$RequestHttp.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$RequestHttp.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat);//请求订单列表订单天数数据
+			},
+			DealerInfoCallBack(e){
+				let data = e.data.data[0];
+				this.wlInfo.addr = data.Add_Full;
+				this.details_list = [
+					{
+						name: "单证号",
+						ZD: data.Sales_Order_No
+					},
+					{
+						name: "单据类型",
+						ZD: data.Order_Type_Desc
+					},
+					{
+						name: "单据状态",
+						ZD: data.Order_Status_Desc
+					},
+					{
+						name: "涉及包裹数",
+						ZD: data.parcel_total
+					},
+					{
+						name: "渠道商",
+						ZD: data.simplified
+					},
+					{
+						name: "收件人",
+						ZD: data.Client_Name + " " +data.Client_Contact
+					},
+					{
+						name: "省市区",
+						ZD: data.Provinces
+					},
+					{
+						name: "地址",
+						ZD: data.Add_Full
+					}
+				]
+			},
+			OrderListDetailsCallBack(e) {
+				let data = e.data.data
+				this.list = data;
+				data.forEach((item,index) => {
+					let forwarderName
+					if(data[index].forwarderName){
+						forwarderName = data[index].forwarderName.splice('-')
+					}else{
+						forwarderName = '无物流公司'
+					}
+					this.wlInfo.post_name = forwarderName
+					this.wlInfo.post_no = data[index].parcelNo
+					this.wlInfo.delivery_status = data[index].parcelStatus;
+					let  parcelInfoes = JSON.parse(item.parcelInfo).reverse();
+					parcelInfoes.forEach((item1,index1) => {
+						let data = item1.AcceptTime.split(" ")
+						let list = {
+					            "time": item1.AcceptTime,
+					            "timeArr": data,
+					            "context": item1.AcceptStation,
+					            "location": ""
+					        }
+						this.wlInfo.list.push(list)
+					})
+				})
+			},
+			defeat(e){
+				console.log(e)
+			},
 			checkboxChange (e) {
 				let values = e.detail.value;
 				this.checkedAll = values;
@@ -201,17 +172,15 @@
 				}else {
 					this.allChecked =false
 				}
-				console.log(this.checkedAll)
-				
 			},
 			allChoose(e){
 				let chooseItem = e.detail.value;
 				if(chooseItem[0] == 'all'){
 					this.allChecked = true;
 					for(let item of this.list){
-						let itemVal = String(item.HH);
+						let itemVal = String(item.lineNo);
 						if(!this.checkedAll.includes(itemVal)){
-							this.checkedAll.push(itemVal)
+							this.checkedAll.push(itemVal) 
 						}
 					}
 				}else{
@@ -228,21 +197,17 @@
 			close() {
 				this.$refs.details_popup.close()
 			},
-			upper(e){
-				console.log(e)
-			},
-			lower(e){
-				console.log(e)
-			},
 			scroll(e){
 				this.old.scrollTop += e.detail.scrollTop
 			},
 		},
-		components: {
-			logistics
-		},
-		mounted() {
-			
+		computed:{
+			...mapState({
+				OrderNumber: state => state.OrderNumber
+			}),
+			OrderNumbers: function() {
+				return this.OrderNumber
+			}
 		}
 	}
 </script>

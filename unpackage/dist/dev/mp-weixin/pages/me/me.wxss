@@ -1,0 +1,30 @@
+
+.bottombar{
+	width: 100%;
+	height: 150rpx;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	padding-bottom: 20rpx;
+	background-color: #FFFFFF;
+}
+.userinfo{
+	text-align: center;
+	line-height: 100rpx;
+}
+.userlook{
+	width: 200rpx;
+	height: 200rpx;
+	margin: auto;
+	margin-top: 150rpx;
+}
+.userlook image{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.userbtn{
+	width: 600rpx;
+	margin-top: 200rpx;
+}
+

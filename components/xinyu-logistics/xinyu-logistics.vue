@@ -8,11 +8,11 @@
 					</view>
 					<view class="text">
 						<view class="text1">{{wlInfo.post_name}}</view>
-						<view class="text2">官方电话 {{wlInfo.exp_phone}}</view>
+						<!-- <view class="text2">官方电话 {{wlInfo.exp_phone}}</view> -->
 					</view>
 				</view>
 				<view class="right">
-					<view class="text">{{wlInfo.post_name}} {{wlInfo.post_no}}</view>
+					<view class="text">订单单号： {{wlInfo.post_no}}</view>
 				</view>
 			</view>
 			
@@ -32,7 +32,7 @@
 							<view>{{item.timeArr[1]}}</view>
 						</view>
 						<view class="info flex1">
-							<view class="title">{{index == 0 && wlInfo.delivery_status == 1 ? '已签收' : '配送中'}}</view>
+							<view class="title">{{wlInfo.delivery_status == 0 ? '尚无物流信息' : index == 0 && wlInfo.delivery_status == 1 ? '已揽收' : wlInfo.delivery_status == 2 ? '已发货' : wlInfo.delivery_status == 3 ? '已收货' : wlInfo.delivery_status == 4 ? '异常状态' : '无需物流'}}</view>
 							<view class="text">{{item.context}}</view>
 						</view>
 					</view>

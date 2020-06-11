@@ -36,7 +36,7 @@
   -webkit-justify-content: space-around;
           justify-content: space-around;
   white-space: nowrap;
-  font-size: 14rpx;
+  font-size: 25rpx;
   box-sizing: border-box;
   height: 60rpx;
   line-height: 60rpx;

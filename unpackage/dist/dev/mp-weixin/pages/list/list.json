@@ -3,6 +3,8 @@
   "navigationBarBackgroundColor": "#007AFF",
   "usingComponents": {
     "uni-popup": "/components/uni-popup/uni-popup",
-    "uni-tag": "/components/uni-tag/uni-tag"
+    "uni-tag": "/components/uni-tag/uni-tag",
+    "uni-pagination": "/components/uni-pagination/uni-pagination",
+    "uni-popup-message": "/components/uni-popup/uni-popup-message"
   }
 }

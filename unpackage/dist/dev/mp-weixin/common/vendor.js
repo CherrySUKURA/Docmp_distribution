@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1711,11 +1711,23 @@ _vue.default.use(_vuex.default);
 var store = new _vuex.default.Store({
 
   state: {
-    "public": "" },
+    "Orderstate": "",
+    "Afterstate": "",
+    "publicstate": "",
+    "ChannelList": "" },
 
   mutations: {
-    Value: function Value(state, newVal) {
-      state.public = newVal;
+    Orderstatu: function Orderstatu(state, newVal) {
+      state.Orderstate = newVal;
+    },
+    Afterstatu: function Afterstatu(state, newVal) {
+      state.Afterstate = newVal;
+    },
+    publicstatu: function publicstatu(state, newVal) {
+      state.publicstate = newVal;
+    },
+    channel: function channel(state, newVal) {
+      state.ChannelList = newVal;
     } },
 
   actions: {},
@@ -2750,7 +2762,73 @@ store;exports.default = _default;
 
 /***/ }),
 
-/***/ 141:
+/***/ 15:
+/*!*****************************************************************************!*\
+  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/common/js/public_.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var url = "http://192.168.2.101:7002/";
+
+function request(DK, methods, data) {
+  return new Promise(function (resolve, reject) {
+    uni.request({
+      url: url + DK,
+      method: methods,
+      dataType: 'json',
+      data: data,
+      header: {
+        'Content-Type': 'application/json;charset=utf-8' },
+
+      success: function success(res) {
+        resolve(res);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
+}
+function download(DK) {
+  return new Promise(function (resolve, reject) {
+    uni.downloadFile({
+      url: url + DK,
+      success: function success(res) {
+        resolve(res);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
+}var _default =
+
+{
+  RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {//封装回调
+    request(url, method, data).then(
+    function (res) {
+      succeed(res);
+    }).catch(
+    function (err) {
+      defeated(err);
+    });
+  },
+  RequestDownload: function RequestDownload(url, succeed, defeated) {
+    download(url).then(
+    function (res) {
+      succeed(res);
+    }).catch(
+    function (err) {
+      defeated(err);
+    });
+  } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 150:
 /*!**************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-icons/icons.js ***!
   \**************************************************************************************/
@@ -2889,50 +2967,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   "cloud-download-filled": "\uE8E9",
   "headphones": "\uE8BF",
   "shop": "\uE609" };exports.default = _default;
-
-/***/ }),
-
-/***/ 15:
-/*!*****************************************************************************!*\
-  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/common/js/public_.js ***!
-  \*****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var url = "http://192.168.2.102:7002/";
-
-function ajax(DK, methods, data) {
-  return new Promise(function (resolve, reject) {
-    uni.request({
-      url: url + DK,
-      method: methods,
-      dataType: 'json',
-      data: data,
-      header: {
-        'Content-Type': 'application/json;charset=utf-8' },
-
-      success: function success(res) {
-        resolve(res);
-      },
-      fail: function fail(err) {
-        reject(err);
-      } });
-
-  });
-}var _default =
-
-{
-  RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {//封装回调
-    ajax(url, method, data).then(
-    function (res) {
-      succeed(res);
-    }).catch(
-    function (err) {
-      defeated(err);
-    });
-  } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -8468,7 +8502,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8489,14 +8523,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8572,7 +8606,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -14678,7 +14712,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 76:
+/***/ 78:
 /*!**************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/popup.js ***!
   \**************************************************************************************/
@@ -14686,7 +14720,7 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 77));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 79));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -14713,7 +14747,7 @@ var config = {
 
 /***/ }),
 
-/***/ 77:
+/***/ 79:
 /*!****************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/message.js ***!
   \****************************************************************************************/

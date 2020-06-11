@@ -48,6 +48,10 @@
 				"navigationBarBackgroundColor":"#007AFF"
 			}
         }
+        ,{
+            "path" : "pages/dayAccout/dayAccout",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color":"#8a8a8a",

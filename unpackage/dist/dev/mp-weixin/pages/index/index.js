@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 71))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
   }
 }
 var render = function() {
@@ -145,6 +145,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
 
 
 
@@ -261,54 +264,64 @@ var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-cha
 //
 //
 //
-var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 80));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
+//
+//
+//
+var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
       ChannelList: ["全部"], //渠道选择列表所有选项
-      date: '0000-00', //时间选择列表时间选项
+      date: currentDate, //时间选择列表时间选项
       canvasStyle: true, //控制饼图是否显示
       OrderNumber: [], //订单数据
       chartData: { //饼图数据
         "series": [] }, cWidth: '', //饼图宽度
       cHeight: '', //饼图高度
       pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
-      OrderParameter: { "cus_id": '%', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '%' } };}, created: function created() {this.RequestData(this.OrderParameter, this.getDealerParameter); //请求数据
-  }, methods: { RequestData: function RequestData(OrderParameter, getDealerParameter) {this.$RequestHttp.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
-      this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
+      OrderParameter: { "cus_id": '%', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '%' } };}, onLoad: function onLoad() {this.RequestData(this.OrderParameter); //请求数据
+    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$RequestHttp.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
+      this.$RequestHttp.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
+    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
     }, apply: function apply(e) {var _this = this; //回调
-      var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.ChannelList = Array.from(newArray);}, OrderCallBack: function OrderCallBack(e) {//回调
-      if (e.data.data[0] != null) {var data = e.data.data[0];var OrderNumber = [{ name: "订单金额", number: data.order_money }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: data.pay_to_account_success }, { name: "账户余额", number: data.this_month_balance }];
+      var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
+      var data = e.data.data[0];if (data == null) {this.$refs.TS.open();return false;}var OrderNumber = [{ name: "订单金额", number: data.order_money }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: data.pay_to_account_success },
+
+      {
+        name: "账户余额",
+        number: data.this_month_balance }];
 
 
-        var series = [
-        {
-          "name": "三盒",
-          "data": data.gift_boxes },
-
-        {
-          "name": "四盒",
-          "data": data.four_boxes_total },
-
-        {
-          "name": "五盒",
-          "data": data.five_boxes_total }];
-
-
-        this.OrderNumber = OrderNumber;
-        this.chartData.series = series;
-        this.cWidth = uni.upx2px(750);
-        this.cHeight = uni.upx2px(500);
-        this.showPie("canvasPie", this.chartData);
-        return true;
+      this.OrderNumber = OrderNumber;
+    },
+    iconCallBack: function iconCallBack(e) {
+      var data = e.data.data[0];
+      if (data == null) {
+        this.$refs.TS.open();
+        return false;
       }
-      this.$refs.TS.open();
+      var series = [
+      {
+        "name": "三盒",
+        "data": data.gift_boxes },
+
+      {
+        "name": "四盒",
+        "data": data.four_boxes_total },
+
+      {
+        "name": "五盒",
+        "data": data.five_boxes_total }];
+
+
+      this.chartData.series = series;
+      this.cWidth = uni.upx2px(750);
+      this.cHeight = uni.upx2px(500);
+      this.showPie("canvasPie", this.chartData);
+
     },
     defeat: function defeat(e) {
       console.log(e);
     },
     bindPickerChange: function bindPickerChange(e) {//选择器选择后的回调函数
       this.ChannelIndex = e.target.value;
-      if (this.ChannelIndex == 0) {
-        this.date = '0000-00';
-      }
     },
     bindDateChange: function bindDateChange(e) {//选择器选择后的回调函数
       this.date = e.target.value;
@@ -362,9 +375,14 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
       this.$refs.popup.close();
       this.canvasStyle = true;
     },
-    condition_click: function condition_click() {//搜索button点击事件
+    condition_click: function condition_click(type) {//搜索button点击事件
       var date = this.date.replace("-", "");
-      if (this.ChannelIndex != 0 || this.date != "0000-00") {
+      if (type == 'all') {
+        this.startDate = this.getDate();
+        this.endDate = this.getDate();
+        this.OrderParameter.simplified = "";
+        this.OrderParameter.date = "";
+      } else {
         if (this.ChannelIndex == 0) {
           this.OrderParameter.simplified = "";
           this.OrderParameter.date = date;
@@ -372,9 +390,6 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
           this.OrderParameter.simplified = this.ChannelList[this.ChannelIndex];
           this.OrderParameter.date = date;
         }
-      } else {
-        this.OrderParameter.simplified = "";
-        this.OrderParameter.date = "";
       }
 
       this.RequestData(this.OrderParameter, this.getDealerParameter);

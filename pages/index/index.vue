@@ -1,64 +1,67 @@
 <template>
 	<view class="index-content">
-		<view class="condition-content">
-			<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
-			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
-				<view class="condition-lee">
-					<view class="block-view">
-						<view class="block_left" @click="close">取消</view>
-						<view class="block-right" @click="condition_click">完成</view>
-					</view>
-					<view class="title-content" >
-						<view class="title">供应商选择</view>
-					</view>
-					<view class="condition-select">
-						<picker mode="selector" @change="bindPickerChange" :value="ChannelIndex" :range="ChannelList">
-							<view class="condition-uni-input">{{ChannelList[ChannelIndex]}}</view>
-						</picker>
-					</view>
-					<view class="title-content" >
-						<view class="title">日期选择</view>
-					</view>
-					<view class="condition-select">
-							<!-- <picker mode="date" @change="bindDateChange"  :start="startDate" :end="endDate" :value="date"> -->
-						<picker mode="date" @change="bindDateChange" :value="date" fields="month">
-							<view class="condition-uni-input">{{date}}</view>
-						</picker>
-					</view>
-					<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
+			<view class="condition-content">
+				<view class="flex">
+					<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
+					<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
 				</view>
-			</uni-popup>
-		</view>
-		<view class="number">
-			<view class="title-content" >
-				<view class="title">订单信息</view>
+				<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
+					<view class="condition-lee">
+						<view class="block-view">
+							<view class="block_left" @click="close">取消</view>
+							<view class="block-right" @click="condition_click">完成</view>
+						</view>
+						<view class="title-content" >
+							<view class="title">供应商选择</view>
+						</view>
+						<view class="condition-select">
+							<picker mode="selector" @change="bindPickerChange" :value="ChannelIndex" :range="ChannelList">
+								<view class="condition-uni-input">{{ChannelList[ChannelIndex]}}</view>
+							</picker>
+						</view>
+						<view class="title-content" >
+							<view class="title">日期选择</view>
+						</view>
+						<view class="condition-select">
+								<!-- <picker mode="date" @change="bindDateChange"  :start="startDate" :end="endDate" :value="date"> -->
+							<picker mode="date" @change="bindDateChange" :value="date" fields="month">
+								<view class="condition-uni-input">{{date}}</view>
+							</picker>
+						</view>
+						<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
+					</view>
+				</uni-popup>
 			</view>
-			<view class="number-flex">
-				<view v-for="(item,index) in OrderNumber" class="number-box">
-					<view>{{item.name}}</view>
-					<view>{{item.number}}</view>
+			<view class="number">
+				<view class="title-content" >
+					<view class="title">订单信息</view>
+				</view>
+				<view class="number-flex">
+					<view v-for="(item,index) in OrderNumber" class="number-box" :key="index">
+						<view>{{item.name}}</view>
+						<view>{{item.number}}</view>
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="qiun-columns">
-			<view class="title-content" >
-				<view class="title">饼状图</view>
+			<view class="qiun-columns">
+				<view class="title-content" >
+					<view class="title">饼状图</view>
+				</view>
+				<view class="qiun-charts">
+					<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
+				</view>
 			</view>
-			<view class="qiun-charts">
-				<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
+			<view class="TS">
+				<uni-popup ref="TS" type="message">
+					<uni-popup-message type="error" message="当日没有数据" :duration="2000" name="TS"></uni-popup-message>
+				</uni-popup>
 			</view>
-		</view>
-		<view class="TS">
-			<uni-popup ref="TS" type="message">
-				<uni-popup-message type="error" message="当日没有数据" :duration="2000" name="TS"></uni-popup-message>
-			</uni-popup>
-		</view>
 	</view>
 </template>
 
 <script>
-	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js' 
-	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue'
+	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js'; 
+	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	let canvaPie=null;
 	export default {
 		components: {
@@ -71,7 +74,7 @@
 			return {
 				ChannelIndex: 0,   //渠道选择列表默认显示选项
 				ChannelList:["全部"],//渠道选择列表所有选项
-				date: '0000-00', //时间选择列表时间选项
+				date: currentDate, //时间选择列表时间选项
 				canvasStyle: true, //控制饼图是否显示
 				OrderNumber: [],        //订单数据
 				chartData: {       //饼图数据
@@ -92,80 +95,90 @@
 			}
 		},
 		onLoad() {
-			this.RequestData(this.OrderParameter,this.getDealerParameter)     //请求数据
+			this.RequestData(this.OrderParameter);     //请求数据
+			this.RequestDataOnce(this.getDealerParameter)
 		},
 		methods: {
-			RequestData(OrderParameter,getDealerParameter){
-				this.$RequestHttp.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat)//请求首页订单数据
-				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat)//请求筛选渠道数据
+			RequestData(OrderParameter){
+				this.$RequestHttp.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat);//请求首页订单数据
+				this.$RequestHttp.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat);//请求首页图表数据
+			},
+			RequestDataOnce(getDealerParameter){
+				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat);//请求筛选渠道数据
 			},
 			apply(e){//回调
 				let order = e.data.data;
 				order.forEach( item => {
-					this.ChannelList.push(item)
+					this.ChannelList.push(item);
 				})
-				let newArray = new Set(this.ChannelList)
-				this.ChannelList = Array.from(newArray)
+				let newArray = new Set(this.ChannelList);
+				this.$store.commit("channel",Array.from(newArray));
+				this.ChannelList = this.$store.state.ChannelList;
 			},
 			OrderCallBack(e){//回调
-				if(e.data.data[0] != null){
-					let data = e.data.data[0]
-					let OrderNumber = [
-						{
-							name: "订单金额",
-							number: data.order_money
-						},
-						{
-							name: "订单数",
-							number: data.order_amount
-						},
-						{
-							name: "包裹数",
-							number: data.parcel_amount
-						},
-						{
-							name: "付款到账",
-							number: data.pay_to_account_success
-						},
-						{
-							name: "账户余额",
-							number: data.this_month_balance
-						}
-					]
-					let series = [
-						{
-							"name": "三盒",
-							"data": data.gift_boxes
-						}, 
-						{
-							"name": "四盒",
-							"data": data.four_boxes_total
-						}, 
-						{
-							"name": "五盒",
-							"data": data.five_boxes_total
-						}
-					]
-					this.OrderNumber = OrderNumber;
-					this.chartData.series = series
-					this.cWidth=uni.upx2px(750);
-					this.cHeight=uni.upx2px(500);
-					this.showPie("canvasPie",this.chartData)
-					return true
+				let data = e.data.data[0];
+				if(data == null){
+					this.$refs.TS.open()
+					return false
 				}
-				this.$refs.TS.open()
+				let OrderNumber = [
+					{
+						name: "订单金额",
+						number: data.order_money
+					},
+					{
+						name: "订单数",
+						number: data.order_amount
+					},
+					{
+						name: "包裹数",
+						number: data.parcel_amount
+					},
+					{
+						name: "付款到账",
+						number: data.pay_to_account_success
+					},
+					{
+						name: "账户余额",
+						number: data.this_month_balance
+					}
+				]
+				this.OrderNumber = OrderNumber;
+			},
+			iconCallBack(e){
+				let data = e.data.data[0];
+				if(data == null){
+					this.$refs.TS.open();
+					return false
+				}
+				let series = [
+					{
+						"name": "三盒",
+						"data": data.gift_boxes
+					}, 
+					{
+						"name": "四盒",
+						"data": data.four_boxes_total
+					}, 
+					{
+						"name": "五盒",
+						"data": data.five_boxes_total
+					},
+				]
+				this.chartData.series = series;
+				this.cWidth=uni.upx2px(750);
+				this.cHeight=uni.upx2px(500);
+				this.showPie("canvasPie",this.chartData);
+				
 			},
 			defeat(e){
-				console.log(e)
+				console.log(e);
 			},
 			bindPickerChange(e){//选择器选择后的回调函数
-				this.ChannelIndex = e.target.value
-				if(this.ChannelIndex == 0){
-					this.date = '0000-00'
-				}
+				this.ChannelIndex = e.target.value;
 			},
 			bindDateChange(e) {//选择器选择后的回调函数
-				this.date = e.target.value
+				this.date = e.target.value;
 			},
 			getDate(type) {//时间
 				const date = new Date();
@@ -210,29 +223,31 @@
 			},
 			open() {//开启弹出层
 				this.canvasStyle = false;
-				this.$refs.popup.open()
+				this.$refs.popup.open();
 			},
 			close() {//关闭弹出层
-				this.$refs.popup.close()
-				this.canvasStyle = true
+				this.$refs.popup.close();
+				this.canvasStyle = true;
 			},
-			condition_click(){//搜索button点击事件
+			condition_click(type){//搜索button点击事件
 				let date = this.date.replace("-","")
-                if(this.ChannelIndex != 0 || this.date != "0000-00"){
+				if(type == 'all'){
+					this.startDate = this.getDate();
+					this.endDate = this.getDate();
+					this.OrderParameter.simplified = "";
+					this.OrderParameter.date = ""
+				}else{
 					if(this.ChannelIndex == 0){
 						this.OrderParameter.simplified = "";
-						this.OrderParameter.date = date;
+						this.OrderParameter.date = date
 					}else{
 						this.OrderParameter.simplified = this.ChannelList[this.ChannelIndex];
-						this.OrderParameter.date = date;
+						this.OrderParameter.date = date
 					}
-				}else{
-					this.OrderParameter.simplified  = "";
-					this.OrderParameter.date = "";
 				}
 				
-				this.RequestData(this.OrderParameter,this.getDealerParameter) 
-				this.close()
+				this.RequestData(this.OrderParameter,this.getDealerParameter) ;
+				this.close();
 			}
 		}
 	}
@@ -243,6 +258,15 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 20rpx;
+	}
+	.flex{
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-around;
+	}
+	.condition-btn{
+		width: 100%;
+		margin: 0 10rpx;
 	}
 	.condition-lee{
 		width: 100%;

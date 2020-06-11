@@ -8,11 +8,27 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	
 	state: {
-		"public": ""
+		"Orderstate": "",
+		"Afterstate": "",
+		"publicstate": "",
+		"ChannelList": "",
+		"OrderNumber": "",
 	}, 
 	mutations: {
-		Value: function (state,newVal){
-			state.public = newVal
+		Orderstatu: function (state,newVal){
+			state.Orderstate = newVal
+		},
+		Afterstatu: function (state,newVal){
+			state.Afterstate = newVal
+		},
+		publicstatu: function (state,newVal){
+			state.publicstate = newVal
+		},
+		channel: function (state,newVal){
+			state.ChannelList = newVal
+		},
+		OrderCode: function (state,newVal){
+			state.OrderNumber = newVal
 		}
 	},
 	actions: {

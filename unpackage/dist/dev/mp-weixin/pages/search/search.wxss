@@ -9,6 +9,9 @@
 	background-color: #FFFFFF;
 	padding: 20rpx 0 150rpx 0;
 }
+.condition-btn{
+	margin-bottom: 20rpx;
+}
 .block-view{
 	width: 100%;
 	height: 80rpx;

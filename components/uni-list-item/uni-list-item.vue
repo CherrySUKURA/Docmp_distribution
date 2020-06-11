@@ -106,8 +106,8 @@
 			},
 			rightText: {
 				// 右侧文字内容
-				type: String,
-				default: ''
+				type: [String,Number],
+				default: '',
 			},
 			thumb: {
 				// 缩略图

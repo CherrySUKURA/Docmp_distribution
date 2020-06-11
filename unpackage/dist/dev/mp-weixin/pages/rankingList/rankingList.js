@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 87))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 89))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 94))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 96))
   },
   uniBadge: function() {
-    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 101))
+    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 103))
   }
 }
 var render = function() {
@@ -160,33 +160,28 @@ var _default =
 {
   data: function data() {
     return {
-      getDate: [
-      {
-        DDZT: "物流单号已返回 | 未发货",
-        badgetext: "12" },
-
-      {
-        DDZT: "问题件 | 需查看具体派送失败原因",
-        badgetext: "12" },
-
-      {
-        DDZT: "订单取消 | 未发货",
-        badgetext: "12" },
-
-      {
-        DDZT: "订单多发 | 取消 | 已出库需拦截",
-        badgetext: "12" },
-
-      {
-        DDZT: "客户未收货 | 退回仓库",
-        badgetext: "12" }] };
-
+      getDate: [],
+      AfterParameter: {
+        "cusId": "%" } };
 
 
   },
+  onLoad: function onLoad() {
+    this.RequestData(this.AfterParameter); //请求数据
+  },
   methods: {
-    a: function a(i) {
-      this.$store.commit("Value", i);
+    RequestData: function RequestData(AfterParameter) {
+      this.$RequestHttp.RequestHttp("afterSales/afterOrderStatusAmount", "Get", AfterParameter, this.AfterCallBack, this.defeat); //请求筛选渠道数据
+    },
+    AfterCallBack: function AfterCallBack(e) {
+      this.getDate = e.data.data;
+    },
+    defeat: function defeat(e) {
+
+    },
+    skip: function skip(i) {
+      this.$store.commit("Afterstatu", i);
+      this.$store.commit("publicstatu", 1);
       uni.navigateTo({
         url: '../../pages/list/list' });
 

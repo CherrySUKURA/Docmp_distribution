@@ -1,6 +1,6 @@
-let url = "http://192.168.2.102:7002/"
+let url = "http://192.168.2.101:7002/"
 
-function ajax(DK,methods,data) {
+function request(DK,methods,data) {
 	return new Promise((resolve,reject) => {
 		uni.request({
 			url: url+DK,
@@ -19,10 +19,32 @@ function ajax(DK,methods,data) {
 		})
 	})
 }
+function download(DK) {
+	return new Promise((resolve,reject) => {
+		uni.downloadFile({
+			url: url+DK,
+			success(res) {
+				resolve(res)
+			},
+			fail(err) {
+				reject(err)
+			}
+		})
+	})
+}
 
 export default{
 	RequestHttp(url,method,data,succeed,defeated){//封装回调
-		ajax(url,method,data).then(
+		request(url,method,data).then(
+		(res) => {
+			succeed(res)
+		}).catch(
+		(err) => {
+			defeated(err)
+		})
+	},
+	RequestDownload(url,succeed,defeated){
+		download(url).then(
 		(res) => {
 			succeed(res)
 		}).catch(

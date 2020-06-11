@@ -1,1 +1,1 @@
-<view></view>
+<view><view class="userinfo"><view class="userlook"><image src="{{avatarUrl}}"></image></view><text class="usertext">{{nickName}}</text><button class="userbtn" type="primary" open-type="getUserInfo" withCedentials="true" data-event-opts="{{[['getphonenumber',[['getPhoneNumber',['$event']]]],['getuserinfo',[['wxGetUserInfo',['$event']]]]]}}" bindgetphonenumber="__e" bindgetuserinfo="__e">微信授权获取用户信息</button></view></view>

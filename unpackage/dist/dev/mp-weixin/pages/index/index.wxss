@@ -4,6 +4,21 @@
 		box-sizing: border-box;
 		padding: 20rpx;
 }
+.flex.data-v-dc3404e0{
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		-webkit-flex-flow: row nowrap;
+		        flex-flow: row nowrap;
+		-webkit-justify-content: space-around;
+		        justify-content: space-around;
+}
+.condition-btn.data-v-dc3404e0{
+		width: 100%;
+		margin: 0 10rpx;
+}
 .condition-lee.data-v-dc3404e0{
 		width: 100%;
 		background-color: #FFFFFF;

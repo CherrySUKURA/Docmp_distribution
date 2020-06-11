@@ -1,5 +1,5 @@
 <template>
-	<text v-if="text" :class="inverted ? 'uni-badge--' + type + ' uni-badge--' + size + ' uni-badge--' + type + '-inverted' : 'uni-badge--' + type + ' uni-badge--' + size" :style="badgeStyle" class="uni-badge" @click="onClick()">{{ text }}</text>
+	<text :class="inverted ? 'uni-badge--' + type + ' uni-badge--' + size + ' uni-badge--' + type + '-inverted' : 'uni-badge--' + type + ' uni-badge--' + size" :style="badgeStyle" class="uni-badge" @click="onClick()">{{ text }}</text>
 </template>
 
 <script>
@@ -19,7 +19,7 @@
 	 * 	@value small 小尺寸
 	 * @property {String} inverted = [true|false] 是否无需背景颜色
 	 * @event {Function} click 点击 Badge 触发事件
-	 * @example <uni-badge text="1"></uni-badge>
+	 * @example <uni-badge text="0"></uni-badge>
 	 */
 	export default {
 		name: 'UniBadge',
@@ -34,7 +34,7 @@
 			},
 			text: {
 				type: [String, Number],
-				default: ''
+				default: '0'
 			},
 			size: {
 				type: String,
@@ -56,7 +56,8 @@
 		},
 		methods: {
 			setStyle() {
-				this.badgeStyle = `width: ${String(this.text).length * 8 + 12}px`
+				// this.badgeStyle = `width: ${String(this.text).length * 8 + 12}px`
+				this.badgeStyle = 'width: 35px'
 			},
 			onClick() {
 				this.$emit('click');

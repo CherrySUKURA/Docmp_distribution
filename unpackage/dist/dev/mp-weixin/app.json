@@ -6,7 +6,8 @@
     "pages/StatementOfAccount/StatementOfAccount",
     "pages/me/me",
     "pages/list/list",
-    "pages/details_list/details_list"
+    "pages/details_list/details_list",
+    "pages/dayAccout/dayAccout"
   ],
   "subPackages": [],
   "window": {
@@ -53,6 +54,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap40.json"
+  "usingComponents": {}
 }
