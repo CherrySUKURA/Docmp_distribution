@@ -38,8 +38,8 @@
 				<uni-list-item v-for="(item,index) in OrderAllDay" @click="skip(item.Order_Date)" :title="item.Order_Date" :key="index"  :show-badge="false" class="list-content-item">
 					<template v-slot:right="">
 						<view  class="badge-content">
-							<uni-badge v-if="OrderAllAmount[index].order_total_amount" :text="OrderAllAmount[index].order_total_amount" type="primary" class="list-content-badge" size="small"></uni-badge>
-							<uni-badge v-if="OrderAllAmount[index].allAfterSalesStatusAmount" :text="OrderAllAfter[index].allAfterSalesStatusAmount" type="success" class="list-content-badge"size="small"></uni-badge>
+							<uni-badge :text="OrderAllAmount[index].order_total_amount" type="primary" class="list-content-badge" size="small"></uni-badge>
+							<uni-badge :text="OrderAllAfter[index].allAfterSalesStatusAmount" type="success" class="list-content-badge"size="small"></uni-badge>
 						</view>
 					</template>
 				</uni-list-item>
@@ -69,8 +69,8 @@
 				endData: currentDate,
 				maskClick: false,
 				OrderAllDay: [],
-				OrderAllAmount: [],
-				OrderAllAfter: [],
+				OrderAllAmount: [{}],
+				OrderAllAfter: [{}],
 				Parameter: {
 				 "cus_id":"%",
 				 "start_date":"",
@@ -83,13 +83,12 @@
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$RequestHttp.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat);//请求订单列表订单天数数据
-				this.$RequestHttp.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat);//请求订单列表订数数据
-				this.$RequestHttp.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat);//请求订单列表售后订单数数据
+				this.$public_.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat);//请求订单列表订数数据
+				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat);//请求订单列表售后订单数数据
 			},
 			DayCallBack(e){
 				this.OrderAllDay = e.data.data;
-				console.log(this.OrderAllDay);
 			},
 			AmoutCallBack(e){
 				this.OrderAllAmount = e.data.data;

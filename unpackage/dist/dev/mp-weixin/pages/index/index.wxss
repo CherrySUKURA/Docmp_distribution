@@ -5,6 +5,7 @@
 		padding: 20rpx;
 }
 .flex.data-v-dc3404e0{
+		width: 100%;
 		display: -webkit-box;
 		display: -webkit-flex;
 		display: flex;
@@ -12,8 +13,9 @@
 		-webkit-box-direction: normal;
 		-webkit-flex-flow: row nowrap;
 		        flex-flow: row nowrap;
-		-webkit-justify-content: space-around;
-		        justify-content: space-around;
+		-webkit-box-pack: space-evenly;
+		-webkit-justify-content: space-evenly;
+		        justify-content: space-evenly;
 }
 .condition-btn.data-v-dc3404e0{
 		width: 100%;

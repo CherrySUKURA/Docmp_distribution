@@ -33,7 +33,7 @@
 				default: false
 			},
 			text: {
-				type: [String, Number],
+				type: [String,Number,Array],
 				default: '0'
 			},
 			size: {

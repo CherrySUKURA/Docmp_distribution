@@ -1,4 +1,4 @@
-let url = "http://192.168.2.101:7002/"
+let url = "http://192.168.2.102:7002/"
 
 function request(DK,methods,data) {
 	return new Promise((resolve,reject) => {
@@ -22,7 +22,10 @@ function request(DK,methods,data) {
 function download(DK) {
 	return new Promise((resolve,reject) => {
 		uni.downloadFile({
-			url: url+DK,
+			url: DK,
+			header: {
+				'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			},
 			success(res) {
 				resolve(res)
 			},
@@ -51,5 +54,13 @@ export default{
 		(err) => {
 			defeated(err)
 		})
+	},
+	formatNumber(num){
+		// console.log("进来的num",num);
+		num = parseFloat(num).toFixed(2).toString().split(".");
+		// console.log("第一次处理后的num",num);
+		num[0] = num[0].replace(new RegExp('(\\d)(?=(\\d{3})+$)', 'ig'), "$1,");
+		// console.log("第一次处理后的num",num[0]);
+		return num.join(".");
 	}
 }

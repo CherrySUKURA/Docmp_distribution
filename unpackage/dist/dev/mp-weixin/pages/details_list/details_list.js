@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 89))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 97))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 96))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 104))
   },
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
   }
 }
 var render = function() {
@@ -108,10 +108,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   var l0 = _vm.__map(_vm.list, function(item, index) {
-    var g0 = _vm.checkedAll.includes(item.HH)
+    var m0 = String(item.lineNo)
+    var g0 = _vm.checkedAll.includes(String(item.lineNo))
+    var m1 = String(item.lineNo)
     return {
       $orig: _vm.__get_orig(item),
-      g0: g0
+      m0: m0,
+      g0: g0,
+      m1: m1
     }
   })
 
@@ -156,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 131));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -214,143 +218,116 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
+var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
+  components: {
+    logistics: logistics },
+
   data: function data() {
     return {
       allChecked: false, //是否被选中
       checkedAll: [], //复选框选中的值
       "DJZT": false,
-      details_list: [
-      {
-        name: "单证号",
-        ZD: "SO202005270564" },
-
-      {
-        name: "单据类型",
-        ZD: "正常销售单" },
-
-      {
-        name: "单据状态",
-        ZD: '物流单号已返回 | 未发货' },
-
-      {
-        name: "设计包裹数",
-        ZD: "1" },
-
-      {
-        name: "渠道商",
-        ZD: "适盒" },
-
-      {
-        name: "收件人",
-        ZD: "阮蓉 1588884895" },
-
-      {
-        name: "省市区",
-        ZD: "浙江省 杭州市 临安区" },
-
-      {
-        name: "地址",
-        ZD: "绿城玉兰花园锦城街道玉兰花园6幢三单元605室" }],
-
-
+      details_list: [],
       scrollTop: 0,
       old: {
         scrollTop: 0 },
 
-      list: [
-      {
-        "HH": '1',
-        "SKU": 'RL0061',
-        "PP": "空刻AirMeter",
-        "PM": "烛光意面四盒装（2番茄2奶油)",
-        "WLGS": "嘉兴--申通" },
-
-      {
-        "HH": '2',
-        "SKU": 'RL0061',
-        "PP": "空刻AirMeter",
-        "PM": "烛光意面四盒装（2番茄2奶油)",
-        "WLGS": "嘉兴--申通" },
-
-      {
-        "HH": '3',
-        "SKU": 'RL0061',
-        "PP": "空刻AirMeter",
-        "PM": "烛光意面四盒装（2番茄2奶油)",
-        "WLGS": "嘉兴--申通" },
-
-      {
-        "HH": '4',
-        "SKU": 'RL0061',
-        "PP": "空刻AirMeter",
-        "PM": "烛光意面四盒装（2番茄2奶油)",
-        "WLGS": "嘉兴--申通" }],
-
-
+      list: [],
       wlInfo: {
-        delivery_status: 0, //快递状态 1已签收 2配送中
-        post_name: '韵达快递', //快递名称
+        delivery_status: "", //快递状态 1已签收 2配送中
+        post_name: '', //快递名称
         logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
-        exp_phone: '95546', //快递电话
-        post_no: '4304678557725', //快递单号
-        addr: '江西省南昌市青云谱区', //收货地址
+        // exp_phone: '95546', //快递电话
+        post_no: '', //快递单号
+        addr: '', //收货地址
         //物流信息
-        list: [{
-          "time": "2020-04-12 13:00:57",
-          "timeArr": ['2020-04-12', '13:00:57'],
-          "context": "江西南昌青云谱区 快件已被 丰巢智能柜 代签收。",
-          "location": "" },
+        list: [] },
 
-        {
-          "time": "2020-04-12 12:58:53",
-          "timeArr": ['2020-04-12', '12:58:53'],
-          "context": "江西南昌青云谱区 进行派件扫描；派送业务员：张三；联系电话：88888888888",
-          "location": "" },
-
-        {
-          "time": "2020-04-11 15:45:44",
-          "timeArr": ['2020-04-11', '15:45:44'],
-          "context": "江西南昌分拨中心 从站点发出，本次转运目的地：江西南昌青云谱区",
-          "location": "" },
-
-        {
-          "time": "2020-04-11 15:08:45",
-          "timeArr": ['2020-04-11', '15:08:45'],
-          "context": "江西南昌分拨中心 在分拨中心进行卸车扫描",
-          "location": "" },
-
-        {
-          "time": "2020-04-10 17:42:41",
-          "timeArr": ['2020-04-10', '17:42:41'],
-          "context": "浙江义乌分拨中心 进行装车扫描，发往：江西南昌分拨中心",
-          "location": "" },
-
-        {
-          "time": "2020-04-10 17:39:38",
-          "timeArr": ['2020-04-10', '17:39:38'],
-          "context": "浙江义乌分拨中心 在分拨中心进行称重扫描",
-          "location": "" },
-
-        {
-          "time": "2020-04-10 16:02:46",
-          "timeArr": ['2020-04-10', '16:02:46'],
-          "context": "浙江义乌城西公司 进行下级地点扫描，发往：江西南昌地区包",
-          "location": "" },
-
-        {
-          "time": "2020-04-10 15:48:42",
-          "timeArr": ['2020-04-10', '15:48:42'],
-          "context": "浙江义乌城西公司城西营销部 进行揽件扫描",
-          "location": "" }] } };
-
-
+      Parameter: {
+        "salesOrderNo": "" } };
 
 
   },
+  onLoad: function onLoad() {
+    this.Parameter.salesOrderNo = this.OrderNumbers;
+    this.RequestData(this.Parameter);
+  },
   methods: {
+    RequestData: function RequestData(Parameter) {
+      this.$public_.RequestHttp('order/dealerOrderInfo', "Get", Parameter, this.DealerInfoCallBack, this.defeat); //请求订单列表订单天数数据
+      this.$public_.RequestHttp('order/orderListDetails', "Get", Parameter, this.OrderListDetailsCallBack, this.defeat); //请求订单列表订单天数数据
+    },
+    DealerInfoCallBack: function DealerInfoCallBack(e) {
+      var data = e.data.data[0];
+      this.wlInfo.addr = data.Add_Full;
+      this.details_list = [
+      {
+        name: "单证号",
+        ZD: data.Sales_Order_No },
+
+      {
+        name: "单据类型",
+        ZD: data.Order_Type_Desc },
+
+      {
+        name: "单据状态",
+        ZD: data.Order_Status_Desc },
+
+      {
+        name: "涉及包裹数",
+        ZD: data.parcel_total },
+
+      {
+        name: "渠道商",
+        ZD: data.simplified },
+
+      {
+        name: "收件人",
+        ZD: data.Client_Name + " " + data.Client_Contact },
+
+      {
+        name: "省市区",
+        ZD: data.Provinces },
+
+      {
+        name: "地址",
+        ZD: data.Add_Full }];
+
+
+    },
+    OrderListDetailsCallBack: function OrderListDetailsCallBack(e) {var _this = this;
+      var data = e.data.data;
+      this.list = data;
+      data.forEach(function (item, index) {
+        var forwarderName;
+        if (data[index].forwarderName) {
+          forwarderName = data[index].forwarderName.splice('-');
+        } else {
+          forwarderName = '无物流公司';
+        }
+        _this.wlInfo.post_name = forwarderName;
+        _this.wlInfo.post_no = data[index].parcelNo;
+        _this.wlInfo.delivery_status = data[index].parcelStatus;
+        if (item.parcelInfo) {
+          var parcelInfoes = JSON.parse(item.parcelInfo).reverse();
+          parcelInfoes.forEach(function (item1, index1) {
+            var data = item1.AcceptTime.split(" ");
+            var list = {
+              "time": item1.AcceptTime,
+              "timeArr": data,
+              "context": item1.AcceptStation,
+              "location": "" };
+
+            _this.wlInfo.list.push(list);
+          });
+        }
+      });
+    },
+    defeat: function defeat(e) {
+      console.log(e);
+    },
     checkboxChange: function checkboxChange(e) {
       var values = e.detail.value;
       this.checkedAll = values;
@@ -359,15 +336,13 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       } else {
         this.allChecked = false;
       }
-      console.log(this.checkedAll);
-
     },
     allChoose: function allChoose(e) {
       var chooseItem = e.detail.value;
       if (chooseItem[0] == 'all') {
         this.allChecked = true;var _iterator = _createForOfIteratorHelper(
         this.list),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
-            var itemVal = String(item.HH);
+            var itemVal = String(item.lineNo);
             if (!this.checkedAll.includes(itemVal)) {
               this.checkedAll.push(itemVal);
             }
@@ -386,22 +361,17 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     close: function close() {
       this.$refs.details_popup.close();
     },
-    upper: function upper(e) {
-      console.log(e);
-    },
-    lower: function lower(e) {
-      console.log(e);
-    },
     scroll: function scroll(e) {
       this.old.scrollTop += e.detail.scrollTop;
     } },
 
-  components: {
-    logistics: logistics },
+  computed: _objectSpread({},
+  (0, _vuex.mapState)({
+    OrderNumber: function OrderNumber(state) {return state.OrderNumber;} }), {
 
-  mounted: function mounted() {
-
-  } };exports.default = _default;
+    OrderNumbers: function OrderNumbers() {
+      return this.OrderNumber;
+    } }) };exports.default = _default;
 
 /***/ }),
 

@@ -5,15 +5,15 @@
 		</view>
 		<view class="table_box">
 			<view class="table-header">
-				<view class="table-header-item">到账日期</view>
+				<view class="table-header-item">收款日期</view>
 				<view class="table-header-item">金额</view>
-				<view class="table-header-item">结算日期</view>
+				<view class="table-header-item">备注</view>
 			</view>
 			<view class="table-body">
-				<view class="table-body-item" v-for="(item,index) in item" :key="index">
-					<view>{{item.DZdate}}</view>
-					<view>{{item.monay}}</view>
-					<view>{{item.JSdate}}</view>
+				<view class="table-body-item" v-for="(item,index) in items" :key="index">
+					<view>{{item.AR_Date}}</view>
+					<view>{{$public_.formatNumber(item.total_money)}}</view>
+					<view>{{item.info}}</view>
 				</view>
 			</view>
 		</view>
@@ -24,42 +24,25 @@
 	export default {
 		data() {
 			return {
-				item: [
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					},
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					},
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					},
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					},
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					},
-					{
-						DZdate: "2020-03-14",
-						monay: "3,000.00",
-						JSdate: "2020-03-14"
-					}
-				]
+				items: [],
+				DayAccoutParam: {
+					"cusId": "%"
+				}
 			}
 		},
+		onLoad() {
+			this.RequestData(this.DayAccoutParam)
+		},
 		methods: {
-			
+			RequestData(DayAccoutParam){
+				this.$public_.RequestHttp("account/accountRunning","Get",DayAccoutParam,this.DayAccoutCallBack,this.defeat)
+			},
+			DayAccoutCallBack(e){
+				this.items = e.data.data
+			},
+			defeat(e){
+				console.log(e)
+			}
 		}
 	}
 </script>
@@ -106,7 +89,7 @@
 	}
 	.table-body{
 		width: 100%;
-
+		height: 100%;
 	}
 	.table-body-item{
 		width: 100%;

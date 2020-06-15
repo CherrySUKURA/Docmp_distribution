@@ -51,9 +51,17 @@
 					<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
 				</view>
 			</view>
+			<view class="qiun-columns">
+				<view class="title-content" >
+					<view class="title">线形图</view>
+				</view>
+				<view class="qiun-charts">
+					<canvas canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
+				</view>
+			</view>
 			<view class="TS">
 				<uni-popup ref="TS" type="message">
-					<uni-popup-message type="error" message="当日没有数据" :duration="2000" name="TS"></uni-popup-message>
+					<uni-popup-message type="error" :message="OrderNumber.length == 0 && chartData.series.length == 0 && chartData.seriesline.length == 0? '当日没有数据' : OrderNumber.length == 0 ? '没有订单数据' : chartData.series.length == 0 ? '没有包装数据' : chartData.seriesline.length == 0 ? '没有物流状态数据' : '没有数据,默认查看所有数据'" :duration="2000" name="TS"></uni-popup-message>
 				</uni-popup>
 			</view>
 	</view>
@@ -63,6 +71,7 @@
 	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js'; 
 	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	let canvaPie=null;
+	let canvaColumn = null;
 	export default {
 		components: {
 			uniPopupMessage
@@ -78,7 +87,9 @@
 				canvasStyle: true, //控制饼图是否显示
 				OrderNumber: [],        //订单数据
 				chartData: {       //饼图数据
-				  "series": []
+					"series": [],
+					"categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"],
+					"seriesline": []
 				},
 				cWidth:'',         //饼图宽度
 				cHeight:'',        //饼图高度
@@ -100,11 +111,12 @@
 		},
 		methods: {
 			RequestData(OrderParameter){
-				this.$RequestHttp.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat);//请求首页订单数据
-				this.$RequestHttp.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat);//请求首页图表数据
+				this.$public_.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat);//请求首页订单数据
+				this.$public_.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat);//请求首页图表数据
+				this.$public_.RequestHttp("order/allOrderLogistics","Post",OrderParameter,this.iconLineCallBack,this.defeat)//请求首页圆柱图数据
 			},
 			RequestDataOnce(getDealerParameter){
-				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat);//请求筛选渠道数据
+				this.$public_.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat);//请求筛选渠道数据
 			},
 			apply(e){//回调
 				let order = e.data.data;
@@ -124,7 +136,7 @@
 				let OrderNumber = [
 					{
 						name: "订单金额",
-						number: data.order_money
+						number: this.$public_.formatNumber(data.order_money)
 					},
 					{
 						name: "订单数",
@@ -136,11 +148,11 @@
 					},
 					{
 						name: "付款到账",
-						number: data.pay_to_account_success
+						number: this.$public_.formatNumber(data.pay_to_account_success)
 					},
 					{
 						name: "账户余额",
-						number: data.this_month_balance
+						number: this.$public_.formatNumber(data.this_month_balance)
 					}
 				]
 				this.OrderNumber = OrderNumber;
@@ -170,6 +182,23 @@
 				this.cHeight=uni.upx2px(500);
 				this.showPie("canvasPie",this.chartData);
 				
+			},
+			iconLineCallBack(e) {
+				let data = e.data.data[0];
+				if(data == null){
+					this.$refs.TS.open();
+					return false
+				}
+				let series = [
+					{
+						"name": "物流状态信息",
+						"data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total]
+					}
+				]
+				this.chartData.seriesline = series;
+				this.cWidth=uni.upx2px(750);
+				this.cHeight=uni.upx2px(500);
+				this.showLine("canvasline",this.chartData)
 			},
 			defeat(e){
 				console.log(e);
@@ -213,6 +242,35 @@
 						}
 					},
 				});
+			},
+			showLine(canvasId,chartData) {
+				canvaColumn = new uCharts({
+					$this:this,
+					canvasId:canvasId,
+					type: 'column',
+					lefend:{show:true},
+					fontSize: 11,
+					background:'#FFFFFF',
+					pixelRatio:1,
+					animation: true,
+					categories: chartData.categories,
+					series: chartData.seriesline,
+					xAxis: {
+						disableGrid:true,
+					},
+					yAxis: {
+						//disabled:true
+					},
+					dataLabel: true,
+					width: this.cWidth,
+					height: this.cHeight,
+					extra: {
+						column: {
+							type:'group',
+							width: 20
+						}
+					  }
+				})
 			},
 			touchPie(e){//点击饼图后的效果
 				canvaPie.showToolTip(e, {
@@ -260,9 +318,10 @@
 		padding: 20rpx;
 	}
 	.flex{
+		width: 100%;
 		display: flex;
 		flex-flow: row nowrap;
-		justify-content: space-around;
+		justify-content: space-evenly;
 	}
 	.condition-btn{
 		width: 100%;

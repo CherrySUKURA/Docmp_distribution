@@ -32,7 +32,7 @@
 							<view>{{item.timeArr[1]}}</view>
 						</view>
 						<view class="info flex1">
-							<view class="title">{{wlInfo.delivery_status == 0 ? '尚无物流信息' : index == 0 && wlInfo.delivery_status == 1 ? '已揽收' : wlInfo.delivery_status == 2 ? '已发货' : wlInfo.delivery_status == 3 ? '已收货' : wlInfo.delivery_status == 4 ? '异常状态' : '无需物流'}}</view>
+							<view class="title" v-if="index == 0">{{wlInfo.delivery_status == 0 ? '尚无物流信息' : index == 0 && wlInfo.delivery_status == 1 ? '已揽收' : wlInfo.delivery_status == 2 ? '已发货' : wlInfo.delivery_status == 3 ? '已收货' : wlInfo.delivery_status == 4 ? '异常状态' : '无需物流'}}</view>
 							<view class="text">{{item.context}}</view>
 						</view>
 					</view>

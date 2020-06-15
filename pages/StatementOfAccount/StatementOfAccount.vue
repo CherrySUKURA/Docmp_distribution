@@ -39,43 +39,42 @@
 
 		<view>
 			<view v-for="(item,index) in items" v-show="current === index" :key="index">
+				
 					<view class="box"  v-for="(item,index) in lists" :key="index">
-						<view class="box-left">
+						<view class="box-top">
 							{{item.order_Date}}
 						</view>
-						<view class="box-center">
-							<view>
-								<view class="label">渠道名称</view>
-								<view class="item-body">{{item.simplified}}</view>
+						<view class="box-flex">
+							<view class="box-left">
+								<view>
+									<view class="label">订单数</view>
+									<view class="item-body">{{item.order_amount_total}}</view>
+								</view>
+								<view>
+									<view class="label">包裹数</view>
+									<view class="item-body">{{item.parcel_amount_total}}</view>
+								</view>
+								<view>
+									<view class="label">订单金额</view>
+									<view class="item-body">{{$public_.formatNumber(item.order_total_money)}}</view>
+								</view>
+								<view>
+									<view class="label">额外运费</view>
+									<view class="item-body">{{$public_.formatNumber(item.sal_total_expenditure)}}</view>
+								</view>
+								<view>
+									<view class="label">售后金额</view>
+									<view class="item-body">{{$public_.formatNumber(item.sal_after_total_money)}}</view>
+								</view>
+								<!-- <view>
+									<view class="label">应收余额</view>
+									<view class="item-body">{{item.receivable_balance}}</view>
+								</view> -->
 							</view>
-							<view>
-								<view class="label">订单数</view>
-								<view class="item-body">{{item.order_amount}}</view>
+							<view class="box-right">
+								<view class="download-btn" @click="derive('Order',index)">导出订单</view>
+								<view class="download-btn" @click="derive('detail',index)">导出明细</view>
 							</view>
-							<view>
-								<view class="label">包裹数</view>
-								<view class="item-body">{{item.parcel_amount}}</view>
-							</view>
-							<view>
-								<view class="label">订单金额</view>
-								<view class="item-body">{{item.order_total_money}}</view>
-							</view>
-							<view>
-								<view class="label">额外运费</view>
-								<view class="item-body">{{item.extra_freight}}</view>
-							</view>
-							<view>
-								<view class="label">应收到账</view>
-								<view class="item-body">{{item.tax_receivable_success_total_money}}</view>
-							</view>
-							<view>
-								<view class="label">应收余额</view>
-								<view class="item-body">{{item.receivable_balance}}</view>
-							</view>
-						</view>
-						<view class="box-right">
-							<view class="download-btn" @click="a()">导出订单</view>
-							<view class="download-btn" @click="b()">导出明细</view>
 						</view>
 					</view>
 			</view>
@@ -126,6 +125,11 @@
 				},
 				channelParam: {
 					"cusId": "%"
+				},
+				exportParam: {
+				    "cus_id":"%",
+				    "date":"",
+				    "simplified":""
 				}
 			}
 		},
@@ -135,11 +139,36 @@
 		},
 		methods: {
 			RequestData(accoutParam){
-				this.$RequestHttp.RequestHttp("account/accountCheckList","Post",accoutParam,this.accoutCallBack,this.defeat);
-				this.$RequestHttp.RequestHttp("account/accountCheckAllAmount","Post",accoutParam,this.accountAmountCallBack,this.defeat);
+				this.$public_.RequestHttp("account/accountCheckListNew","Post",accoutParam,this.accoutCallBack,this.defeat);
+				this.$public_.RequestHttp("account/accountCheckAllAmount","Post",accoutParam,this.accountAmountCallBack,this.defeat);
 			},
 			RequestDataOnce(channelParam){
-				this.$RequestHttp.RequestHttp("dealer/getDealer","Get",channelParam,this.channelCallBack,this.defeat);
+				this.$public_.RequestHttp("dealer/getDealer","Get",channelParam,this.channelCallBack,this.defeat);
+			},
+			RequestExportOrderData(exportParam,url){
+				this.$public_.RequestHttp(url,"Post",exportParam,this.urlCallBack,this.defeat)
+			},
+			urlCallBack(e){
+				let url = e.data.data[0]
+				this.$public_.RequestDownload(url,this.success,this.defeat)
+			},
+			success(e) {
+				if (e.statusCode === 200) {
+					let tempFIlePath = e.tempFilePath;
+					uni.saveFile({
+						tempFilePath : tempFIlePath,
+						success:(res)=>{
+							 // res.savedFilePath文件的保存路径
+							 // 保存成功并打开文件
+							 console.log(res.savedFilePath)
+							 uni.openDocument({
+								filePath:res.savedFilePath,
+								success:(res)=>console.log('成功打开文档')
+							})
+						},
+						fail:()=>console.log('下载失败')
+					})
+				}
 			},
 			accoutCallBack(e){
 				if(e.data.data.length == 0){
@@ -152,19 +181,17 @@
 				this.sum = [
 					{
 						"money_name": '总金额',
-						"money": data.order_money_total
+						"money":this.$public_.formatNumber(data.order_money_total)
 					},
 					{
 						"money_name": '总付款',
-						"money": data.buy_money_total
+						"money": this.$public_.formatNumber(data.buy_money_total)
 					},
 					{
 						"money_name": '余额',
-						"money": data.receivable_balance_total
+						"money": this.$public_.formatNumber(data.receivable_balance_total)
 					}
 				]
-				
-				
 			},
 			channelCallBack(e){
 				let data = e.data.data
@@ -205,11 +232,16 @@
 				}
 				this.RequestData(this.accoutParam)
 			},
-			a() {
-				
-			},
-			b() {
-				
+			derive(type,index) {
+				let url
+				if(type == 'Order'){
+					url = "order/exportOrder"
+				}else {
+					url = "order/exportOrderDetail"
+				}
+				this.exportParam.date = this.lists[index].order_Date;
+				this.exportParam.simplified = this.lists[index].simplified;
+				this.RequestExportOrderData(this.exportParam,url)
 			},
 			getDate(type) {//时间
 				const date = new Date();
@@ -320,22 +352,28 @@
 	}
 	.box{
 		width: 100%;
-		display: flex;
-		flex-flow: row nowrap;
 		margin:  0 0 40rpx 0;
 		border: 1rpx solid rgba(0,0,0,0.1);
 		padding: 20rpx;
 		box-sizing: border-box;
 		font-size: 25rpx;
 	}
-	.box-left{
-		width: 200rpx;
-		line-height: 160rpx;
+	.box-top{
+		width: 100%;
+		height: 40rpx;
+		border-bottom: 1rpx solid rgba(0,0,0,0.1);
+		/* line-height: 160rpx; */
 	}
-	.box-center{
+	.box-flex{
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+	}
+	.box-left{
 		width: 400rpx;
 	}
 	.box-right{
+		/* width: 100%; */
 	}
 	.label{
 		display: inline-block;
@@ -369,11 +407,11 @@
 		border-radius: 10px; /* future proofing */  
 		-khtml-border-radius: 10px; /* for old Konqueror browsers */  
 		text-align: center;  
-		vertical-align: middle;  
 		border: 1px solid transparent;  
-		font-weight: 900;  
+		font-weight: 900; 
 		margin-top: 10rpx;
 		font-size: 20rpx;
+		white-space: nowrap;
 	}
 	.pos-bottom{
 		padding:20rpx;

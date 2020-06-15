@@ -29,7 +29,7 @@
 		},
 		methods: {
 			RequestData(AfterParameter){
-				this.$RequestHttp.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat);//请求筛选渠道数据
+				this.$public_.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat);//请求筛选渠道数据
 			},
 			AfterCallBack(e){
 				this.getDate = e.data.data

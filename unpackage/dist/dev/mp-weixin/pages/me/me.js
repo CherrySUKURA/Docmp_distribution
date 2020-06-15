@@ -162,91 +162,25 @@ var _default =
     };
   },
   methods: {
-    wxGetUserInfo: function wxGetUserInfo(res) {var _this = this;
-      //判断时候允许授权
-      if (!res.detail.iv) {
-        uni.showToast({
-          title: "你取消了授权，登录失败",
-          icon: "none" });
-
-        return false;
-      }
-      //获取用户信息
-      uni.getUserInfo({
-        provider: 'weixin',
-        success: function success(infoRes) {
-          console.log(infoRes);
-          _this.encrypteddData = infoRes.encryptedData;
-          _this.iv = infoRes.iv;
-          _this.nickName = infoRes.userInfo.nickName;
-          _this.avatarUrl = infoRes.userInfo.avatarUrl;
-          uni.setStorageSync('isCanUse', false); //记录是否对此授权，false表示不是第一次授权
-          // this.updateUserInfo();
-        }, fail: function fail(_fail) {console.log("fail:", _fail);} });
-
+    RequestUserData: function RequestUserData(param) {
+      this.$public_.RequestHttp('', 'Post', param, this.loginCallBack, this.defeat);
     },
-    login: function login() {var _this2 = this;
-      uni.showLoading({
-        title: '登陆中...' });
-
-
-      //1.wx获取登录用户code
+    getPhoneNumber: function getPhoneNumber(e) {//获取电话号码
+      console.log(e);
+    },
+    login: function login() {
       uni.login({
-        provider: 'weixin',
-        success: function success(loginRes) {
-          _this2.code = loginRes.code;
-          if (!_this2.isVanUse) {
-            //非第一次授权获取用户信息
-            uni.getUserInfo({
-              provider: 'weixin',
-              success: function success(infoRes) {
-                console.log('login用户信息：', infoRes);
-                //获取用户信息后向调用信息更新方法
-                _this2.nickName = infoRes.userInfo.nickName; //昵称
-                _this2.avatarUrl = infoRes.userInfo.avatarUrl; //头像
-                // this.updataUserInfo();//调用更新信息方法
-              } });
+        success: function success(res) {
+          if (res.code) {
+            var param = {
+              code: res.code };
 
+            this.RequestUserData(param);
+          } else {
+            console.log('登陆失败' + res.errMsg);
           }
-          //将用户登录code传递到后台置换用户SessionKey,OpenId等信息
-
-          uni.hideLoading();
         } });
 
-    },
-    // updateUserInfo(){ //向后台更新信息
-    // 	this.setName(this.nickName,this.avatarUrl)
-    // 	let _this = this;
-    // 	var obj ={
-    // 		appid:"wx1b02a26b03110f06",
-    // 		secret:"07bd35d41e7fb6a9bff173c728d6a096",
-    // 		code:this.code
-    // 	}
-
-    // 	// 这一步一般是在后台  这里是为了测试
-    // 	// 正常给 后台 5个测试 appId appsecret code(登录接口获取) encryptedData iv
-
-    // 	htxcx(obj.appid,obj.secret,obj.code).then(res=>{
-    // 		console.log("res:",res)
-
-    // 		res.data.openid // 唯一
-    // 		res.data.session_key 
-    // 		this.encryptedData
-    // 		this.iv
-
-    // 		// 把这些参数通过接口传给后台 解密 获取手机号
-
-
-    // 		return
-    // 		uni.reLaunch({//信息更新成功后跳转到小程序首页
-    // 			url: '/pages/index/index'
-    // 		});
-    // 	},err=>{
-    // 		console.log("err:",err)
-    // 	})
-    // },
-    getPhoneNumber: function getPhoneNumber(val) {
-      console.log(val);
     } },
 
   components: {},

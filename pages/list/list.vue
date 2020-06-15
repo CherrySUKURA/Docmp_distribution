@@ -114,10 +114,10 @@
 				this.RequestDataOnce(statusUrl,this.StatusParam)//调用封装好的请求方法
 			},
 			RequestData(url,OrderParam){//请求
-				this.$RequestHttp.RequestHttp(url,"Post",OrderParam,this.StatusCallBack,this.defeat);//请求列表数据
+				this.$public_.RequestHttp(url,"Post",OrderParam,this.StatusCallBack,this.defeat);//请求列表数据
 			},
 			RequestDataOnce(statusUrl,StatusParam){//请求
-				this.$RequestHttp.RequestHttp(statusUrl,"Get",StatusParam,this.OrderStatusCallBack,this.defeat)//请求筛选列表数据
+				this.$public_.RequestHttp(statusUrl,"Get",StatusParam,this.OrderStatusCallBack,this.defeat)//请求筛选列表数据
 			},
 			StatusCallBack(e){//回调
 				if(e.data.data.length == 0){//判断是否有数据

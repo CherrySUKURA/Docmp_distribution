@@ -94,8 +94,8 @@
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$RequestHttp.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat);//请求订单列表订单天数数据
-				this.$RequestHttp.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat);//请求订单列表订单天数数据
 			},
 			DealerInfoCallBack(e){
 				let data = e.data.data[0];
@@ -148,17 +148,19 @@
 					this.wlInfo.post_name = forwarderName
 					this.wlInfo.post_no = data[index].parcelNo
 					this.wlInfo.delivery_status = data[index].parcelStatus;
-					let  parcelInfoes = JSON.parse(item.parcelInfo).reverse();
-					parcelInfoes.forEach((item1,index1) => {
-						let data = item1.AcceptTime.split(" ")
-						let list = {
-					            "time": item1.AcceptTime,
-					            "timeArr": data,
-					            "context": item1.AcceptStation,
-					            "location": ""
-					        }
-						this.wlInfo.list.push(list)
-					})
+					if(item.parcelInfo){
+						let  parcelInfoes = JSON.parse(item.parcelInfo).reverse();
+						parcelInfoes.forEach((item1,index1) => {
+							let data = item1.AcceptTime.split(" ")
+							let list = {
+						            "time": item1.AcceptTime,
+						            "timeArr": data,
+						            "context": item1.AcceptStation,
+						            "location": ""
+						        }
+							this.wlInfo.list.push(list)
+						})
+					}
 				})
 			},
 			defeat(e){
@@ -243,7 +245,9 @@
 		text-align: center;
 	}
 	.right-content{
-		height: 200rpx;
+		/* height: 200rpx; */
+		width: 100%;
+		position: relative;
 		text-align: left;
 	}
 	.WLXX_BTN{
@@ -252,7 +256,11 @@
 		background: url(../../static/WLXX.png) no-repeat;
 		background-size: 100% 100%;
 		display: block;
-		margin-right: 0;
+/* 		margin-right: 0;
+		margin-bottom: 0; */
+		position: absolute;
+		bottom: 20rpx;
+		right: 0;
 	}
 	.btn{
 		width: 100rpx;

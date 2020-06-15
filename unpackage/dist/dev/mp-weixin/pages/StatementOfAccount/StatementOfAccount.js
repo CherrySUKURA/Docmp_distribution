@@ -94,16 +94,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
   },
   zzxTabs: function() {
-    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 110))
+    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 118))
   }
 }
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l1 = _vm.__map(_vm.items, function(item, index) {
+    var l0 = _vm.__map(_vm.lists, function(item, index) {
+      var g0 = _vm.$public_.formatNumber(item.order_total_money)
+      var g1 = _vm.$public_.formatNumber(item.sal_total_expenditure)
+      var g2 = _vm.$public_.formatNumber(item.sal_after_total_money)
+      return {
+        $orig: _vm.__get_orig(item),
+        g0: g0,
+        g1: g1,
+        g2: g2
+      }
+    })
+
+    return {
+      $orig: _vm.__get_orig(item),
+      l0: l0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l1: l1
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -137,20 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -266,6 +280,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       items: ['全部'],
       current: 0,
       lists: [],
+      sum: [],
       accoutParam: {
         "cus_id": "%",
         "simplified": "",
@@ -275,7 +290,12 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         "page_no": "1" },
 
       channelParam: {
-        "cusId": "%" } };
+        "cusId": "%" },
+
+      exportParam: {
+        "cus_id": "%",
+        "date": "",
+        "simplified": "" } };
 
 
   },
@@ -285,16 +305,59 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   },
   methods: {
     RequestData: function RequestData(accoutParam) {
-      this.$RequestHttp.RequestHttp("account/accountCheckList", "Post", accoutParam, this.accoutCallBack, this.defeat);
+      this.$public_.RequestHttp("account/accountCheckListNew", "Post", accoutParam, this.accoutCallBack, this.defeat);
+      this.$public_.RequestHttp("account/accountCheckAllAmount", "Post", accoutParam, this.accountAmountCallBack, this.defeat);
     },
     RequestDataOnce: function RequestDataOnce(channelParam) {
-      this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat);
+      this.$public_.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat);
+    },
+    RequestExportOrderData: function RequestExportOrderData(exportParam, url) {
+      this.$public_.RequestHttp(url, "Post", exportParam, this.urlCallBack, this.defeat);
+    },
+    urlCallBack: function urlCallBack(e) {
+      var url = e.data.data[0];
+      this.$public_.RequestDownload(url, this.success, this.defeat);
+    },
+    success: function success(e) {
+      if (e.statusCode === 200) {
+        var tempFIlePath = e.tempFilePath;
+        uni.saveFile({
+          tempFilePath: tempFIlePath,
+          success: function success(res) {
+            // res.savedFilePath文件的保存路径
+            // 保存成功并打开文件
+            console.log(res.savedFilePath);
+            uni.openDocument({
+              filePath: res.savedFilePath,
+              success: function success(res) {return console.log('成功打开文档');} });
+
+          },
+          fail: function fail() {return console.log('下载失败');} });
+
+      }
     },
     accoutCallBack: function accoutCallBack(e) {
       if (e.data.data.length == 0) {
         this.$refs.TS.open();
       }
       this.lists = e.data.data;
+    },
+    accountAmountCallBack: function accountAmountCallBack(e) {
+      var data = e.data.data;
+      this.sum = [
+      {
+        "money_name": '总金额',
+        "money": this.$public_.formatNumber(data.order_money_total) },
+
+      {
+        "money_name": '总付款',
+        "money": this.$public_.formatNumber(data.buy_money_total) },
+
+      {
+        "money_name": '余额',
+        "money": this.$public_.formatNumber(data.receivable_balance_total) }];
+
+
     },
     channelCallBack: function channelCallBack(e) {var _this = this;
       var data = e.data.data;
@@ -335,11 +398,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       }
       this.RequestData(this.accoutParam);
     },
-    a: function a() {
-
-    },
-    b: function b() {
-
+    derive: function derive(type, index) {
+      var url;
+      if (type == 'Order') {
+        url = "order/exportOrder";
+      } else {
+        url = "order/exportOrderDetail";
+      }
+      this.exportParam.date = this.lists[index].order_Date;
+      this.exportParam.simplified = this.lists[index].simplified;
+      this.RequestExportOrderData(this.exportParam, url);
     },
     getDate: function getDate(type) {//时间
       var date = new Date();
@@ -357,6 +425,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     close: function close() {//关闭弹出层
       this.$refs.popup.close();
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

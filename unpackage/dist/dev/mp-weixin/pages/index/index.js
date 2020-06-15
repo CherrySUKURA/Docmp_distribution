@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 73))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
   }
 }
 var render = function() {
@@ -145,6 +145,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -267,27 +275,31 @@ var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-cha
 //
 //
 //
-var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
+//
+//
+//
+//
+//
+//
+//
+//
+var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var canvaColumn = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
       ChannelList: ["全部"], //渠道选择列表所有选项
       date: currentDate, //时间选择列表时间选项
       canvasStyle: true, //控制饼图是否显示
       OrderNumber: [], //订单数据
       chartData: { //饼图数据
-        "series": [] }, cWidth: '', //饼图宽度
+        "series": [], "categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"], "seriesline": [] }, cWidth: '', //饼图宽度
       cHeight: '', //饼图高度
       pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
       OrderParameter: { "cus_id": '%', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '%' } };}, onLoad: function onLoad() {this.RequestData(this.OrderParameter); //请求数据
-    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$RequestHttp.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
-      this.$RequestHttp.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
-    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$RequestHttp.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
+    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
+      this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
+      this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat); //请求首页圆柱图数据
+    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
     }, apply: function apply(e) {var _this = this; //回调
       var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
-      var data = e.data.data[0];if (data == null) {this.$refs.TS.open();return false;}var OrderNumber = [{ name: "订单金额", number: data.order_money }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: data.pay_to_account_success },
-
-      {
-        name: "账户余额",
-        number: data.this_month_balance }];
-
+      var data = e.data.data[0];if (data == null) {this.$refs.TS.open();return false;}var OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: this.$public_.formatNumber(data.pay_to_account_success) }, { name: "账户余额", number: this.$public_.formatNumber(data.this_month_balance) }];
 
       this.OrderNumber = OrderNumber;
     },
@@ -316,6 +328,23 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
       this.cHeight = uni.upx2px(500);
       this.showPie("canvasPie", this.chartData);
 
+    },
+    iconLineCallBack: function iconLineCallBack(e) {
+      var data = e.data.data[0];
+      if (data == null) {
+        this.$refs.TS.open();
+        return false;
+      }
+      var series = [
+      {
+        "name": "物流状态信息",
+        "data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total] }];
+
+
+      this.chartData.seriesline = series;
+      this.cWidth = uni.upx2px(750);
+      this.cHeight = uni.upx2px(500);
+      this.showLine("canvasline", this.chartData);
     },
     defeat: function defeat(e) {
       console.log(e);
@@ -356,6 +385,35 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
         extra: {
           pie: {
             lableWidth: 15 } } });
+
+
+
+    },
+    showLine: function showLine(canvasId, chartData) {
+      canvaColumn = new _uCharts.default({
+        $this: this,
+        canvasId: canvasId,
+        type: 'column',
+        lefend: { show: true },
+        fontSize: 11,
+        background: '#FFFFFF',
+        pixelRatio: 1,
+        animation: true,
+        categories: chartData.categories,
+        series: chartData.seriesline,
+        xAxis: {
+          disableGrid: true },
+
+        yAxis: {
+          //disabled:true
+        },
+        dataLabel: true,
+        width: this.cWidth,
+        height: this.cHeight,
+        extra: {
+          column: {
+            type: 'group',
+            width: 20 } } });
 
 
 
