@@ -1,4 +1,4 @@
-let url = "http://192.168.2.102:7002/"
+let url = "http://192.168.2.101:7002/"
 
 function request(DK,methods,data) {
 	return new Promise((resolve,reject) => {
@@ -62,5 +62,17 @@ export default{
 		num[0] = num[0].replace(new RegExp('(\\d)(?=(\\d{3})+$)', 'ig'), "$1,");
 		// console.log("第一次处理后的num",num[0]);
 		return num.join(".");
+	},
+	showToast(title,icon,duration,success){
+		uni.showToast({
+			title,
+			icon,
+			duration,
+			success:(e) => {
+				if(success != 'null'){
+					success(e)
+				}
+			}
+		})
 	}
 }

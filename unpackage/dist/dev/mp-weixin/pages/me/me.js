@@ -92,7 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  uniPopup: function() {
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -146,54 +150,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
+  components: {},
+
+
   data: function data() {
     return {
-      indexnumber: 4,
-      code: "",
-      SessionKey: "",
-      encrypteddData: "",
-      iv: "",
-      OpenId: "",
       nickName: "用户名",
       avatarUrl: "../../static/userimg.png",
-      siCanUse: uni.getStorageSync('isVanUse') //默认为true，记录当前用户是否是第一次授权使用的
-    };
+      maskClick: false };
+
   },
   methods: {
     RequestUserData: function RequestUserData(param) {
-      this.$public_.RequestHttp('', 'Post', param, this.loginCallBack, this.defeat);
+      this.$public_.RequestHttp('role/auto_login', 'Get', param, this.loginCallBack, this.defeat);
     },
-    getPhoneNumber: function getPhoneNumber(e) {//获取电话号码
-      console.log(e);
-    },
-    login: function login() {
-      uni.login({
-        success: function success(res) {
-          if (res.code) {
-            var param = {
-              code: res.code };
-
-            this.RequestUserData(param);
-          } else {
-            console.log('登陆失败' + res.errMsg);
-          }
+    loginCallBack: function loginCallBack(e) {var _this = this;
+      this.nickName = e.data.name;
+      this.avatarUrl = e.data.face;
+      uni.setStorage({
+        key: 'storage_key',
+        data: e.data,
+        success: function success(e) {
+          _this.$public_.showToast("登陆成功", "success", 2000, _this.open);
         } });
 
+    },
+    callback: function callback(e) {
+      this.close();
+    },
+    defeat: function defeat(e) {
+
+    },
+    open: function open() {
+      this.$refs.phone.open();
+    },
+    close: function close() {
+      this.$refs.phone.close();
+    },
+    login: function login() {var _this2 = this;
+      uni.login({
+        provider: 'weixin',
+        success: function success(res) {
+          var code = res.code;
+          var param;
+          uni.getUserInfo({
+            provider: 'weixin',
+            success: function success(res) {
+              param = {
+                code: code,
+                userInfo: res.userInfo };
+
+              _this2.RequestUserData(param);
+            } });
+
+        } });
+
+    },
+    decryptPhoneNumber: function decryptPhoneNumber(e) {var _this3 = this; //获取电话号码
+      if (e.detail.errMsg === 'getPhoneNumber:ok') {
+        uni.getStorage({
+          key: 'storage_key',
+          success: function success(res) {
+            var param = {
+              uuid: res.data.uuid,
+              endata: e.detail.encryptedData,
+              iv: e.detail.iv };
+
+            _this3.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this3.callback, _this3.defeat);
+          } });
+
+      } else {
+        this.$refs.phone.close();
+      }
     } },
 
-  components: {},
-
   onShow: function onShow() {
-    if (wx.hideHomeButton) {
-      wx.hideHomeButton();
-    }
-  }
-  // onLoad() {
-  // 	this.login()
-  // }
-};exports.default = _default;
+
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

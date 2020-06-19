@@ -209,11 +209,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
 var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-charts/u-charts/u-charts.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -278,12 +273,7 @@ var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-cha
 //
 //
 //
-//
-//
-//
-//
-//
-var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! ../../components/uni-popup/uni-popup-message.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var canvaPie = null;var canvaColumn = null;var _default = { components: { uniPopupMessage: uniPopupMessage }, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
+var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
       ChannelList: ["全部"], //渠道选择列表所有选项
       date: currentDate, //时间选择列表时间选项
       canvasStyle: true, //控制饼图是否显示
@@ -299,14 +289,20 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
     }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
     }, apply: function apply(e) {var _this = this; //回调
       var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
-      var data = e.data.data[0];if (data == null) {this.$refs.TS.open();return false;}var OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: this.$public_.formatNumber(data.pay_to_account_success) }, { name: "账户余额", number: this.$public_.formatNumber(data.this_month_balance) }];
+      var data = e.data.data[0];if (data == null) {this.$public_.showToast("没有订单信息数据", "none", 2000, "null");this.OrderNumber = [];return false;}var OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: this.$public_.formatNumber(data.pay_to_account_success) },
+
+      {
+        name: "账户余额",
+        number: this.$public_.formatNumber(data.this_month_balance) }];
+
 
       this.OrderNumber = OrderNumber;
     },
     iconCallBack: function iconCallBack(e) {
       var data = e.data.data[0];
       if (data == null) {
-        this.$refs.TS.open();
+        this.$public_.showToast("没有饼图数据", "none", 2000, null);
+        this.series = [];
         return false;
       }
       var series = [
@@ -332,7 +328,8 @@ var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! requ
     iconLineCallBack: function iconLineCallBack(e) {
       var data = e.data.data[0];
       if (data == null) {
-        this.$refs.TS.open();
+        this.$public_.showToast("没有柱形图数据", "none", 2000, null);
+        this.chartData.seriesline = [];
         return false;
       }
       var series = [

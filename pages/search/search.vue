@@ -45,21 +45,12 @@
 				</uni-list-item>
 			</uni-list>
 		</view>
-		<view class="TS">
-			<uni-popup ref="TS" type="message">
-				<uni-popup-message type="error" message="没有数据" :duration="2000"></uni-popup-message>
-			</uni-popup>
-		</view>
 	</view>
 </template>
 
 <script>
 	import searchs from '../../store/search.js';
-	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	export default {
-		components: {
-			uniPopupMessage
-		},
 		data() {
 			const currentDate = this.getDate({
 				format: true
@@ -88,6 +79,9 @@
 				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat);//请求订单列表售后订单数数据
 			},
 			DayCallBack(e){
+				if(e.data.data.length == 0){
+					this.$public_.showToast("没有数据","none",2000,"null")
+				}
 				this.OrderAllDay = e.data.data;
 			},
 			AmoutCallBack(e){
@@ -144,7 +138,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.search-content{
 		width: 100%;
 		padding: 20rpx;

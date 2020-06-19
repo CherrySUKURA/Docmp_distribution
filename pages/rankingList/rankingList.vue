@@ -29,9 +29,12 @@
 		},
 		methods: {
 			RequestData(AfterParameter){
-				this.$public_.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat);//请求筛选渠道数据
+				this.$public_.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat);//请求售后列表数据
 			},
 			AfterCallBack(e){
+				if(e.data.data.length == 0){
+					this.$public_.showToast("没有售后列表数据","none",2000,"null")
+				}
 				this.getDate = e.data.data
 			},
 			defeat(e){

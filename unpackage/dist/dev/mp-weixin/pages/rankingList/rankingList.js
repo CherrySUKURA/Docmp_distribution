@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 97))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 90))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 104))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 97))
   },
   uniBadge: function() {
-    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 111))
+    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 104))
   }
 }
 var render = function() {
@@ -171,9 +171,12 @@ var _default =
   },
   methods: {
     RequestData: function RequestData(AfterParameter) {
-      this.$public_.RequestHttp("afterSales/afterOrderStatusAmount", "Get", AfterParameter, this.AfterCallBack, this.defeat); //请求筛选渠道数据
+      this.$public_.RequestHttp("afterSales/afterOrderStatusAmount", "Get", AfterParameter, this.AfterCallBack, this.defeat); //请求售后列表数据
     },
     AfterCallBack: function AfterCallBack(e) {
+      if (e.data.data.length == 0) {
+        this.$public_.showToast("没有售后列表数据", "none", 2000, "null");
+      }
       this.getDate = e.data.data;
     },
     defeat: function defeat(e) {

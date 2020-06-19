@@ -7,7 +7,7 @@
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
-		"usingComponents" : "true",
+        "usingComponents" : "true",
         "compilerVersion" : 3,
         "modules" : {},
         "distribute" : {
@@ -43,8 +43,8 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wxcabb7f591f5f89f6",
-		"usingComponents" : "true",
+        "appid" : "wx3f4b039e770c8cba",
+        "usingComponents" : "true",
         "setting" : {
             "urlCheck" : true
         }

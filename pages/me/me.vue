@@ -1,66 +1,100 @@
 <template>
 	<view>
-<!-- 		<view class="searchbar">
-			<v-searchbar></v-searchbar>
-		</view> -->
 		<view class="userinfo">
 			<view class="userlook">
 				<image :src="avatarUrl"></image>
 			</view>
 			<text class="usertext">{{nickName}}</text>
-			<button class="userbtn" type="primary" open-type="getPhoneNumber" @getPhoneNumber="getPhoneNumber" @click="login" withCedentials="true">微信授权获取用户信息</button>
+			<button class="userbtn btntop" type="primary" open-type="getUserInfo" @click="login">微信获取用户消息</button>
 		</view>
-
+		<uni-popup ref="phone" class="bindPhone" :maskClick="maskClick" :animation="true">
+			<view class="bindPhone-content">
+				绑定手机
+				<button class="phonebtn" type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">绑定手机账户</button>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	export default {
+		components:{
+			
+		},
 		data() {
 			return {
-				indexnumber: 4,
-				code: "",
-				SessionKey: "",
-				encrypteddData: "",
-				iv: "",
-				OpenId: "",
 				nickName: "用户名",
 				avatarUrl: "../../static/userimg.png",
-				siCanUse: uni.getStorageSync('isVanUse')//默认为true，记录当前用户是否是第一次授权使用的
+				maskClick: false
 			}
 		},
 		methods: {
 			RequestUserData(param){
-				this.$public_.RequestHttp('','Post',param,this.loginCallBack,this.defeat)
+				this.$public_.RequestHttp('role/auto_login','Get',param,this.loginCallBack,this.defeat)
 			},
-			getPhoneNumber(e){//获取电话号码
-				console.log(e)
+			loginCallBack(e){
+				this.nickName = e.data.name;
+				this.avatarUrl = e.data.face;
+				uni.setStorage({
+					key: 'storage_key',
+					data: e.data,
+					success: (e) => {
+						this.$public_.showToast("登陆成功","success",2000,this.open)
+					}
+				})
+			},
+			callback(e){
+				this.close()
+			},
+			defeat(e){
+
+			},
+			open(){
+				this.$refs.phone.open()
+			},
+			close(){
+				this.$refs.phone.close()
 			},
 			login(){
 				uni.login({
-					success(res) {
-						if(res.code){
-							let param = {
-								code: res.code
+					provider:'weixin',
+					success:(res) => {
+						let code = res.code;
+						let param 
+						uni.getUserInfo({
+							provider: 'weixin',
+							success:(res) => {
+								param = {
+									code: code,
+									userInfo: res.userInfo,
+								}
+								this.RequestUserData(param)
 							}
-							this.RequestUserData(param)
-						}else {
-							console.log('登陆失败' + res.errMsg)
-						}
+						})
 					}
 				})
-			}
+			},
+			decryptPhoneNumber(e){//获取电话号码
+				if(e.detail.errMsg === 'getPhoneNumber:ok'){
+					uni.getStorage({
+						key:'storage_key',
+						success: (res) => {
+							let param = {
+								uuid: res.data.uuid,
+								endata: e.detail.encryptedData,
+								iv: e.detail.iv
+							}
+							this.$public_.RequestHttp('role/security/mini_program/bind','Post',param,this.callback,this.defeat)
+						}
+					})
+				}else{
+					this.$refs.phone.close()
+				}
+			},
 		},
-		components: {
-		},
-		onShow() {
-			if(wx.hideHomeButton){  
-			    wx.hideHomeButton();  
-			}  
-		},
-		// onLoad() {
-		// 	this.login()
-		// }
+		onShow() { 
+
+		}
 	}
 </script>
 
@@ -89,8 +123,24 @@
 		height: 100%;
 		border-radius: 50%;
 	}
+	.btntop{
+		margin-top: 200rpx;
+	}
 	.userbtn{
 		width: 600rpx;
-		margin-top: 200rpx;
+	}
+	.bindPhone{
+		width: 100%;
+		height: 100%;
+	}
+	.bindPhone-content{
+		width: 600rpx;
+		height: 300rpx;
+		background-color: #FFFFFF;
+	}
+	.phonebtn{
+		width: 300rpx;
+		height: 70rpx;
+		font-size: 25rpx;
 	}
 </style>

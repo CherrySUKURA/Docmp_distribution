@@ -59,22 +59,16 @@
 					<canvas canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
 				</view>
 			</view>
-			<view class="TS">
-				<uni-popup ref="TS" type="message">
-					<uni-popup-message type="error" :message="OrderNumber.length == 0 && chartData.series.length == 0 && chartData.seriesline.length == 0? '当日没有数据' : OrderNumber.length == 0 ? '没有订单数据' : chartData.series.length == 0 ? '没有包装数据' : chartData.seriesline.length == 0 ? '没有物流状态数据' : '没有数据,默认查看所有数据'" :duration="2000" name="TS"></uni-popup-message>
-				</uni-popup>
-			</view>
 	</view>
 </template>
 
 <script>
 	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js'; 
-	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	let canvaPie=null;
 	let canvaColumn = null;
 	export default {
 		components: {
-			uniPopupMessage
+			
 		},
 		data() {
 			const currentDate = this.getDate({
@@ -107,7 +101,7 @@
 		},
 		onLoad() {
 			this.RequestData(this.OrderParameter);     //请求数据
-			this.RequestDataOnce(this.getDealerParameter)
+			this.RequestDataOnce(this.getDealerParameter);
 		},
 		methods: {
 			RequestData(OrderParameter){
@@ -130,7 +124,8 @@
 			OrderCallBack(e){//回调
 				let data = e.data.data[0];
 				if(data == null){
-					this.$refs.TS.open()
+					this.$public_.showToast("没有订单信息数据","none",2000,"null")
+					this.OrderNumber = []
 					return false
 				}
 				let OrderNumber = [
@@ -160,7 +155,8 @@
 			iconCallBack(e){
 				let data = e.data.data[0];
 				if(data == null){
-					this.$refs.TS.open();
+					this.$public_.showToast("没有饼图数据","none",2000,null)
+					this.series = []
 					return false
 				}
 				let series = [
@@ -186,7 +182,8 @@
 			iconLineCallBack(e) {
 				let data = e.data.data[0];
 				if(data == null){
-					this.$refs.TS.open();
+					this.$public_.showToast("没有柱形图数据","none",2000,null)
+					this.chartData.seriesline = []
 					return false
 				}
 				let series = [

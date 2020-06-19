@@ -3,7 +3,6 @@
   "navigationBarBackgroundColor": "#007AFF",
   "usingComponents": {
     "uni-popup": "/components/uni-popup/uni-popup",
-    "zzx-tabs": "/components/zzx-tabs/zzx-tabs",
-    "uni-popup-message": "/components/uni-popup/uni-popup-message"
+    "zzx-tabs": "/components/zzx-tabs/zzx-tabs"
   }
 }

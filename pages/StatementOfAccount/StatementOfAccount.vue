@@ -89,19 +89,13 @@
 				</view>
 			</view>
 		</view>
-		<view class="TS">
-			<uni-popup ref="TS" type="message">
-				<uni-popup-message type="error" message="没有数据" :duration="2000"></uni-popup-message>
-			</uni-popup>
-		</view>
 	</view>
 </template>
 
 <script>
-	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	export default {
 		components: {
-			uniPopupMessage
+			
 		},
 		data() {
 			const currentDate = this.getDate({
@@ -172,7 +166,8 @@
 			},
 			accoutCallBack(e){
 				if(e.data.data.length == 0){
-					this.$refs.TS.open()
+					this.$public_.showToast("没有订单数据","none",2000,"null")
+					// return false
 				}
 				this.lists = e.data.data
 			},
@@ -452,8 +447,5 @@
 	}
 	.active{
 		color: blue;
-	}
-	.TS{
-		z-index: 10000;
 	}
 </style>

@@ -38,6 +38,9 @@
 				this.$public_.RequestHttp("account/accountRunning","Get",DayAccoutParam,this.DayAccoutCallBack,this.defeat)
 			},
 			DayAccoutCallBack(e){
+				if(e.data.data.length == 0){
+					this.$public_.showToast("没有流水数据","none",2000,"null")
+				}
 				this.items = e.data.data
 			},
 			defeat(e){

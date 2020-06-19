@@ -47,20 +47,14 @@
 		<view class="fixed">
 			<uni-pagination show_icon="true" :total="total" :current="current" @change="pagination"></uni-pagination>
 		</view>
-		<view class="TS">
-			<uni-popup ref="TS" type="message">
-				<uni-popup-message type="error" message="无法查到数据" :duration="2000" name="TS"></uni-popup-message>
-			</uni-popup>
-		</view>
 	</view>
 </template>
 
 <script>
 	import { mapState,mapAction,mapGetter,mapMutations } from 'vuex';
-	import uniPopupMessage from '../../components/uni-popup/uni-popup-message.vue';
 	export default {
 		components:{
-			uniPopupMessage
+			
 		},
 		data() {
 			return {
@@ -121,7 +115,7 @@
 			},
 			StatusCallBack(e){//回调
 				if(e.data.data.length == 0){//判断是否有数据
-					this.$refs.TS.open();
+					this.$public_.showToast("没有列表数据","none",2000,"null")
 					return false
 				}
 				this.list = e.data.data;//传入list渲染
@@ -129,6 +123,10 @@
 			},
 			OrderStatusCallBack(e){//回调
 				let data = e.data.data;
+				if(data.length == 0){
+					this.$public_.showToast("没有筛选数据","none",2000,"null")
+					return false
+				}
 				data.forEach( (item,index) => {//循环后判断并渲染
 					if(this.publicstates == 0){
 						//由于可能需要筛选全部的数据，所以在渲染的数组中事先加了一个全部的筛选条件，所以只能push进去
