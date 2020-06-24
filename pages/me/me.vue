@@ -5,7 +5,7 @@
 				<image :src="avatarUrl"></image>
 			</view>
 			<text class="usertext">{{nickName}}</text>
-			<button class="userbtn btntop" type="primary" open-type="getUserInfo" @click="login">微信获取用户消息</button>
+			<button v-if="ifsee" class="userbtn btntop" type="primary" open-type="getUserInfo" @click="login">微信获取用户消息</button>
 		</view>
 		<uni-popup ref="phone" class="bindPhone" :maskClick="maskClick" :animation="true">
 			<view class="bindPhone-content">
@@ -18,36 +18,63 @@
 
 <script>
 	export default {
-		components:{
-			
-		},
 		data() {
 			return {
 				nickName: "用户名",
 				avatarUrl: "../../static/userimg.png",
-				maskClick: false
+				maskClick: false,
+				ifsee: true
 			}
+		},
+		onShow() {
+
 		},
 		methods: {
 			RequestUserData(param){
-				this.$public_.RequestHttp('role/auto_login','Get',param,this.loginCallBack,this.defeat)
+				this.$public_.loginRequestHttp('role/auto_login','Get',param,this.loginCallBack,this.defeat)
 			},
 			loginCallBack(e){
-				this.nickName = e.data.name;
-				this.avatarUrl = e.data.face;
 				uni.setStorage({
 					key: 'storage_key',
 					data: e.data,
-					success: (e) => {
-						this.$public_.showToast("登陆成功","success",2000,this.open)
+					success: (res) => {
+						if(res.errMsg == "setStorage:ok"){
+							this.ifsee = false
+							uni.getStorage({
+								key:"storage_key",
+								success: (ress) => {
+									if(ress.errMsg == "getStorage:ok"){
+										this.nickName = ress.data.name;
+										this.avatarUrl = ress.data.face;
+										this.$public_.token1(ress.data.access_token)
+										if(e.data.first_register){
+											this.$public_.showToast("登陆成功","success",2000,this.open)
+										}else{
+											this.$public_.showToast("登陆成功","success",2000,null)
+										}
+									}else{
+										this.$public_.showToast("登陆失败","none",2000,null)
+									}
+								},
+								fail:() => {
+									this.$public_.showToast("登陆失败","none",2000,null)
+								}
+							})
+						}else{
+							this.$public_.showToast("登陆失败","none",2000,null)
+						}
+					},
+					fail:() => {
+						this.$public_.showToast("登陆失败","none",2000,null)
 					}
 				})
 			},
 			callback(e){
 				this.close()
+				this.$public_.showToast(e.msg,"success",2000,this.open)
 			},
 			defeat(e){
-
+				this.$public_.showToast("登陆失败","none",2000,null)
 			},
 			open(){
 				this.$refs.phone.open()
@@ -59,18 +86,26 @@
 				uni.login({
 					provider:'weixin',
 					success:(res) => {
-						let code = res.code;
-						let param 
-						uni.getUserInfo({
-							provider: 'weixin',
-							success:(res) => {
-								param = {
-									code: code,
-									userInfo: res.userInfo,
+						if(res.errMsg == "login:ok"){
+							let code = res.code;
+							let param 
+							uni.getUserInfo({
+								provider: 'weixin',
+								success:(res) => {
+									if(res.errMsg == "getUserInfo:ok"){
+										param = {
+											code: code,
+											userInfo: res.userInfo,
+										}
+										this.RequestUserData(param)
+									}else{
+										this.$public_.showToast("登陆失败","none",2000,null)
+									}
 								}
-								this.RequestUserData(param)
-							}
-						})
+							})
+						}else{
+							this.$public_.showToast("登陆失败","none",2000,null)
+						}
 					}
 				})
 			},
@@ -90,10 +125,7 @@
 				}else{
 					this.$refs.phone.close()
 				}
-			},
-		},
-		onShow() { 
-
+			}
 		}
 	}
 </script>

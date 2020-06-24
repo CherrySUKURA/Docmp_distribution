@@ -20,11 +20,11 @@
 			return {
 				getDate: [],
 				AfterParameter: {
-					"cusId": "%"
+					"cusId": ""
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.RequestData(this.AfterParameter);     //请求数据
 		},
 		methods: {
@@ -33,12 +33,12 @@
 			},
 			AfterCallBack(e){
 				if(e.data.data.length == 0){
-					this.$public_.showToast("没有售后列表数据","none",2000,"null")
+					this.$public_.showToast("没有售后列表数据","none",2000,null)
 				}
 				this.getDate = e.data.data
 			},
 			defeat(e){
-				
+				console.log(e)
 			},
 			skip(i){
 				this.$store.commit("Afterstatu",i);

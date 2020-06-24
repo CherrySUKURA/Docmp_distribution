@@ -1,0 +1,1 @@
+<text data-event-opts="{{[['tap',[['onClick']]]]}}" class="{{['uni-badge data-v-f2068f48',inverted?'uni-badge--'+type+' uni-badge--'+size+' uni-badge--'+type+'-inverted':'uni-badge--'+type+' uni-badge--'+size]}}" style="{{(badgeStyle)}}" bindtap="__e">{{text}}</text>

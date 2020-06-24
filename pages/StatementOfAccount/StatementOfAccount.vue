@@ -110,7 +110,7 @@
 				lists: [],
 				sum:[],
 				accoutParam: {
-					"cus_id":"%",
+					"cus_id":"",
 					"simplified":"",
 					"start_date":"",
 					"end_date":"",
@@ -118,16 +118,16 @@
 					"page_no":"1"
 				},
 				channelParam: {
-					"cusId": "%"
+					"cusId": ""
 				},
 				exportParam: {
-				    "cus_id":"%",
+				    "cus_id":"",
 				    "date":"",
 				    "simplified":""
 				}
 			}
 		},
-		onLoad(){
+		onShow(){	
 			this.RequestData(this.accoutParam);
 			this.RequestDataOnce(this.channelParam);
 		},
@@ -154,19 +154,18 @@
 						success:(res)=>{
 							 // res.savedFilePath文件的保存路径
 							 // 保存成功并打开文件
-							 console.log(res.savedFilePath)
 							 uni.openDocument({
-								filePath:res.savedFilePath,
-								success:(res)=>console.log('成功打开文档')
+								filePath: res.savedFilePath,
+								success: (res) => console.log('成功打开文档')
 							})
 						},
-						fail:()=>console.log('下载失败')
+						fail:() => console.log('下载失败')
 					})
 				}
 			},
 			accoutCallBack(e){
 				if(e.data.data.length == 0){
-					this.$public_.showToast("没有订单数据","none",2000,"null")
+					this.$public_.showToast("没有订单数据","none",2000,null)
 					// return false
 				}
 				this.lists = e.data.data

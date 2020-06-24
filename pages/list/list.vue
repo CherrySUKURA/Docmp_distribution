@@ -67,7 +67,7 @@
 				current: 1,//分页默认第一页
 				list: [],//订单数据列表	
 				OrderParam:{//公共参数对象
-				    "cus_id": "%",//用户id
+				    "cus_id": "",//用户id
 					"order_date": "",//订单页面用的字段
 					"client_contact": "",//电话号码查询字段
 					"after_sales_status": "",//售后状态查询字段
@@ -76,11 +76,11 @@
 					"order_status_desc":""//售后页面索引字段
 				},
 				StatusParam: {//获取状态列表对象参数
-					"cusId": "%"//用户id
+					"cusId": ""//用户id
 				}
 			}
 		},
-		onLoad() {
+		onShow() {	
 			this.OrderRequest();//获取列表数据
 			this.StatusRequest();//获取查询字段的数据
 		},
@@ -115,7 +115,7 @@
 			},
 			StatusCallBack(e){//回调
 				if(e.data.data.length == 0){//判断是否有数据
-					this.$public_.showToast("没有列表数据","none",2000,"null")
+					this.$public_.showToast("没有列表数据","none",2000,null)
 					return false
 				}
 				this.list = e.data.data;//传入list渲染
@@ -124,7 +124,7 @@
 			OrderStatusCallBack(e){//回调
 				let data = e.data.data;
 				if(data.length == 0){
-					this.$public_.showToast("没有筛选数据","none",2000,"null")
+					this.$public_.showToast("没有筛选数据","none",2000,null)
 					return false
 				}
 				data.forEach( (item,index) => {//循环后判断并渲染

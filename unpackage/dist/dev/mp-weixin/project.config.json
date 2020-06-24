@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
@@ -22,11 +22,11 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"useCompilerModule": true,
+		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.2",
+	"libVersion": "",
 	"appid": "wx3f4b039e770c8cba",
 	"projectname": "DOCMP_Distribution",
 	"simulatorType": "wechat",

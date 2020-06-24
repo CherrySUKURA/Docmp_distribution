@@ -88,7 +88,7 @@
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.Parameter.salesOrderNo = this.OrderNumbers
 			this.RequestData(this.Parameter)
 		},

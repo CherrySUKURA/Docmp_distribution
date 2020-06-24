@@ -1,64 +1,64 @@
 <template>
 	<view class="index-content">
-			<view class="condition-content">
-				<view class="flex">
-					<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
-					<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
-				</view>
-				<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
-					<view class="condition-lee">
-						<view class="block-view">
-							<view class="block_left" @click="close">取消</view>
-							<view class="block-right" @click="condition_click">完成</view>
-						</view>
-						<view class="title-content" >
-							<view class="title">供应商选择</view>
-						</view>
-						<view class="condition-select">
-							<picker mode="selector" @change="bindPickerChange" :value="ChannelIndex" :range="ChannelList">
-								<view class="condition-uni-input">{{ChannelList[ChannelIndex]}}</view>
-							</picker>
-						</view>
-						<view class="title-content" >
-							<view class="title">日期选择</view>
-						</view>
-						<view class="condition-select">
-								<!-- <picker mode="date" @change="bindDateChange"  :start="startDate" :end="endDate" :value="date"> -->
-							<picker mode="date" @change="bindDateChange" :value="date" fields="month">
-								<view class="condition-uni-input">{{date}}</view>
-							</picker>
-						</view>
-						<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
+		<view class="condition-content">
+			<view class="flex">
+				<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
+				<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
+			</view>
+			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
+				<view class="condition-lee">
+					<view class="block-view">
+						<view class="block_left" @click="close">取消</view>
+						<view class="block-right" @click="condition_click">完成</view>
 					</view>
-				</uni-popup>
-			</view>
-			<view class="number">
-				<view class="title-content" >
-					<view class="title">订单信息</view>
-				</view>
-				<view class="number-flex">
-					<view v-for="(item,index) in OrderNumber" class="number-box" :key="index">
-						<view>{{item.name}}</view>
-						<view>{{item.number}}</view>
+					<view class="title-content">
+						<view class="title">供应商选择</view>
 					</view>
+					<view class="condition-select">
+						<picker mode="selector" @change="bindPickerChange" :value="ChannelIndex" :range="ChannelList">
+							<view class="condition-uni-input">{{ChannelList[ChannelIndex]}}</view>
+						</picker>
+					</view>
+					<view class="title-content" >
+						<view class="title">日期选择</view>
+					</view>
+					<view class="condition-select">
+						<!-- <picker mode="date" @change="bindDateChange"  :start="startDate" :end="endDate" :value="date"> -->
+						<picker mode="date" @change="bindDateChange" :value="date" fields="month">
+							<view class="condition-uni-input">{{date}}</view>
+						</picker>
+					</view>
+					<button type="primary" class="condition-lee-btn" @click="condition_click">搜索</button>
+				</view>
+			</uni-popup>
+		</view>
+		<view class="number">
+			<view class="title-content" >
+				<view class="title">订单信息</view>
+			</view>
+			<view class="number-flex">
+				<view v-for="(item,index) in OrderNumber" class="number-box" :key="index">
+					<view>{{item.name}}</view>
+					<view>{{item.number}}</view>
 				</view>
 			</view>
-			<view class="qiun-columns">
-				<view class="title-content" >
-					<view class="title">饼状图</view>
-				</view>
-				<view class="qiun-charts">
-					<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
-				</view>
+		</view>
+		<view class="qiun-columns">
+			<view class="title-content" >
+				<view class="title">饼状图</view>
 			</view>
-			<view class="qiun-columns">
-				<view class="title-content" >
-					<view class="title">线形图</view>
-				</view>
-				<view class="qiun-charts">
-					<canvas canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
-				</view>
+			<view class="qiun-charts">
+				<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
 			</view>
+		</view>
+		<view class="qiun-columns">
+			<view class="title-content" >
+				<view class="title">线形图</view>
+			</view>
+			<view class="qiun-charts">
+				<canvas canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -90,18 +90,21 @@
 				pixelRatio:1,
 				maskClick: false,  //控制点击弹出层灰色部分是否关闭弹出层
 				OrderParameter: {
-					"cus_id":'%',
+					"cus_id":'',
 					"date":"",
 					"simplified":"",
 				},
 				getDealerParameter: {
-					'cusId':'%'
+					'cusId':''
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.RequestData(this.OrderParameter);     //请求数据
 			this.RequestDataOnce(this.getDealerParameter);
+			// if(this.OrderCallBack&&this.iconCallBack&&this.iconLineCallBack == false){
+			// 	this.$public_.showToast("没有数据","none",2000,null)
+			// }
 		},
 		methods: {
 			RequestData(OrderParameter){
@@ -124,7 +127,7 @@
 			OrderCallBack(e){//回调
 				let data = e.data.data[0];
 				if(data == null){
-					this.$public_.showToast("没有订单信息数据","none",2000,"null")
+					this.$public_.showToast("没有订单信息数据","none",2000,null)
 					this.OrderNumber = []
 					return false
 				}

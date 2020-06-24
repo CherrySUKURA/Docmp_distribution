@@ -63,13 +63,13 @@
 				OrderAllAmount: [{}],
 				OrderAllAfter: [{}],
 				Parameter: {
-				 "cus_id":"%",
+				 "cus_id":"",
 				 "start_date":"",
 				 "end_date":""
 				}
 			}
 		},
-		onLoad() {
+		onShow() {	
 			this.RequestData(this.Parameter)     //请求数据
 		},
 		methods: {
@@ -80,7 +80,7 @@
 			},
 			DayCallBack(e){
 				if(e.data.data.length == 0){
-					this.$public_.showToast("没有数据","none",2000,"null")
+					this.$public_.showToast("没有数据","none",2000,null)
 				}
 				this.OrderAllDay = e.data.data;
 			},

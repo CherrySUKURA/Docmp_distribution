@@ -26,11 +26,11 @@
 			return {
 				items: [],
 				DayAccoutParam: {
-					"cusId": "%"
+					"cusId": ""
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.RequestData(this.DayAccoutParam)
 		},
 		methods: {
@@ -39,7 +39,7 @@
 			},
 			DayAccoutCallBack(e){
 				if(e.data.data.length == 0){
-					this.$public_.showToast("没有流水数据","none",2000,"null")
+					this.$public_.showToast("没有流水数据","none",2000,null)
 				}
 				this.items = e.data.data
 			},
