@@ -1,5 +1,6 @@
-// let url = "https://www.hotmine.cn:8787/" 
-let url = "http://192.168.2.101:8787/"
+let url = "https://www.hotmine.cn/api/"  
+// let url = "http://114.55.171.119:8823/api/"
+// let url = "http://192.168.2.101:8787/api/"
 let token
 
 function request(DK,methods,data) {
@@ -62,12 +63,7 @@ function download(DK) {
 
 function callback(res) {
 	uni.removeStorage({
-		key: "storage_key",
-		success: () => {
-			uni.switchTab({
-				url: "/pages/me/me",
-			})
-		}
+		key: "storage_key"
 	})
 
 }
@@ -80,7 +76,7 @@ export default{
 		request(url,method,data).then(
 			(res) => {
 				if(res.data.code == "401"){
-					this.showToast("登录已失效","none",2000,callback)
+					this.showToast("登录已失效,请前往登录","none",2000,callback)
 				}else{
 					succeed(res)
 				}

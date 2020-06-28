@@ -62,9 +62,9 @@
 .uni-list{
 }
 .uni-list-all {
-	   width: 100%;
-	   height: 150rpx;
-	   line-height: 75rpx;
+	    width: 100%;
+	    height: 150rpx;
+	    line-height: 75rpx;
 }
 .uni-list-cell {
 		width: 100%;

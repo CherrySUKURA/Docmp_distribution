@@ -219,6 +219,9 @@ var _default =
       this.$refs.phone.close();
     },
     login: function login() {var _this2 = this;
+      // uni.authorize({
+      // 	scope: "scope.userInfo",
+      // 	success: () => {
       uni.login({
         provider: 'weixin',
         success: function success(res) {
@@ -244,6 +247,11 @@ var _default =
           }
         } });
 
+      // },
+      // fail: () => {
+      // 	this.$public_.showToast("用户未授权，登陆失败","none",2000,null)
+      // }
+      // })
     },
     decryptPhoneNumber: function decryptPhoneNumber(e) {var _this3 = this; //获取电话号码
       if (e.detail.errMsg === 'getPhoneNumber:ok') {

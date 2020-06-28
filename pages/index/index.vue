@@ -197,7 +197,7 @@
 				]
 				this.chartData.seriesline = series;
 				this.cWidth=uni.upx2px(750);
-				this.cHeight=uni.upx2px(500);
+				this.cHeight=uni.upx2px(600);
 				this.showLine("canvasline",this.chartData)
 			},
 			defeat(e){
@@ -425,15 +425,11 @@
 	}
 	.qiun-charts{
 		width: 100%; 
-		height:500rpx;
+		/* height:500rpx; */
 		background-color: #FFFFFF;
 	}
 	.charts{
 		width: 100%; 
-		height:500rpx;
+		height:600rpx;
 	}
-/* 	.show{
-		display: none;
-	} */
-	
 </style>

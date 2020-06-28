@@ -343,7 +343,7 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
 
       this.chartData.seriesline = series;
       this.cWidth = uni.upx2px(750);
-      this.cHeight = uni.upx2px(500);
+      this.cHeight = uni.upx2px(600);
       this.showLine("canvasline", this.chartData);
     },
     defeat: function defeat(e) {

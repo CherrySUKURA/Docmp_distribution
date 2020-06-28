@@ -44,14 +44,13 @@
 						</view>
 					</view>
 					<scroll-view class="logistics" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll">
-				<!-- <view class="logistics"> -->
+					<!-- <view class="logistics"> -->
 					<logistics :wlInfo="wlInfo"></logistics>
-				<!-- </view> -->
+					<!-- </view> -->
 					</scroll-view>
 				</view>
 			</uni-popup>
 		</view>
-		
 	</view>
 </template>
 
@@ -76,7 +75,7 @@
 				wlInfo: {
 				    delivery_status: "", //快递状态 1已签收 2配送中
 				    post_name: '', //快递名称
-				    logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
+				    // logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
 				    // exp_phone: '95546', //快递电话
 				    post_no: '', //快递单号
 				    addr: '', //收货地址
@@ -273,9 +272,9 @@
 	.uni-list{
 	}
 	.uni-list-all {
-	   width: 100%;
-	   height: 150rpx;
-	   line-height: 75rpx;
+	    width: 100%;
+	    height: 150rpx;
+	    line-height: 75rpx;
 	}
 	.uni-list-cell {
 		width: 100%;

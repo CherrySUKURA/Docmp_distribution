@@ -12,7 +12,7 @@
 					</view>
 				</view>
 				<view class="right">
-					<view class="text">订单单号： {{wlInfo.post_no}}</view>
+					<view class="text">物流单号： {{wlInfo.post_no}}</view>
 				</view>
 			</view>
 			

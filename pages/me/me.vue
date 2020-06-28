@@ -83,31 +83,39 @@
 				this.$refs.phone.close()
 			},
 			login(){
-				uni.login({
-					provider:'weixin',
-					success:(res) => {
-						if(res.errMsg == "login:ok"){
-							let code = res.code;
-							let param 
-							uni.getUserInfo({
-								provider: 'weixin',
-								success:(res) => {
-									if(res.errMsg == "getUserInfo:ok"){
-										param = {
-											code: code,
-											userInfo: res.userInfo,
+				// uni.authorize({
+				// 	scope: "scope.userInfo",
+				// 	success: () => {
+						uni.login({
+							provider:'weixin',
+							success:(res) => {
+								if(res.errMsg == "login:ok"){
+									let code = res.code;
+									let param 
+									uni.getUserInfo({
+										provider: 'weixin',
+										success:(res) => {
+											if(res.errMsg == "getUserInfo:ok"){
+												param = {
+													code: code,
+													userInfo: res.userInfo,
+												}
+												this.RequestUserData(param)
+											}else{
+												this.$public_.showToast("登陆失败","none",2000,null)
+											}
 										}
-										this.RequestUserData(param)
-									}else{
-										this.$public_.showToast("登陆失败","none",2000,null)
-									}
+									})
+								}else{
+									this.$public_.showToast("登陆失败","none",2000,null)
 								}
-							})
-						}else{
-							this.$public_.showToast("登陆失败","none",2000,null)
-						}
-					}
-				})
+							}
+						})
+					// },
+					// fail: () => {
+					// 	this.$public_.showToast("用户未授权，登陆失败","none",2000,null)
+					// }
+				// })
 			},
 			decryptPhoneNumber(e){//获取电话号码
 				if(e.detail.errMsg === 'getPhoneNumber:ok'){
