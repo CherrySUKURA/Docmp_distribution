@@ -2870,12 +2870,15 @@ function callback(res) {
             if (losed != null) {
               losed(res);
             }
+            setTimeout(function () {
+              uni.hideLoading();
+            }, 2000);
             _this.showToast("登录已失效,请前往登录", "none", 2000, callback);
           } else {
             succeed(res);
             setTimeout(function () {
               uni.hideLoading();
-            }, 3000);
+            }, 2000);
           }
         }).catch(
         function (err) {
@@ -2890,7 +2893,6 @@ function callback(res) {
 
   },
   loginRequestHttp: function loginRequestHttp(url, method, data, succeed, defeated) {
-    // debugger
     loginReuqest(url, method, data).then(
     function (res) {
       succeed(res);

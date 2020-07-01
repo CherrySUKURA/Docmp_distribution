@@ -83,7 +83,9 @@
 				})
 			},
 			callback(e){
-				this.login()
+				if(e.data.isYes){
+					this.login()
+				}
 				this.close()
 				this.$public_.showToast(e.msg,"success",2000,this.open)
 			},
@@ -97,7 +99,6 @@
 				this.$refs.phone.close()
 			},
 			login(){
-				debugger
 				uni.login({
 					provider:'weixin',
 					success:(res) => {
@@ -108,7 +109,6 @@
 								provider: 'weixin',
 								success:(res) => {
 									if(res.errMsg == "getUserInfo:ok"){
-										// debugger
 										param = {
 											code: code,
 											userInfo: res.userInfo,
@@ -120,7 +120,6 @@
 								}
 							})
 						}else{
-							// debugger
 							this.$public_.showToast("登陆失败","none",2000,null)
 						}
 					},

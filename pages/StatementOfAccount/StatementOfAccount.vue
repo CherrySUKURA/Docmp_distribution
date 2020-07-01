@@ -189,6 +189,7 @@
 			},
 			channelCallBack(e){
 				let data = e.data.data
+				this.items = ['全部']
 				data.forEach( (item,index) => {
 					this.items.push(item)
 				})

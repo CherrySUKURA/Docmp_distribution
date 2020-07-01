@@ -355,6 +355,7 @@ var _default =
     },
     channelCallBack: function channelCallBack(e) {var _this = this;
       var data = e.data.data;
+      this.items = ['全部'];
       data.forEach(function (item, index) {
         _this.items.push(item);
       });

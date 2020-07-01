@@ -219,7 +219,9 @@ var _default =
 
     },
     callback: function callback(e) {
-      this.login();
+      if (e.data.isYes) {
+        this.login();
+      }
       this.close();
       this.$public_.showToast(e.msg, "success", 2000, this.open);
     },
@@ -233,7 +235,6 @@ var _default =
       this.$refs.phone.close();
     },
     login: function login() {var _this3 = this;
-      debugger;
       uni.login({
         provider: 'weixin',
         success: function success(res) {
@@ -244,7 +245,6 @@ var _default =
               provider: 'weixin',
               success: function success(res) {
                 if (res.errMsg == "getUserInfo:ok") {
-                  // debugger
                   param = {
                     code: code,
                     userInfo: res.userInfo };
@@ -256,7 +256,6 @@ var _default =
               } });
 
           } else {
-            // debugger
             _this3.$public_.showToast("登陆失败", "none", 2000, null);
           }
         },

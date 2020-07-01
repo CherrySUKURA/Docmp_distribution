@@ -91,12 +91,15 @@ export default{
 							if(losed!=null){
 								losed(res)
 							}
+							setTimeout(function () {
+							    uni.hideLoading();
+							}, 2000)
 							this.showToast("登录已失效,请前往登录","none",2000,callback)
 						}else{
 							succeed(res)
 							setTimeout(function () {
 							    uni.hideLoading();
-							}, 3000)
+							}, 2000)
 						}
 					}).catch(
 					(err) => {
@@ -111,7 +114,6 @@ export default{
 		
 	},
 	loginRequestHttp(url,method,data,succeed,defeated){
-		// debugger
 		loginReuqest(url,method,data).then(
 		(res) => {
 			succeed(res)
