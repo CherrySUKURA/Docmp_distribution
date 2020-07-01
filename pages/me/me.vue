@@ -46,7 +46,7 @@
 									if(ress.errMsg == "getStorage:ok"){
 										this.nickName = ress.data.name;
 										this.avatarUrl = ress.data.face;
-										this.$public_.token1(ress.data.access_token)
+										this.$public_.storagedata(ress.data)
 										if(e.data.first_register){
 											this.$public_.showToast("登陆成功","success",2000,this.open)
 										}else{
@@ -83,39 +83,34 @@
 				this.$refs.phone.close()
 			},
 			login(){
-				// uni.authorize({
-				// 	scope: "scope.userInfo",
-				// 	success: () => {
-						uni.login({
-							provider:'weixin',
-							success:(res) => {
-								if(res.errMsg == "login:ok"){
-									let code = res.code;
-									let param 
-									uni.getUserInfo({
-										provider: 'weixin',
-										success:(res) => {
-											if(res.errMsg == "getUserInfo:ok"){
-												param = {
-													code: code,
-													userInfo: res.userInfo,
-												}
-												this.RequestUserData(param)
-											}else{
-												this.$public_.showToast("登陆失败","none",2000,null)
-											}
+				uni.login({
+					provider:'weixin',
+					success:(res) => {
+						if(res.errMsg == "login:ok"){
+							let code = res.code;
+							let param 
+							uni.getUserInfo({
+								provider: 'weixin',
+								success:(res) => {
+									if(res.errMsg == "getUserInfo:ok"){
+										param = {
+											code: code,
+											userInfo: res.userInfo,
 										}
-									})
-								}else{
-									this.$public_.showToast("登陆失败","none",2000,null)
+										this.RequestUserData(param)
+									}else{
+										this.$public_.showToast("登陆失败","none",2000,null)
+									}
 								}
-							}
-						})
-					// },
-					// fail: () => {
-					// 	this.$public_.showToast("用户未授权，登陆失败","none",2000,null)
-					// }
-				// })
+							})
+						}else{
+							this.$public_.showToast("登陆失败","none",2000,null)
+						}
+					},
+					fail: (res) => {
+						this.$public_.showToast("用户取消授权，登陆失败","none",2000,null)
+					}
+				})
 			},
 			decryptPhoneNumber(e){//获取电话号码
 				if(e.detail.errMsg === 'getPhoneNumber:ok'){

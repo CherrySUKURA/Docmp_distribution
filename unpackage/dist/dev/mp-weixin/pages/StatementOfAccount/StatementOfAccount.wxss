@@ -211,4 +211,9 @@
 .active.data-v-520fa6e6{
 	color: blue;
 }
+.tosettext.data-v-520fa6e6{
+	color: #C0C0C0;
+	display: block;
+	text-align: center;
+}
 

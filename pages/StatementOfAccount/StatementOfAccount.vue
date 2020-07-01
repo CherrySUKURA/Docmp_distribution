@@ -3,8 +3,8 @@
 		<view class="pos-top">
 			<view class="condition-content">
 				<view class="flex">
-					<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
-					<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
+					<button type="primary" @click="open" class="condition-btn">筛选</button>
+					<button type="primary" @click="condition_click('all')" class="condition-btn">清除筛选条件</button>
 				</view>
 				<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
 					<view class="condition-lee">
@@ -39,8 +39,8 @@
 
 		<view>
 			<view v-for="(item,index) in items" v-show="current === index" :key="index">
-				
-					<view class="box"  v-for="(item,index) in lists" :key="index">
+					<text v-if="lists.length == 0" class="tosettext">无内容</text>
+					<view class="box" v-if="lists.length != 0"  v-for="(item,index) in lists" :key="index">
 						<view class="box-top">
 							{{item.order_Date}}
 						</view>
@@ -446,5 +446,10 @@
 	}
 	.active{
 		color: blue;
+	}
+	.tosettext{
+		color: #C0C0C0;
+		display: block;
+		text-align: center;
 	}
 </style>

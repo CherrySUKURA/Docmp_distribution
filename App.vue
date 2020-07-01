@@ -1,15 +1,18 @@
 <script>
 export default {
 	onLaunch: function() {
-		console.log('App Launch');
+
 	},
 	onShow: function() {
-
-		console.log('App Show');
+		// this.$public_.token1("")
 	},
 	onHide: function() {
-
-		console.log('App Hide');
+		// uni.removeStorage({
+		// 	key:"storage_key",
+		// 	success:() => {
+		// 		this.$public_.token1("")
+		// 	}
+		// })
 	}
 };
 </script>

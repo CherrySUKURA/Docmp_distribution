@@ -88,6 +88,8 @@
 	height: 550rpx;
 	margin-top: 20rpx;
 	background-color: #FFFFFF;
+	box-sizing: border-box;
+	position: relative;
 }
 .number-flex.data-v-57280228{
 	display: -webkit-box;
@@ -101,6 +103,14 @@
 	-webkit-justify-content: space-evenly;
 	        justify-content: space-evenly;
 }
+.tosettext.data-v-57280228{
+	color: #C0C0C0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	        transform: translateX(-50%);
+}
 .number-box.data-v-57280228{
 	width: 200rpx;
 	height: 200rpx;
@@ -113,47 +123,19 @@ page.data-v-57280228{
 	width: 750rpx;
 	overflow-x: hidden;
 }
-.qiun-padding.data-v-57280228{
-	padding:2%; 
-	width:96%;
-}
-.qiun-wrap.data-v-57280228{
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:flex; 
-	-webkit-flex-wrap:wrap; 
-	        flex-wrap:wrap;
-}
-.qiun-rows.data-v-57280228{
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:flex; 
-	-webkit-box-orient:
-	horizontal !important; 
-	-webkit-box-direction:
-	normal !important; 
-	-webkit-flex-direction:
-	row !important; 
-	        flex-direction:
-	row !important;
-}
 .qiun-columns.data-v-57280228{
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:flex; 
-	-webkit-box-orient:vertical !important; 
-	-webkit-box-direction:normal !important; 
-	-webkit-flex-direction:column !important; 
-	        flex-direction:column !important; 
+	width: 100%;
+	height: 600rpx;
 	margin-top: 20rpx;
+	position: relative;
 }
 .qiun-charts.data-v-57280228{
 	width: 100%; 
-	/* height:500rpx; */
+	height: 100%;
 	background-color: #FFFFFF;
 }
 .charts.data-v-57280228{
 	width: 100%; 
-	height:600rpx;
+	height:100%;
 }
 

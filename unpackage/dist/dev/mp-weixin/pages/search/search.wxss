@@ -78,4 +78,9 @@
 	display: -webkit-flex;
 	display: flex;
 }
+.tosettext.data-v-4cedc0c6{
+	color: #C0C0C0;
+	display: block;
+	text-align: center;
+}
 

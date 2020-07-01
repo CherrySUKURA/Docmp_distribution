@@ -1,7 +1,7 @@
 <template>
 	<view class="list-body">
 		<view class="condition-content">
-			<button type="primary" @click="open" class="condition-btn">打开窗口</button>
+			<button type="primary" @click="open" class="condition-btn">筛选</button>
 			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
 				<view class="condition-lee">
 					<view class="block-view">

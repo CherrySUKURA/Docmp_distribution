@@ -2,7 +2,8 @@
 	<view class="rankingList-content">
 		<view class="afterSale-list">
 			<uni-list class="list-content-list">
-				<uni-list-item v-for="(item,index) in getDate" @click="skip(item.Order_Status_Desc)" :title="item.Order_Status_Desc" :key="index"  :show-badge="false" class="list-content-item">
+				<text v-if="getDate.length == 0" class="tosettext">无内容</text>
+				<uni-list-item v-if="getDate.length != 0" v-for="(item,index) in getDate" @click="skip(item.Order_Status_Desc)" :title="item.Order_Status_Desc" :key="index"  :show-badge="false" class="list-content-item">
 					<template v-slot:right="">
 						<view  class="badge-content">
 							<uni-badge :text="item.order_status_amount" type="success" class="list-content-badge"size="small"></uni-badge>
@@ -54,5 +55,11 @@
 <style scoped>
 	.badge-content{
 		display: flex;
+	}
+	.tosettext{
+		color: #C0C0C0;
+		display: block;
+		text-align: center;
+		margin-top: 20rpx;
 	}
 </style>

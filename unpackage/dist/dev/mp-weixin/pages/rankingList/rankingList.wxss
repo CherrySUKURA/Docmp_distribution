@@ -4,4 +4,10 @@
 	display: -webkit-flex;
 	display: flex;
 }
+.tosettext.data-v-456bbf70{
+	color: #C0C0C0;
+	display: block;
+	text-align: center;
+	margin-top: 20rpx;
+}
 

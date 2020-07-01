@@ -2781,6 +2781,7 @@ store;exports.default = _default;
 // let url = "http://114.55.171.119:8823/api/"
 // let url = "http://192.168.2.101:8787/api/"
 var token;
+var uuid;
 
 function request(DK, methods, data) {
   return new Promise(function (resolve, reject) {
@@ -2791,7 +2792,8 @@ function request(DK, methods, data) {
       data: data,
       header: {
         'Content-Type': 'application/json;charset=utf-8',
-        "Authorization": token },
+        "Authorization": token,
+        "uuid": uuid },
 
       success: function success(res) {
         resolve(res);
@@ -2842,27 +2844,71 @@ function download(DK) {
 
 function callback(res) {
   uni.removeStorage({
-    key: "storage_key" });
+    key: "storage_key",
+    success: function success() {
+      uni.navigateTo({
+        url: "/pages/me/me" });
+
+    } });
 
 
 }var _default =
 
 {
-  token1: function token1(e) {
-    token = e;
+  storagedata: function storagedata(e) {
+    token = e.access_token;
+    uuid = e.uuid;
   },
+  // loading(title,mask,success,fail,complete){
+  // 	uni.showLoading({
+  // 		title,
+  // 		mask,
+  // 		success: (res)=> {
+  // 			if(success != null){
+  // 				success()
+  // 			}
+  // 		},
+  // 		fail: (res) => {
+  // 			if(fail != null){
+  // 				fail()
+  // 			}
+  // 		},
+  // 		complete: (res) => {
+  // 			if(complete != null){
+  // 				complete()
+  // 			}
+  // 		}
+  // 	})
+  // },
+  // hideloading(){
+  // 	uni.hideLoading()
+  // },
   RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {var _this = this; //封装回调
-    request(url, method, data).then(
-    function (res) {
-      if (res.data.code == "401") {
-        _this.showToast("登录已失效,请前往登录", "none", 2000, callback);
-      } else {
-        succeed(res);
-      }
-    }).catch(
-    function (err) {
-      defeated(err);
-    });
+    uni.showLoading({
+      title: "加载中",
+      mask: true,
+      success: function success(res) {
+        request(url, method, data).then(
+        function (res) {
+          if (res.data.code == "401") {
+            _this.showToast("登录已失效,请前往登录", "none", 2000, callback);
+          } else {
+            succeed(res);
+            setTimeout(function () {
+              uni.hideLoading();
+            }, 3000);
+          }
+        }).catch(
+        function (err) {
+          defeated(err);
+        });
+
+      },
+      fail: function fail(res) {
+        _this.showToast("加载失败", "none", 2000, null);
+      } });
+
+
   },
   loginRequestHttp: function loginRequestHttp(url, method, data, succeed, defeated) {
     // debugger

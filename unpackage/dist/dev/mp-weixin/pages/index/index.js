@@ -209,7 +209,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-charts/u-charts/u-charts.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
 //
 //
 //
@@ -279,49 +285,85 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       canvasStyle: true, //控制饼图是否显示
       OrderNumber: [], //订单数据
       chartData: { //饼图数据
-        "series": [], "categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"], "seriesline": [] }, cWidth: '', //饼图宽度
+        "series": [], "categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"], "seriesline": [{ "name": "物流状态信息", "data": [0, 0, 0, 0, 0, 0] }] }, cWidth: '', //饼图宽度
       cHeight: '', //饼图高度
       pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
       OrderParameter: { "cus_id": '', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '' } };}, onShow: function onShow() {this.RequestData(this.OrderParameter); //请求数据
-    this.RequestDataOnce(this.getDealerParameter); // if(this.OrderCallBack&&this.iconCallBack&&this.iconLineCallBack == false){
-    // 	this.$public_.showToast("没有数据","none",2000,null)
-    // }
-  }, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
+    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
       this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
       this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat); //请求首页圆柱图数据
     }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
     }, apply: function apply(e) {var _this = this; //回调
       var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
-      var data = e.data.data[0];if (data == null) {this.$public_.showToast("没有订单信息数据", "none", 2000, null);this.OrderNumber = [];return false;}var OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: this.$public_.formatNumber(data.pay_to_account_success) },
+      var data = e.data.data[0];var OrderNumber;if (data == null) {// this.$public_.showToast("没有订单信息数据","none",2000,null)
+        OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(0) }, { name: "订单数", number: 0 }, { name: "包裹数", number: 0 }, { name: "付款到账", number: this.$public_.formatNumber(0) },
+        {
+          name: "账户余额",
+          number: this.$public_.formatNumber(0) }];
 
-      {
-        name: "账户余额",
-        number: this.$public_.formatNumber(data.this_month_balance) }];
 
+      } else {
+        OrderNumber = [
+        {
+          name: "订单金额",
+          number: this.$public_.formatNumber(data.order_money) },
+
+        {
+          name: "订单数",
+          number: data.order_amount },
+
+        {
+          name: "包裹数",
+          number: data.parcel_amount },
+
+        {
+          name: "付款到账",
+          number: this.$public_.formatNumber(data.pay_to_account_success) },
+
+        {
+          name: "账户余额",
+          number: this.$public_.formatNumber(data.this_month_balance) }];
+
+
+      }
 
       this.OrderNumber = OrderNumber;
     },
     iconCallBack: function iconCallBack(e) {
       var data = e.data.data[0];
+      var series;
       if (data == null) {
-        this.$public_.showToast("没有饼图数据", "none", 2000, null);
-        this.series = [];
-        return false;
+        // this.$public_.showToast("没有包装信息","none",2000,null)
+        series = [
+        {
+          "name": "三盒",
+          "data": 0 },
+
+        {
+          "name": "四盒",
+          "data": 0 },
+
+        {
+          "name": "五盒",
+          "data": 0 }];
+
+
+      } else {
+        series = [
+        {
+          "name": "三盒",
+          "data": data.gift_boxes },
+
+        {
+          "name": "四盒",
+          "data": data.four_boxes_total },
+
+        {
+          "name": "五盒",
+          "data": data.five_boxes_total }];
+
+
       }
-      var series = [
-      {
-        "name": "三盒",
-        "data": data.gift_boxes },
-
-      {
-        "name": "四盒",
-        "data": data.four_boxes_total },
-
-      {
-        "name": "五盒",
-        "data": data.five_boxes_total }];
-
-
       this.chartData.series = series;
       this.cWidth = uni.upx2px(750);
       this.cHeight = uni.upx2px(500);
@@ -330,17 +372,23 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
     },
     iconLineCallBack: function iconLineCallBack(e) {
       var data = e.data.data[0];
+      var series;
       if (data == null) {
-        this.$public_.showToast("没有柱形图数据", "none", 2000, null);
-        this.chartData.seriesline = [];
-        return false;
+        // this.$public_.showToast("没有物流信息","none",2000,null)
+        series = [
+        {
+          "name": "物流状态信息",
+          "data": [0, 0, 0, 0, 0, 0] }];
+
+
+      } else {
+        series = [
+        {
+          "name": "物流状态信息",
+          "data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total] }];
+
+
       }
-      var series = [
-      {
-        "name": "物流状态信息",
-        "data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total] }];
-
-
       this.chartData.seriesline = series;
       this.cWidth = uni.upx2px(750);
       this.cHeight = uni.upx2px(600);

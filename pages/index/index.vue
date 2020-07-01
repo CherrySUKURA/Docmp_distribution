@@ -2,8 +2,8 @@
 	<view class="index-content">
 		<view class="condition-content">
 			<view class="flex">
-				<button type="primary" @click="open" class="condition-btn">打开弹窗</button>
-				<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
+				<button type="primary" @click="open" class="condition-btn">筛选</button>
+				<button type="primary" @click="condition_click('all')" class="condition-btn">清除筛选条件</button>
 			</view>
 			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick" :animation="true">
 				<view class="condition-lee">
@@ -37,7 +37,8 @@
 				<view class="title">订单信息</view>
 			</view>
 			<view class="number-flex">
-				<view v-for="(item,index) in OrderNumber" class="number-box" :key="index">
+<!-- 				<text v-if="OrderNumber.length == 0" class="tosettext">无内容</text> -->
+				<view v-for="(item,index) in OrderNumber" v-if="OrderNumber.length != 0" class="number-box" :key="index">
 					<view>{{item.name}}</view>
 					<view>{{item.number}}</view>
 				</view>
@@ -45,18 +46,20 @@
 		</view>
 		<view class="qiun-columns">
 			<view class="title-content" >
-				<view class="title">饼状图</view>
+				<view class="title">礼盒信息</view>
 			</view>
 			<view class="qiun-charts">
-				<canvas canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
+				<!-- <text v-if="chartData.series.length == 0" class="tosettext">无内容</text> -->
+				<canvas v-if="chartData.series.length != 0" canvas-id="canvasPie" id="canvasPie" v-show="canvasStyle" class="charts" @touchstart="touchPie"></canvas>
 			</view>
 		</view>
 		<view class="qiun-columns">
 			<view class="title-content" >
-				<view class="title">线形图</view>
+				<view class="title">物流信息</view>
 			</view>
 			<view class="qiun-charts">
-				<canvas canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
+				<!-- <text v-if="chartData.seriesline.length == 0" class="tosettext">无内容</text> -->
+				<canvas v-if="chartData.seriesline.length != 0" canvas-id="canvasline" id="canvasline" v-show="canvasStyle" class="charts"></canvas>
 			</view>
 		</view>
 	</view>
@@ -83,7 +86,12 @@
 				chartData: {       //饼图数据
 					"series": [],
 					"categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"],
-					"seriesline": []
+					"seriesline": [
+						{
+							"name": "物流状态信息",
+							"data": [0,0,0,0,0,0]
+						}
+					]
 				},
 				cWidth:'',         //饼图宽度
 				cHeight:'',        //饼图高度
@@ -102,9 +110,6 @@
 		onShow() {
 			this.RequestData(this.OrderParameter);     //请求数据
 			this.RequestDataOnce(this.getDealerParameter);
-			// if(this.OrderCallBack&&this.iconCallBack&&this.iconLineCallBack == false){
-			// 	this.$public_.showToast("没有数据","none",2000,null)
-			// }
 		},
 		methods: {
 			RequestData(OrderParameter){
@@ -126,56 +131,93 @@
 			},
 			OrderCallBack(e){//回调
 				let data = e.data.data[0];
+				let OrderNumber
 				if(data == null){
-					this.$public_.showToast("没有订单信息数据","none",2000,null)
-					this.OrderNumber = []
-					return false
+					// this.$public_.showToast("没有订单信息数据","none",2000,null)
+					OrderNumber = [
+						{
+							name: "订单金额",
+							number: this.$public_.formatNumber(0)
+						},
+						{
+							name: "订单数",
+							number: 0
+						},
+						{
+							name: "包裹数",
+							number: 0
+						},
+						{
+							name: "付款到账",
+							number: this.$public_.formatNumber(0)
+						},
+						{
+							name: "账户余额",
+							number: this.$public_.formatNumber(0)
+						}
+					]
+				}else{
+					OrderNumber = [
+						{
+							name: "订单金额",
+							number: this.$public_.formatNumber(data.order_money)
+						},
+						{
+							name: "订单数",
+							number: data.order_amount
+						},
+						{
+							name: "包裹数",
+							number: data.parcel_amount
+						},
+						{
+							name: "付款到账",
+							number: this.$public_.formatNumber(data.pay_to_account_success)
+						},
+						{
+							name: "账户余额",
+							number: this.$public_.formatNumber(data.this_month_balance)
+						}
+					]
 				}
-				let OrderNumber = [
-					{
-						name: "订单金额",
-						number: this.$public_.formatNumber(data.order_money)
-					},
-					{
-						name: "订单数",
-						number: data.order_amount
-					},
-					{
-						name: "包裹数",
-						number: data.parcel_amount
-					},
-					{
-						name: "付款到账",
-						number: this.$public_.formatNumber(data.pay_to_account_success)
-					},
-					{
-						name: "账户余额",
-						number: this.$public_.formatNumber(data.this_month_balance)
-					}
-				]
+				
 				this.OrderNumber = OrderNumber;
 			},
 			iconCallBack(e){
 				let data = e.data.data[0];
+				let series
 				if(data == null){
-					this.$public_.showToast("没有饼图数据","none",2000,null)
-					this.series = []
-					return false
+					// this.$public_.showToast("没有包装信息","none",2000,null)
+					series = [
+						{
+							"name": "三盒",
+							"data": 0
+						}, 
+						{
+							"name": "四盒",
+							"data": 0
+						}, 
+						{
+							"name": "五盒",
+							"data": 0
+						},
+					]
+				}else {
+					series = [
+						{
+							"name": "三盒",
+							"data": data.gift_boxes
+						}, 
+						{
+							"name": "四盒",
+							"data": data.four_boxes_total
+						}, 
+						{
+							"name": "五盒",
+							"data": data.five_boxes_total
+						},
+					]
 				}
-				let series = [
-					{
-						"name": "三盒",
-						"data": data.gift_boxes
-					}, 
-					{
-						"name": "四盒",
-						"data": data.four_boxes_total
-					}, 
-					{
-						"name": "五盒",
-						"data": data.five_boxes_total
-					},
-				]
 				this.chartData.series = series;
 				this.cWidth=uni.upx2px(750);
 				this.cHeight=uni.upx2px(500);
@@ -184,24 +226,30 @@
 			},
 			iconLineCallBack(e) {
 				let data = e.data.data[0];
+				let series
 				if(data == null){
-					this.$public_.showToast("没有柱形图数据","none",2000,null)
-					this.chartData.seriesline = []
-					return false
+					// this.$public_.showToast("没有物流信息","none",2000,null)
+					series = [
+						{
+							"name": "物流状态信息",
+							"data": [0,0,0,0,0,0]
+						}
+					]
+				}else{
+					series = [
+						{
+							"name": "物流状态信息",
+							"data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total]
+						}
+					]
 				}
-				let series = [
-					{
-						"name": "物流状态信息",
-						"data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total]
-					}
-				]
 				this.chartData.seriesline = series;
 				this.cWidth=uni.upx2px(750);
 				this.cHeight=uni.upx2px(600);
 				this.showLine("canvasline",this.chartData)
 			},
 			defeat(e){
-				console.log(e);
+				console.log(e)
 			},
 			bindPickerChange(e){//选择器选择后的回调函数
 				this.ChannelIndex = e.target.value;
@@ -386,11 +434,20 @@
 		height: 550rpx;
 		margin-top: 20rpx;
 		background-color: #FFFFFF;
+		box-sizing: border-box;
+		position: relative;
 	}
 	.number-flex{
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: space-evenly;
+	}
+	.tosettext{
+		color: #C0C0C0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.number-box{
 		width: 200rpx;
@@ -405,31 +462,19 @@
 		width: 750rpx;
 		overflow-x: hidden;
 	}
-	.qiun-padding{
-		padding:2%; 
-		width:96%;
-	}
-	.qiun-wrap{
-		display:flex; 
-		flex-wrap:wrap;
-	}
-	.qiun-rows{
-		display:flex; 
-		flex-direction:
-		row !important;
-	}
 	.qiun-columns{
-		display:flex; 
-		flex-direction:column !important; 
+		width: 100%;
+		height: 600rpx;
 		margin-top: 20rpx;
+		position: relative;
 	}
 	.qiun-charts{
 		width: 100%; 
-		/* height:500rpx; */
+		height: 100%;
 		background-color: #FFFFFF;
 	}
 	.charts{
 		width: 100%; 
-		height:600rpx;
+		height:100%;
 	}
 </style>

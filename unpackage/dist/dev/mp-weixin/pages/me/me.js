@@ -182,7 +182,7 @@ var _default =
                 if (ress.errMsg == "getStorage:ok") {
                   _this.nickName = ress.data.name;
                   _this.avatarUrl = ress.data.face;
-                  _this.$public_.token1(ress.data.access_token);
+                  _this.$public_.storagedata(ress.data);
                   if (e.data.first_register) {
                     _this.$public_.showToast("登陆成功", "success", 2000, _this.open);
                   } else {
@@ -219,9 +219,6 @@ var _default =
       this.$refs.phone.close();
     },
     login: function login() {var _this2 = this;
-      // uni.authorize({
-      // 	scope: "scope.userInfo",
-      // 	success: () => {
       uni.login({
         provider: 'weixin',
         success: function success(res) {
@@ -245,13 +242,11 @@ var _default =
           } else {
             _this2.$public_.showToast("登陆失败", "none", 2000, null);
           }
+        },
+        fail: function fail(res) {
+          _this2.$public_.showToast("用户取消授权，登陆失败", "none", 2000, null);
         } });
 
-      // },
-      // fail: () => {
-      // 	this.$public_.showToast("用户未授权，登陆失败","none",2000,null)
-      // }
-      // })
     },
     decryptPhoneNumber: function decryptPhoneNumber(e) {var _this3 = this; //获取电话号码
       if (e.detail.errMsg === 'getPhoneNumber:ok') {

@@ -95,15 +95,18 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
   onLaunch: function onLaunch() {
-    console.log('App Launch');
+
   },
   onShow: function onShow() {
-
-    console.log('App Show');
+    // this.$public_.token1("")
   },
   onHide: function onHide() {
-
-    console.log('App Hide');
+    // uni.removeStorage({
+    // 	key:"storage_key",
+    // 	success:() => {
+    // 		this.$public_.token1("")
+    // 	}
+    // })
   } };exports.default = _default;
 
 /***/ }),

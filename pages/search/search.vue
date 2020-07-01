@@ -1,8 +1,8 @@
 <template>
 	<view class="search-content">
 		<view class="condition-content">
-			<button type="primary" @click="open" class="condition-btn">打开窗口</button>
-			<button type="primary" @click="condition_click('all')" class="condition-btn">查看全部</button>
+			<button type="primary" @click="open" class="condition-btn">筛选</button>
+			<button type="primary" @click="condition_click('all')" class="condition-btn">清除筛选条件</button>
 			<uni-popup ref="popup" type="bottom" class="condition-popup" :maskClick="maskClick">
 				<view class="condition-lee">
 					<view class="block-view">
@@ -35,7 +35,8 @@
 		</view>
 		<view class="list-content">
 			<uni-list class="list-content-list">
-				<uni-list-item v-for="(item,index) in OrderAllDay" @click="skip(item.Order_Date)" :title="item.Order_Date" :key="index"  :show-badge="false" class="list-content-item">
+				<text v-if="OrderAllDay.length == 0" class="tosettext">无内容</text>
+				<uni-list-item v-if="OrderAllDay.length != 0" v-for="(item,index) in OrderAllDay" @click="skip(item.Order_Date)" :title="item.Order_Date" :key="index"  :show-badge="false" class="list-content-item">
 					<template v-slot:right="">
 						<view  class="badge-content">
 							<uni-badge :text="OrderAllAmount[index].order_total_amount" type="primary" class="list-content-badge" size="small"></uni-badge>
@@ -91,7 +92,7 @@
 				this.OrderAllAfter = e.data.data;
 			},
 			defeat(e){
-				console.log(e);
+				console.log(e)
 			},
 			StartDataTime(e) {//选择器选择后的回调函数
 				this.startData = e.detail.value;
@@ -207,5 +208,10 @@
 	}
 	.badge-content{
 		display: flex;
+	}
+	.tosettext{
+		color: #C0C0C0;
+		display: block;
+		text-align: center;
 	}
 </style>
