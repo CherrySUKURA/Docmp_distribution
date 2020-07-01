@@ -93,8 +93,8 @@
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$public_.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat);//请求订单列表订单天数数据
-				this.$public_.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat,this.dealerlosed);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat,this.OrderListlosed);//请求订单列表订单天数数据
 			},
 			DealerInfoCallBack(e){
 				let data = e.data.data[0];
@@ -161,6 +161,45 @@
 						})
 					}
 				})
+			},
+			dealerlosed(e){
+				this.details_list = this.details_list = [
+					{
+						name: "单证号",
+						ZD: ""
+					},
+					{
+						name: "单据类型",
+						ZD: ""
+					},
+					{
+						name: "单据状态",
+						ZD: ""
+					},
+					{
+						name: "涉及包裹数",
+						ZD: ""
+					},
+					{
+						name: "渠道商",
+						ZD: ""
+					},
+					{
+						name: "收件人",
+						ZD: ""
+					},
+					{
+						name: "省市区",
+						ZD: ""
+					},
+					{
+						name: "地址",
+						ZD: ""
+					}
+				]
+			},
+			OrderListlosed(e){
+				this.list = []
 			},
 			defeat(e){
 				console.log(e)

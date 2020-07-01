@@ -108,24 +108,29 @@
 				this.RequestDataOnce(statusUrl,this.StatusParam)//调用封装好的请求方法
 			},
 			RequestData(url,OrderParam){//请求
-				this.$public_.RequestHttp(url,"Post",OrderParam,this.StatusCallBack,this.defeat);//请求列表数据
+				this.$public_.RequestHttp(url,"Post",OrderParam,this.StatusCallBack,this.defeat,this.statuslosed);//请求列表数据
 			},
 			RequestDataOnce(statusUrl,StatusParam){//请求
-				this.$public_.RequestHttp(statusUrl,"Get",StatusParam,this.OrderStatusCallBack,this.defeat)//请求筛选列表数据
+				this.$public_.RequestHttp(statusUrl,"Get",StatusParam,this.OrderStatusCallBack,this.defeat,this.OrderStatuslosed)//请求筛选列表数据
 			},
 			StatusCallBack(e){//回调
 				if(e.data.data.length == 0){//判断是否有数据
 					this.$public_.showToast("没有列表数据","none",2000,null)
-					return false
 				}
 				this.list = e.data.data;//传入list渲染
 				this.total = e.data.data_total//传入total渲染
+			},
+			statuslosed(e){
+				this.list = [];
+				this.total = 0;
+			},
+			OrderStatuslosed(e){
+				this.array = ['全部']
 			},
 			OrderStatusCallBack(e){//回调
 				let data = e.data.data;
 				if(data.length == 0){
 					this.$public_.showToast("没有筛选数据","none",2000,null)
-					return false
 				}
 				data.forEach( (item,index) => {//循环后判断并渲染
 					if(this.publicstates == 0){

@@ -247,12 +247,21 @@ var _search = _interopRequireDefault(__webpack_require__(/*! ../../store/search.
 //
 //
 var _default = { data: function data() {var currentDate = this.getDate({ format: true });return { startData: currentDate, endData: currentDate, maskClick: false, OrderAllDay: [], OrderAllAmount: [{}], OrderAllAfter: [{}], Parameter: { "cus_id": "", "start_date": "", "end_date": "" } };}, onShow: function onShow() {this.RequestData(this.Parameter); //请求数据
-  }, methods: { RequestData: function RequestData(Parameter) {this.$public_.RequestHttp('order/orderAllDay', "Post", Parameter, this.DayCallBack, this.defeat); //请求订单列表订单天数数据
-      this.$public_.RequestHttp('order/orderAllAmount', "Post", Parameter, this.AmoutCallBack, this.defeat); //请求订单列表订数数据
-      this.$public_.RequestHttp('order/orderAllAfter', "Post", Parameter, this.AfterCallBack, this.defeat); //请求订单列表售后订单数数据
-    }, DayCallBack: function DayCallBack(e) {if (e.data.data.length == 0) {this.$public_.showToast("没有数据", "none", 2000, null);}this.OrderAllDay = e.data.data;}, AmoutCallBack: function AmoutCallBack(e) {this.OrderAllAmount = e.data.data;}, AfterCallBack: function AfterCallBack(e) {this.OrderAllAfter = e.data.data;}, defeat: function defeat(e) {console.log(e);}, StartDataTime: function StartDataTime(e) {//选择器选择后的回调函数
+  }, methods: { RequestData: function RequestData(Parameter) {this.$public_.RequestHttp('order/orderAllDay', "Post", Parameter, this.DayCallBack, this.defeat, this.Daylosed); //请求订单列表订单天数数据
+      this.$public_.RequestHttp('order/orderAllAmount', "Post", Parameter, this.AmoutCallBack, this.defeat, this.Amoutlosed); //请求订单列表订数数据
+      this.$public_.RequestHttp('order/orderAllAfter', "Post", Parameter, this.AfterCallBack, this.defeat, this.Afterlosed); //请求订单列表售后订单数数据
+    }, DayCallBack: function DayCallBack(e) {if (e.data.data.length == 0) {this.$public_.showToast("没有订单列表数据", "none", 2000, null);}this.OrderAllDay = e.data.data;}, AmoutCallBack: function AmoutCallBack(e) {this.OrderAllAmount = e.data.data;}, AfterCallBack: function AfterCallBack(e) {this.OrderAllAfter = e.data.data;}, Daylosed: function Daylosed(e) {this.OrderAllDay = [];}, Amoutlosed: function Amoutlosed(e) {this.OrderAllAmount = [{}];}, Afterlosed: function Afterlosed(e) {this.OrderAllAfter = [{}];}, defeat: function defeat(e) {console.log(e);}, StartDataTime: function StartDataTime(e) {//选择器选择后的回调函数
       this.startData = e.detail.value;}, endDataTime: function endDataTime(e) {//选择器选择后回调
-      this.endData = e.detail.value;}, condition_click: function condition_click(type) {if (type == 'all') {this.startData = this.getDate();this.endData = this.getDate();this.Parameter.start_date = "";this.Parameter.end_date = "";} else if (type == "time") {this.Parameter.start_date = this.startData;
+      this.endData = e.detail.value;
+    },
+    condition_click: function condition_click(type) {
+      if (type == 'all') {
+        this.startData = this.getDate();
+        this.endData = this.getDate();
+        this.Parameter.start_date = "";
+        this.Parameter.end_date = "";
+      } else if (type == "time") {
+        this.Parameter.start_date = this.startData;
         this.Parameter.end_date = this.endData;
       }
       this.RequestData(this.Parameter);

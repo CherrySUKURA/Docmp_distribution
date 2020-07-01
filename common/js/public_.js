@@ -1,6 +1,6 @@
-let url = "https://www.hotmine.cn/api/"  
+// let url = "https://www.hotmine.cn/api/"  
 // let url = "http://114.55.171.119:8823/api/"
-// let url = "http://192.168.2.101:8787/api/"
+let url = "http://192.168.2.101:8787/api/"
 let token
 let uuid
 
@@ -67,9 +67,9 @@ function callback(res) {
 	uni.removeStorage({
 		key: "storage_key",
 		success() {
-			uni.navigateTo({
-				url: "/pages/me/me"
-			})
+			// uni.navigateTo({
+			// 	url: "/pages/me/me"
+			// })
 		}
 	})
 
@@ -80,31 +80,7 @@ export default{
 		token = e.access_token;
 		uuid = e.uuid
 	},
-	// loading(title,mask,success,fail,complete){
-	// 	uni.showLoading({
-	// 		title,
-	// 		mask,
-	// 		success: (res)=> {
-	// 			if(success != null){
-	// 				success()
-	// 			}
-	// 		},
-	// 		fail: (res) => {
-	// 			if(fail != null){
-	// 				fail()
-	// 			}
-	// 		},
-	// 		complete: (res) => {
-	// 			if(complete != null){
-	// 				complete()
-	// 			}
-	// 		}
-	// 	})
-	// },
-	// hideloading(){
-	// 	uni.hideLoading()
-	// },
-	RequestHttp(url,method,data,succeed,defeated){//封装回调
+	RequestHttp(url,method,data,succeed,defeated,losed=null){//封装回调
 		uni.showLoading({
 			title: "加载中",
 			mask: true,
@@ -112,6 +88,9 @@ export default{
 				request(url,method,data).then(
 					(res) => {
 						if(res.data.code == "401"){
+							if(losed!=null){
+								losed(res)
+							}
 							this.showToast("登录已失效,请前往登录","none",2000,callback)
 						}else{
 							succeed(res)

@@ -75,13 +75,13 @@
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$public_.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat);//请求订单列表订单天数数据
-				this.$public_.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat);//请求订单列表订数数据
-				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat);//请求订单列表售后订单数数据
+				this.$public_.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat,this.Daylosed);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat,this.Amoutlosed);//请求订单列表订数数据
+				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat,this.Afterlosed);//请求订单列表售后订单数数据
 			},
 			DayCallBack(e){
 				if(e.data.data.length == 0){
-					this.$public_.showToast("没有数据","none",2000,null)
+					this.$public_.showToast("没有订单列表数据","none",2000,null)
 				}
 				this.OrderAllDay = e.data.data;
 			},
@@ -90,6 +90,15 @@
 			},
 			AfterCallBack(e){
 				this.OrderAllAfter = e.data.data;
+			},
+			Daylosed(e){
+				this.OrderAllDay = []
+			},
+			Amoutlosed(e){
+				this.OrderAllAmount = [{}]
+			},
+			Afterlosed(e){
+				this.OrderAllAfter = [{}]
 			},
 			defeat(e){
 				console.log(e)

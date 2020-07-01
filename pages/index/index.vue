@@ -113,12 +113,12 @@
 		},
 		methods: {
 			RequestData(OrderParameter){
-				this.$public_.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat);//请求首页订单数据
-				this.$public_.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat);//请求首页图表数据
-				this.$public_.RequestHttp("order/allOrderLogistics","Post",OrderParameter,this.iconLineCallBack,this.defeat)//请求首页圆柱图数据
+				this.$public_.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat,this.Orderlosed);//请求首页订单数据
+				this.$public_.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat,this.iconlosed);//请求首页图表数据
+				this.$public_.RequestHttp("order/allOrderLogistics","Post",OrderParameter,this.iconLineCallBack,this.defeat,this.iconLinelosed)//请求首页圆柱图数据
 			},
 			RequestDataOnce(getDealerParameter){
-				this.$public_.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat);//请求筛选渠道数据
+				this.$public_.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat,this.getDealerlosed);//请求筛选渠道数据
 			},
 			apply(e){//回调
 				let order = e.data.data;
@@ -131,94 +131,55 @@
 			},
 			OrderCallBack(e){//回调
 				let data = e.data.data[0];
-				let OrderNumber
 				if(data == null){
-					// this.$public_.showToast("没有订单信息数据","none",2000,null)
-					OrderNumber = [
-						{
-							name: "订单金额",
-							number: this.$public_.formatNumber(0)
-						},
-						{
-							name: "订单数",
-							number: 0
-						},
-						{
-							name: "包裹数",
-							number: 0
-						},
-						{
-							name: "付款到账",
-							number: this.$public_.formatNumber(0)
-						},
-						{
-							name: "账户余额",
-							number: this.$public_.formatNumber(0)
-						}
-					]
-				}else{
-					OrderNumber = [
-						{
-							name: "订单金额",
-							number: this.$public_.formatNumber(data.order_money)
-						},
-						{
-							name: "订单数",
-							number: data.order_amount
-						},
-						{
-							name: "包裹数",
-							number: data.parcel_amount
-						},
-						{
-							name: "付款到账",
-							number: this.$public_.formatNumber(data.pay_to_account_success)
-						},
-						{
-							name: "账户余额",
-							number: this.$public_.formatNumber(data.this_month_balance)
-						}
-					]
+					this.$public_.showToast("没有订单信息数据","none",2000,null)
+					this.Orderlosed()
+					return false
 				}
-				
-				this.OrderNumber = OrderNumber;
+				this.OrderNumber = [
+					{
+						name: "订单金额",
+						number: this.$public_.formatNumber(data.order_money)
+					},
+					{
+						name: "订单数",
+						number: data.order_amount
+					},
+					{
+						name: "包裹数",
+						number: data.parcel_amount
+					},
+					{
+						name: "付款到账",
+						number: this.$public_.formatNumber(data.pay_to_account_success)
+					},
+					{
+						name: "账户余额",
+						number: this.$public_.formatNumber(data.this_month_balance)
+					}
+				]
 			},
 			iconCallBack(e){
 				let data = e.data.data[0];
-				let series
 				if(data == null){
-					// this.$public_.showToast("没有包装信息","none",2000,null)
-					series = [
-						{
-							"name": "三盒",
-							"data": 0
-						}, 
-						{
-							"name": "四盒",
-							"data": 0
-						}, 
-						{
-							"name": "五盒",
-							"data": 0
-						},
-					]
-				}else {
-					series = [
-						{
-							"name": "三盒",
-							"data": data.gift_boxes
-						}, 
-						{
-							"name": "四盒",
-							"data": data.four_boxes_total
-						}, 
-						{
-							"name": "五盒",
-							"data": data.five_boxes_total
-						},
-					]
-				}
-				this.chartData.series = series;
+					this.$public_.showToast("没有包装信息","none",2000,null)
+					this.iconlosed()
+					return false
+				}	
+				this.chartData.series = [
+					{
+						"name": "三盒",
+						"data": data.gift_boxes
+					}, 
+					{
+						"name": "四盒",
+						"data": data.four_boxes_total
+					}, 
+					{
+						"name": "五盒",
+						"data": data.five_boxes_total
+					},
+				];
 				this.cWidth=uni.upx2px(750);
 				this.cHeight=uni.upx2px(500);
 				this.showPie("canvasPie",this.chartData);
@@ -226,30 +187,80 @@
 			},
 			iconLineCallBack(e) {
 				let data = e.data.data[0];
-				let series
 				if(data == null){
-					// this.$public_.showToast("没有物流信息","none",2000,null)
-					series = [
-						{
-							"name": "物流状态信息",
-							"data": [0,0,0,0,0,0]
-						}
-					]
-				}else{
-					series = [
-						{
-							"name": "物流状态信息",
-							"data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total]
-						}
-					]
+					this.$public_.showToast("没有物流信息","none",2000,null)
+					this.iconLinelosed()
+					return false
 				}
-				this.chartData.seriesline = series;
+				this.chartData.seriesline = [
+					{
+						"name": "物流状态信息",
+						"data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total]
+					}
+				];
 				this.cWidth=uni.upx2px(750);
 				this.cHeight=uni.upx2px(600);
 				this.showLine("canvasline",this.chartData)
 			},
 			defeat(e){
 				console.log(e)
+			},
+			Orderlosed(e){
+				this.OrderNumber = [
+					{
+						name: "订单金额",
+						number: this.$public_.formatNumber(0)
+					},
+					{
+						name: "订单数",
+						number: 0
+					},
+					{
+						name: "包裹数",
+						number: 0
+					},
+					{
+						name: "付款到账",
+						number: this.$public_.formatNumber(0)
+					},
+					{
+						name: "账户余额",
+						number: this.$public_.formatNumber(0)
+					}
+				];
+			},
+			iconlosed(e){
+				this.chartData.series = [
+					{
+						"name": "三盒",
+						"data": 0
+					}, 
+					{
+						"name": "四盒",
+						"data": 0
+					}, 
+					{
+						"name": "五盒",
+						"data": 0
+					},
+				]
+				this.cWidth=uni.upx2px(750);
+				this.cHeight=uni.upx2px(600);
+				this.showPie("canvasPie",this.chartData);
+			},
+			iconLinelosed(e){
+				this.chartData.seriesline = [
+					{
+						"name": "物流状态信息",
+						"data": [0,0,0,0,0,0]
+					}
+				]
+				this.cWidth=uni.upx2px(750);
+				this.cHeight=uni.upx2px(600);
+				this.showLine("canvasline",this.chartData)
+			},
+			getDealerlosed(e){
+				this.ChannelList = ['全部']
 			},
 			bindPickerChange(e){//选择器选择后的回调函数
 				this.ChannelIndex = e.target.value;

@@ -299,11 +299,11 @@ var _default =
   },
   methods: {
     RequestData: function RequestData(accoutParam) {
-      this.$public_.RequestHttp("account/accountCheckListNew", "Post", accoutParam, this.accoutCallBack, this.defeat);
-      this.$public_.RequestHttp("account/accountCheckAllAmount", "Post", accoutParam, this.accountAmountCallBack, this.defeat);
+      this.$public_.RequestHttp("account/accountCheckListNew", "Post", accoutParam, this.accoutCallBack, this.defeat, this.accoutlosed);
+      this.$public_.RequestHttp("account/accountCheckAllAmount", "Post", accoutParam, this.accountAmountCallBack, this.defeat, this.accoutAmoutlosed);
     },
     RequestDataOnce: function RequestDataOnce(channelParam) {
-      this.$public_.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat);
+      this.$public_.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat, this.channellosed);
     },
     RequestExportOrderData: function RequestExportOrderData(exportParam, url) {
       this.$public_.RequestHttp(url, "Post", exportParam, this.urlCallBack, this.defeat);
@@ -358,6 +358,29 @@ var _default =
       data.forEach(function (item, index) {
         _this.items.push(item);
       });
+    },
+    accoutlosed: function accoutlosed(e) {
+      this.lists = [];
+
+    },
+    accoutAmoutlosed: function accoutAmoutlosed(e) {
+      this.sum = [
+      {
+        "money_name": '总金额',
+        "money": this.$public_.formatNumber(0) },
+
+      {
+        "money_name": '总付款',
+        "money": this.$public_.formatNumber(0) },
+
+      {
+        "money_name": '余额',
+        "money": this.$public_.formatNumber(0) }];
+
+
+    },
+    channellosed: function channellosed(e) {
+      this.items = ['全部'];
     },
     defeat: function defeat(e) {
       console.log(e);

@@ -152,6 +152,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -162,50 +163,63 @@ var _default =
       ifsee: true };
 
   },
-  onShow: function onShow() {
+  onShow: function onShow() {var _this = this;
+    uni.getStorage({
+      key: "storage_key",
+      success: function success(res) {
+        _this.avatarUrl = res.data.face;
+        _this.nickName = res.data.name;
+        _this.ifsee = false;
+      },
+      fail: function fail(err) {
+        _this.nickName = "用户名";
+        _this.avatarUrl = "../../static/userimg.png";
+        _this.ifsee = true;
+      } });
 
   },
   methods: {
     RequestUserData: function RequestUserData(param) {
       this.$public_.loginRequestHttp('role/auto_login', 'Get', param, this.loginCallBack, this.defeat);
     },
-    loginCallBack: function loginCallBack(e) {var _this = this;
+    loginCallBack: function loginCallBack(e) {var _this2 = this;
       uni.setStorage({
         key: 'storage_key',
         data: e.data,
         success: function success(res) {
           if (res.errMsg == "setStorage:ok") {
-            _this.ifsee = false;
+            _this2.ifsee = false;
             uni.getStorage({
               key: "storage_key",
               success: function success(ress) {
                 if (ress.errMsg == "getStorage:ok") {
-                  _this.nickName = ress.data.name;
-                  _this.avatarUrl = ress.data.face;
-                  _this.$public_.storagedata(ress.data);
+                  _this2.nickName = ress.data.name;
+                  _this2.avatarUrl = ress.data.face;
+                  _this2.$public_.storagedata(ress.data);
                   if (e.data.first_register) {
-                    _this.$public_.showToast("登陆成功", "success", 2000, _this.open);
+                    _this2.$public_.showToast("登陆成功", "success", 2000, _this2.open);
                   } else {
-                    _this.$public_.showToast("登陆成功", "success", 2000, null);
+                    _this2.$public_.showToast("登陆成功", "success", 2000, null);
                   }
                 } else {
-                  _this.$public_.showToast("登陆失败", "none", 2000, null);
+                  _this2.$public_.showToast("登陆失败", "none", 2000, null);
                 }
               },
               fail: function fail() {
-                _this.$public_.showToast("登陆失败", "none", 2000, null);
+                _this2.$public_.showToast("登陆失败", "none", 2000, null);
               } });
 
           } else {
-            _this.$public_.showToast("登陆失败", "none", 2000, null);
+            _this2.$public_.showToast("登陆失败", "none", 2000, null);
           }
         },
         fail: function fail() {
-          _this.$public_.showToast("登陆失败", "none", 2000, null);
+          _this2.$public_.showToast("登陆失败", "none", 2000, null);
         } });
 
     },
     callback: function callback(e) {
+      this.login();
       this.close();
       this.$public_.showToast(e.msg, "success", 2000, this.open);
     },
@@ -218,7 +232,8 @@ var _default =
     close: function close() {
       this.$refs.phone.close();
     },
-    login: function login() {var _this2 = this;
+    login: function login() {var _this3 = this;
+      debugger;
       uni.login({
         provider: 'weixin',
         success: function success(res) {
@@ -229,26 +244,28 @@ var _default =
               provider: 'weixin',
               success: function success(res) {
                 if (res.errMsg == "getUserInfo:ok") {
+                  // debugger
                   param = {
                     code: code,
                     userInfo: res.userInfo };
 
-                  _this2.RequestUserData(param);
+                  _this3.RequestUserData(param);
                 } else {
-                  _this2.$public_.showToast("登陆失败", "none", 2000, null);
+                  _this3.$public_.showToast("登陆失败", "none", 2000, null);
                 }
               } });
 
           } else {
-            _this2.$public_.showToast("登陆失败", "none", 2000, null);
+            // debugger
+            _this3.$public_.showToast("登陆失败", "none", 2000, null);
           }
         },
         fail: function fail(res) {
-          _this2.$public_.showToast("用户取消授权，登陆失败", "none", 2000, null);
+          _this3.$public_.showToast("用户取消授权，登陆失败", "none", 2000, null);
         } });
 
     },
-    decryptPhoneNumber: function decryptPhoneNumber(e) {var _this3 = this; //获取电话号码
+    decryptPhoneNumber: function decryptPhoneNumber(e) {var _this4 = this; //获取电话号码
       if (e.detail.errMsg === 'getPhoneNumber:ok') {
         uni.getStorage({
           key: 'storage_key',
@@ -258,7 +275,7 @@ var _default =
               endata: e.detail.encryptedData,
               iv: e.detail.iv };
 
-            _this3.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this3.callback, _this3.defeat);
+            _this4.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this4.callback, _this4.defeat);
           } });
 
       } else {

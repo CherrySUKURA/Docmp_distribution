@@ -2777,9 +2777,9 @@ store;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var url = "https://www.hotmine.cn/api/";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // let url = "https://www.hotmine.cn/api/"  
 // let url = "http://114.55.171.119:8823/api/"
-// let url = "http://192.168.2.101:8787/api/"
+var url = "http://192.168.2.101:8787/api/";
 var token;
 var uuid;
 
@@ -2846,9 +2846,9 @@ function callback(res) {
   uni.removeStorage({
     key: "storage_key",
     success: function success() {
-      uni.navigateTo({
-        url: "/pages/me/me" });
-
+      // uni.navigateTo({
+      // 	url: "/pages/me/me"
+      // })
     } });
 
 
@@ -2859,31 +2859,7 @@ function callback(res) {
     token = e.access_token;
     uuid = e.uuid;
   },
-  // loading(title,mask,success,fail,complete){
-  // 	uni.showLoading({
-  // 		title,
-  // 		mask,
-  // 		success: (res)=> {
-  // 			if(success != null){
-  // 				success()
-  // 			}
-  // 		},
-  // 		fail: (res) => {
-  // 			if(fail != null){
-  // 				fail()
-  // 			}
-  // 		},
-  // 		complete: (res) => {
-  // 			if(complete != null){
-  // 				complete()
-  // 			}
-  // 		}
-  // 	})
-  // },
-  // hideloading(){
-  // 	uni.hideLoading()
-  // },
-  RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {var _this = this; //封装回调
+  RequestHttp: function RequestHttp(url, method, data, succeed, defeated) {var _this = this;var losed = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null; //封装回调
     uni.showLoading({
       title: "加载中",
       mask: true,
@@ -2891,6 +2867,9 @@ function callback(res) {
         request(url, method, data).then(
         function (res) {
           if (res.data.code == "401") {
+            if (losed != null) {
+              losed(res);
+            }
             _this.showToast("登录已失效,请前往登录", "none", 2000, callback);
           } else {
             succeed(res);

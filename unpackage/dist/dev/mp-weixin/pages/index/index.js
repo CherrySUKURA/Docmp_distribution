@@ -289,82 +289,43 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       cHeight: '', //饼图高度
       pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
       OrderParameter: { "cus_id": '', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '' } };}, onShow: function onShow() {this.RequestData(this.OrderParameter); //请求数据
-    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
-      this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
-      this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat); //请求首页圆柱图数据
-    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
+    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat, this.Orderlosed); //请求首页订单数据
+      this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat, this.iconlosed); //请求首页图表数据
+      this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat, this.iconLinelosed); //请求首页圆柱图数据
+    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat, this.getDealerlosed); //请求筛选渠道数据
     }, apply: function apply(e) {var _this = this; //回调
       var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
-      var data = e.data.data[0];var OrderNumber;if (data == null) {// this.$public_.showToast("没有订单信息数据","none",2000,null)
-        OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(0) }, { name: "订单数", number: 0 }, { name: "包裹数", number: 0 }, { name: "付款到账", number: this.$public_.formatNumber(0) },
-        {
-          name: "账户余额",
-          number: this.$public_.formatNumber(0) }];
+      var data = e.data.data[0];if (data == null) {this.$public_.showToast("没有订单信息数据", "none", 2000, null);this.Orderlosed();return false;}this.OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, {
+        name: "付款到账",
+        number: this.$public_.formatNumber(data.pay_to_account_success) },
+
+      {
+        name: "账户余额",
+        number: this.$public_.formatNumber(data.this_month_balance) }];
 
 
-      } else {
-        OrderNumber = [
-        {
-          name: "订单金额",
-          number: this.$public_.formatNumber(data.order_money) },
-
-        {
-          name: "订单数",
-          number: data.order_amount },
-
-        {
-          name: "包裹数",
-          number: data.parcel_amount },
-
-        {
-          name: "付款到账",
-          number: this.$public_.formatNumber(data.pay_to_account_success) },
-
-        {
-          name: "账户余额",
-          number: this.$public_.formatNumber(data.this_month_balance) }];
-
-
-      }
-
-      this.OrderNumber = OrderNumber;
     },
     iconCallBack: function iconCallBack(e) {
       var data = e.data.data[0];
-      var series;
       if (data == null) {
-        // this.$public_.showToast("没有包装信息","none",2000,null)
-        series = [
-        {
-          "name": "三盒",
-          "data": 0 },
-
-        {
-          "name": "四盒",
-          "data": 0 },
-
-        {
-          "name": "五盒",
-          "data": 0 }];
-
-
-      } else {
-        series = [
-        {
-          "name": "三盒",
-          "data": data.gift_boxes },
-
-        {
-          "name": "四盒",
-          "data": data.four_boxes_total },
-
-        {
-          "name": "五盒",
-          "data": data.five_boxes_total }];
-
-
+        this.$public_.showToast("没有包装信息", "none", 2000, null);
+        this.iconlosed();
+        return false;
       }
-      this.chartData.series = series;
+      this.chartData.series = [
+      {
+        "name": "三盒",
+        "data": data.gift_boxes },
+
+      {
+        "name": "四盒",
+        "data": data.four_boxes_total },
+
+      {
+        "name": "五盒",
+        "data": data.five_boxes_total }];
+
+
       this.cWidth = uni.upx2px(750);
       this.cHeight = uni.upx2px(500);
       this.showPie("canvasPie", this.chartData);
@@ -372,30 +333,80 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
     },
     iconLineCallBack: function iconLineCallBack(e) {
       var data = e.data.data[0];
-      var series;
       if (data == null) {
-        // this.$public_.showToast("没有物流信息","none",2000,null)
-        series = [
-        {
-          "name": "物流状态信息",
-          "data": [0, 0, 0, 0, 0, 0] }];
-
-
-      } else {
-        series = [
-        {
-          "name": "物流状态信息",
-          "data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total] }];
-
-
+        this.$public_.showToast("没有物流信息", "none", 2000, null);
+        this.iconLinelosed();
+        return false;
       }
-      this.chartData.seriesline = series;
+      this.chartData.seriesline = [
+      {
+        "name": "物流状态信息",
+        "data": [data.wait_sorting_total, data.LanShou_total, data.transit_total, data.sign_for_total, data.problem_piece_total, data.cancel_total] }];
+
+
       this.cWidth = uni.upx2px(750);
       this.cHeight = uni.upx2px(600);
       this.showLine("canvasline", this.chartData);
     },
     defeat: function defeat(e) {
       console.log(e);
+    },
+    Orderlosed: function Orderlosed(e) {
+      this.OrderNumber = [
+      {
+        name: "订单金额",
+        number: this.$public_.formatNumber(0) },
+
+      {
+        name: "订单数",
+        number: 0 },
+
+      {
+        name: "包裹数",
+        number: 0 },
+
+      {
+        name: "付款到账",
+        number: this.$public_.formatNumber(0) },
+
+      {
+        name: "账户余额",
+        number: this.$public_.formatNumber(0) }];
+
+
+    },
+    iconlosed: function iconlosed(e) {
+      this.chartData.series = [
+      {
+        "name": "三盒",
+        "data": 0 },
+
+      {
+        "name": "四盒",
+        "data": 0 },
+
+      {
+        "name": "五盒",
+        "data": 0 }];
+
+
+      this.cWidth = uni.upx2px(750);
+      this.cHeight = uni.upx2px(600);
+      this.showPie("canvasPie", this.chartData);
+    },
+    iconLinelosed: function iconLinelosed(e) {
+      this.chartData.seriesline = [
+      {
+        "name": "物流状态信息",
+        "data": [0, 0, 0, 0, 0, 0] }];
+
+
+      this.cWidth = uni.upx2px(750);
+      this.cHeight = uni.upx2px(600);
+      this.showLine("canvasline", this.chartData);
+    },
+    getDealerlosed: function getDealerlosed(e) {
+      this.ChannelList = ['全部'];
     },
     bindPickerChange: function bindPickerChange(e) {//选择器选择后的回调函数
       this.ChannelIndex = e.target.value;

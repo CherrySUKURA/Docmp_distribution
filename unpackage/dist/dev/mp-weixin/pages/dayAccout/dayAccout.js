@@ -183,13 +183,16 @@ var _default =
   },
   methods: {
     RequestData: function RequestData(DayAccoutParam) {
-      this.$public_.RequestHttp("account/accountRunning", "Get", DayAccoutParam, this.DayAccoutCallBack, this.defeat);
+      this.$public_.RequestHttp("account/accountRunning", "Get", DayAccoutParam, this.DayAccoutCallBack, this.defeat, this.DayAccoutlose);
     },
     DayAccoutCallBack: function DayAccoutCallBack(e) {
       if (e.data.data.length == 0) {
         this.$public_.showToast("没有流水数据", "none", 2000, null);
       }
       this.items = e.data.data;
+    },
+    DayAccoutlose: function DayAccoutlose(e) {
+      this.items = [];
     },
     defeat: function defeat(e) {
       console.log(e);

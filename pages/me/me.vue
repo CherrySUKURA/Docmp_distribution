@@ -6,6 +6,7 @@
 			</view>
 			<text class="usertext">{{nickName}}</text>
 			<button v-if="ifsee" class="userbtn btntop" type="primary" open-type="getUserInfo" @click="login">微信获取用户消息</button>
+			<!-- <button v-if="!ifsee" class="userbtn btntop" type="primary" open-type="getUserInfo" @click="">退出登录</button> -->
 		</view>
 		<uni-popup ref="phone" class="bindPhone" :maskClick="maskClick" :animation="true">
 			<view class="bindPhone-content">
@@ -27,7 +28,19 @@
 			}
 		},
 		onShow() {
-
+			uni.getStorage({
+				key: "storage_key",
+				success: (res) => {
+					this.avatarUrl = res.data.face
+					this.nickName = res.data.name
+					this.ifsee = false
+				},
+				fail: (err) => {
+					this.nickName = "用户名"
+					this.avatarUrl = "../../static/userimg.png"
+					this.ifsee = true
+				}
+			})
 		},
 		methods: {
 			RequestUserData(param){
@@ -70,6 +83,7 @@
 				})
 			},
 			callback(e){
+				this.login()
 				this.close()
 				this.$public_.showToast(e.msg,"success",2000,this.open)
 			},
@@ -83,6 +97,7 @@
 				this.$refs.phone.close()
 			},
 			login(){
+				debugger
 				uni.login({
 					provider:'weixin',
 					success:(res) => {
@@ -93,6 +108,7 @@
 								provider: 'weixin',
 								success:(res) => {
 									if(res.errMsg == "getUserInfo:ok"){
+										// debugger
 										param = {
 											code: code,
 											userInfo: res.userInfo,
@@ -104,6 +120,7 @@
 								}
 							})
 						}else{
+							// debugger
 							this.$public_.showToast("登陆失败","none",2000,null)
 						}
 					},
