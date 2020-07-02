@@ -2777,9 +2777,9 @@ store;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // let url = "https://www.hotmine.cn/api/"  
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var url = "https://www.hotmine.cn/api/";
 // let url = "http://114.55.171.119:8823/api/"
-var url = "http://192.168.2.101:8787/api/";
+// let url = "http://192.168.2.101:8787/api/"
 var token;
 var uuid;
 

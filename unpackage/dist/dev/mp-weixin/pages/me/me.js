@@ -153,14 +153,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
     return {
       nickName: "用户名",
       avatarUrl: "../../static/userimg.png",
-      maskClick: false,
-      ifsee: true };
+      maskClick: true,
+      ifsee: true,
+      bindPhone: false };
 
   },
   onShow: function onShow() {var _this = this;
@@ -170,11 +172,13 @@ var _default =
         _this.avatarUrl = res.data.face;
         _this.nickName = res.data.name;
         _this.ifsee = false;
+        _this.bindPhone = true;
       },
       fail: function fail(err) {
         _this.nickName = "用户名";
         _this.avatarUrl = "../../static/userimg.png";
         _this.ifsee = true;
+        _this.bindPhone = false;
       } });
 
   },
@@ -196,6 +200,7 @@ var _default =
                   _this2.nickName = ress.data.name;
                   _this2.avatarUrl = ress.data.face;
                   _this2.$public_.storagedata(ress.data);
+                  _this2.bindPhone = true;
                   if (e.data.first_register) {
                     _this2.$public_.showToast("登陆成功", "success", 2000, _this2.open);
                   } else {
@@ -219,14 +224,17 @@ var _default =
 
     },
     callback: function callback(e) {
-      if (e.data.isYes) {
+      if (e.data.data.checkOut) {
         this.login();
       }
       this.close();
-      this.$public_.showToast(e.msg, "success", 2000, this.open);
+      this.$public_.showToast(e.data.msg, "none", 2000, null);
     },
     defeat: function defeat(e) {
       this.$public_.showToast("登陆失败", "none", 2000, null);
+    },
+    defeated: function defeated(e) {
+      this.$public_.showToast("绑定失败", "none", 2000, null);
     },
     open: function open() {
       this.$refs.phone.open();
@@ -274,12 +282,15 @@ var _default =
               endata: e.detail.encryptedData,
               iv: e.detail.iv };
 
-            _this4.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this4.callback, _this4.defeat);
+            _this4.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this4.callback, _this4.defeated);
           } });
 
       } else {
-        this.$refs.phone.close();
+        this.$public_.showToast("用户取消授权，绑定失败", "none", 2000, this.close);
       }
+    },
+    a: function a() {
+      this.open();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

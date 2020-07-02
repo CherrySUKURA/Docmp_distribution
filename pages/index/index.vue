@@ -245,7 +245,7 @@
 					},
 				]
 				this.cWidth=uni.upx2px(750);
-				this.cHeight=uni.upx2px(600);
+				this.cHeight=uni.upx2px(500);
 				this.showPie("canvasPie",this.chartData);
 			},
 			iconLinelosed(e){

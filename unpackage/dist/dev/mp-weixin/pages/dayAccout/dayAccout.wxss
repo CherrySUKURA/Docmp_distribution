@@ -25,7 +25,7 @@
 	text-align: center;
 }
 .table-header{
-	height: 50rpx;
+	min-height: 50rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -50,7 +50,7 @@
 }
 .table-body-item{
 	width: 100%;
-	height: 50rpx;
+	min-height: 50rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

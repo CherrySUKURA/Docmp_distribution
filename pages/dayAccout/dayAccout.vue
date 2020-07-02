@@ -80,7 +80,7 @@
 		text-align: center;
 	}
 	.table-header{
-		height: 50rpx;
+		min-height: 50rpx;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-around;
@@ -99,7 +99,7 @@
 	}
 	.table-body-item{
 		width: 100%;
-		height: 50rpx;
+		min-height: 50rpx;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-around;

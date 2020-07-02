@@ -6,6 +6,7 @@
 			</view>
 			<text class="usertext">{{nickName}}</text>
 			<button v-if="ifsee" class="userbtn btntop" type="primary" open-type="getUserInfo" @click="login">微信获取用户消息</button>
+			<button v-if="bindPhone" class="userbtn btntop" type="primary" @click="a()">绑定手机号</button>
 			<!-- <button v-if="!ifsee" class="userbtn btntop" type="primary" open-type="getUserInfo" @click="">退出登录</button> -->
 		</view>
 		<uni-popup ref="phone" class="bindPhone" :maskClick="maskClick" :animation="true">
@@ -23,8 +24,9 @@
 			return {
 				nickName: "用户名",
 				avatarUrl: "../../static/userimg.png",
-				maskClick: false,
-				ifsee: true
+				maskClick: true,
+				ifsee: true,
+				bindPhone: false
 			}
 		},
 		onShow() {
@@ -34,11 +36,13 @@
 					this.avatarUrl = res.data.face
 					this.nickName = res.data.name
 					this.ifsee = false
+					this.bindPhone = true
 				},
 				fail: (err) => {
 					this.nickName = "用户名"
 					this.avatarUrl = "../../static/userimg.png"
 					this.ifsee = true
+					this.bindPhone = false
 				}
 			})
 		},
@@ -60,6 +64,7 @@
 										this.nickName = ress.data.name;
 										this.avatarUrl = ress.data.face;
 										this.$public_.storagedata(ress.data)
+										this.bindPhone = true;
 										if(e.data.first_register){
 											this.$public_.showToast("登陆成功","success",2000,this.open)
 										}else{
@@ -83,14 +88,17 @@
 				})
 			},
 			callback(e){
-				if(e.data.isYes){
+				if(e.data.data.checkOut){
 					this.login()
 				}
 				this.close()
-				this.$public_.showToast(e.msg,"success",2000,this.open)
+				this.$public_.showToast(e.data.msg,"none",2000,null)
 			},
 			defeat(e){
 				this.$public_.showToast("登陆失败","none",2000,null)
+			},
+			defeated(e){
+				this.$public_.showToast("绑定失败","none",2000,null)
 			},
 			open(){
 				this.$refs.phone.open()
@@ -138,12 +146,15 @@
 								endata: e.detail.encryptedData,
 								iv: e.detail.iv
 							}
-							this.$public_.RequestHttp('role/security/mini_program/bind','Post',param,this.callback,this.defeat)
+							this.$public_.RequestHttp('role/security/mini_program/bind','Post',param,this.callback,this.defeated)
 						}
 					})
 				}else{
-					this.$refs.phone.close()
+					this.$public_.showToast("用户取消授权，绑定失败","none",2000,this.close)
 				}
+			},
+			a(){
+				this.open()
 			}
 		}
 	}

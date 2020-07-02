@@ -1,6 +1,6 @@
-// let url = "https://www.hotmine.cn/api/"  
+let url = "https://www.hotmine.cn/api/"  
 // let url = "http://114.55.171.119:8823/api/"
-let url = "http://192.168.2.101:8787/api/"
+// let url = "http://192.168.2.101:8787/api/"
 let token
 let uuid
 
