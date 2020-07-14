@@ -19,8 +19,8 @@
 	export default {
 		data() {
 			return {
-				getDate: [],
-				AfterParameter: {
+				getDate: [],//售后列表数据
+				AfterParameter: {//请求售后列表的条件对象
 					"cusId": ""
 				}
 			}
@@ -30,20 +30,20 @@
 		},
 		methods: {
 			RequestData(AfterParameter){
-				this.$public_.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat,this.AfterOrderlosed);//请求售后列表数据
+				this.$public_.RequestHttp("afterSales/afterOrderStatusAmount","Get",AfterParameter,this.AfterCallBack,this.defeat);//请求售后列表数据
 			},
+			//请求售后列表数据回调
 			AfterCallBack(e){
 				if(e.data.data.length == 0){
 					this.$public_.showToast("没有售后列表数据","none",2000,null)
 				}
 				this.getDate = e.data.data
 			},
-			AfterOrderlosed(e){
-				this.getDate = []
-			},
+			//失败回调
 			defeat(e){
 				console.log(e)
 			},
+			//存储状态，跳转页面
 			skip(i){
 				this.$store.commit("Afterstatu",i);
 				this.$store.commit("publicstatu",1);

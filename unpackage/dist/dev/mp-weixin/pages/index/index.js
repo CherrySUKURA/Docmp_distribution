@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
   }
 }
 var render = function() {
@@ -279,32 +279,30 @@ var _uCharts = _interopRequireDefault(__webpack_require__(/*! ../../js_sdk/u-cha
 //
 //
 //
-var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data: function data() {var currentDate = this.getDate({ format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
+var canvaPie = null; //饼图
+var canvaColumn = null; //柱状图
+var _default = { data: function data() {var currentDate = this.getDate({ //默认时间
+      format: true });return { ChannelIndex: 0, //渠道选择列表默认显示选项
       ChannelList: ["全部"], //渠道选择列表所有选项
       date: currentDate, //时间选择列表时间选项
       canvasStyle: true, //控制饼图是否显示
       OrderNumber: [], //订单数据
-      chartData: { //饼图数据
-        "series": [], "categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"], "seriesline": [{ "name": "物流状态信息", "data": [0, 0, 0, 0, 0, 0] }] }, cWidth: '', //饼图宽度
-      cHeight: '', //饼图高度
+      chartData: { //图数据
+        "series": [], "categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"], "seriesline": [{ "name": "物流状态信息", "data": [0, 0, 0, 0, 0, 0] }] }, cWidth: '', //图宽度
+      cHeight: '', //图高度
       pixelRatio: 1, maskClick: false, //控制点击弹出层灰色部分是否关闭弹出层
-      OrderParameter: { "cus_id": '', "date": "", "simplified": "" }, getDealerParameter: { 'cusId': '' } };}, onShow: function onShow() {this.RequestData(this.OrderParameter); //请求数据
-    this.RequestDataOnce(this.getDealerParameter);}, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat, this.Orderlosed); //请求首页订单数据
-      this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat, this.iconlosed); //请求首页图表数据
-      this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat, this.iconLinelosed); //请求首页圆柱图数据
-    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat, this.getDealerlosed); //请求筛选渠道数据
-    }, apply: function apply(e) {var _this = this; //回调
-      var order = e.data.data;order.forEach(function (item) {_this.ChannelList.push(item);});var newArray = new Set(this.ChannelList);this.$store.commit("channel", Array.from(newArray));this.ChannelList = this.$store.state.ChannelList;}, OrderCallBack: function OrderCallBack(e) {//回调
-      var data = e.data.data[0];if (data == null) {this.$public_.showToast("没有订单信息数据", "none", 2000, null);this.Orderlosed();return false;}this.OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, {
-        name: "付款到账",
-        number: this.$public_.formatNumber(data.pay_to_account_success) },
-
-      {
-        name: "账户余额",
-        number: this.$public_.formatNumber(data.this_month_balance) }];
-
-
-    },
+      OrderParameter: { //请求首页数据条件对象
+        "cus_id": '', "date": "", "simplified": "" }, getDealerParameter: { //请求筛选渠道数据条件对象
+        'cusId': '' } };}, onShow: function onShow() {this.RequestData(this.OrderParameter); //请求数据
+    this.RequestDataOnce(this.getDealerParameter); //请求一次数据
+  }, methods: { RequestData: function RequestData(OrderParameter) {this.$public_.RequestHttp('order/allOrder', "Post", OrderParameter, this.OrderCallBack, this.defeat); //请求首页订单数据
+      this.$public_.RequestHttp('order/allOrderBox', "Post", OrderParameter, this.iconCallBack, this.defeat); //请求首页图表数据
+      this.$public_.RequestHttp("order/allOrderLogistics", "Post", OrderParameter, this.iconLineCallBack, this.defeat); //请求首页圆柱图数据
+    }, RequestDataOnce: function RequestDataOnce(getDealerParameter) {this.$public_.RequestHttp("dealer/getDealer", "Get", getDealerParameter, this.apply, this.defeat); //请求筛选渠道数据
+    }, //请求筛选渠道数据回调
+    apply: function apply(e) {var _this = this;var order = e.data.data;this.ChannelList = ['全部'];order.forEach(function (item) {_this.ChannelList.push(item);});}, //请求首页订单数据回调
+    OrderCallBack: function OrderCallBack(e) {var data = e.data.data[0];if (data == null) {this.$public_.showToast("没有订单信息数据", "none", 2000, null);this.Orderlosed();return false;}this.OrderNumber = [{ name: "订单金额", number: this.$public_.formatNumber(data.order_money) }, { name: "订单数", number: data.order_amount }, { name: "包裹数", number: data.parcel_amount }, { name: "付款到账", number: this.$public_.formatNumber(data.pay_to_account_success) }, { name: "账户余额", number: this.$public_.formatNumber(data.this_month_balance) }];},
+    //请求首页饼图数据回调
     iconCallBack: function iconCallBack(e) {
       var data = e.data.data[0];
       if (data == null) {
@@ -331,6 +329,7 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       this.showPie("canvasPie", this.chartData);
 
     },
+    //请求首页柱状图数据回调
     iconLineCallBack: function iconLineCallBack(e) {
       var data = e.data.data[0];
       if (data == null) {
@@ -348,9 +347,11 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       this.cHeight = uni.upx2px(600);
       this.showLine("canvasline", this.chartData);
     },
+    //失败会掉
     defeat: function defeat(e) {
       console.log(e);
     },
+    //如果没有有数据执行事件
     Orderlosed: function Orderlosed(e) {
       this.OrderNumber = [
       {
@@ -375,6 +376,7 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
 
 
     },
+    //如果没有有数据执行事件
     iconlosed: function iconlosed(e) {
       this.chartData.series = [
       {
@@ -394,6 +396,7 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       this.cHeight = uni.upx2px(500);
       this.showPie("canvasPie", this.chartData);
     },
+    //如果没有有数据执行事件
     iconLinelosed: function iconLinelosed(e) {
       this.chartData.seriesline = [
       {
@@ -404,9 +407,6 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
       this.cWidth = uni.upx2px(750);
       this.cHeight = uni.upx2px(600);
       this.showLine("canvasline", this.chartData);
-    },
-    getDealerlosed: function getDealerlosed(e) {
-      this.ChannelList = ['全部'];
     },
     bindPickerChange: function bindPickerChange(e) {//选择器选择后的回调函数
       this.ChannelIndex = e.target.value;
@@ -448,7 +448,7 @@ var canvaPie = null;var canvaColumn = null;var _default = { components: {}, data
 
 
     },
-    showLine: function showLine(canvasId, chartData) {
+    showLine: function showLine(canvasId, chartData) {//柱状图实例
       canvaColumn = new _uCharts.default({
         $this: this,
         canvasId: canvasId,

@@ -53,17 +53,18 @@
 	import searchs from '../../store/search.js';
 	export default {
 		data() {
+			//默认时间
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
-				startData: currentDate,
-				endData: currentDate,
-				maskClick: false,
-				OrderAllDay: [],
-				OrderAllAmount: [{}],
-				OrderAllAfter: [{}],
-				Parameter: {
+				startData: currentDate,//筛选开始时间
+				endData: currentDate,//筛选结束时间
+				maskClick: false,//弹出窗点击空白处是否可以关闭弹出
+				OrderAllDay: [],//列表时间
+				OrderAllAmount: [{}],//订单数量
+				OrderAllAfter: [{}],//售后数量
+				Parameter: {//请求订单列表参数
 				 "cus_id":"",
 				 "start_date":"",
 				 "end_date":""
@@ -75,31 +76,26 @@
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$public_.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat,this.Daylosed);//请求订单列表订单天数数据
-				this.$public_.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat,this.Amoutlosed);//请求订单列表订数数据
-				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat,this.Afterlosed);//请求订单列表售后订单数数据
+				this.$public_.RequestHttp('order/orderAllDay',"Post",Parameter,this.DayCallBack,this.defeat);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/orderAllAmount',"Post",Parameter,this.AmoutCallBack,this.defeat);//请求订单列表订单数数据
+				this.$public_.RequestHttp('order/orderAllAfter',"Post",Parameter,this.AfterCallBack,this.defeat);//请求订单列表售后订单数数据
 			},
+			//请求订单列表订单天数数据回调
 			DayCallBack(e){
 				if(e.data.data.length == 0){
 					this.$public_.showToast("没有订单列表数据","none",2000,null)
 				}
 				this.OrderAllDay = e.data.data;
 			},
+			//请求订单列表订单数数据回调
 			AmoutCallBack(e){
 				this.OrderAllAmount = e.data.data;
 			},
+			//请求订单列表售后订单数数据会地哦啊
 			AfterCallBack(e){
 				this.OrderAllAfter = e.data.data;
 			},
-			Daylosed(e){
-				this.OrderAllDay = []
-			},
-			Amoutlosed(e){
-				this.OrderAllAmount = [{}]
-			},
-			Afterlosed(e){
-				this.OrderAllAfter = [{}]
-			},
+			//失败回调
 			defeat(e){
 				console.log(e)
 			},
@@ -109,6 +105,7 @@
 			endDataTime(e) {//选择器选择后回调
 				this.endData = e.detail.value;
 			},
+			//单价筛选的搜索按钮调用函数
 			condition_click(type) {
 				if(type == 'all'){
 					this.startData = this.getDate();
@@ -137,6 +134,7 @@
 			close() {//关闭弹出层
 				this.$refs.popup.close();
 			},
+			//存储状态并跳转页面
 			skip(i){
 				this.$store.commit("Orderstatu",i);
 				this.$store.commit("publicstatu",0);

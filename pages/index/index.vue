@@ -39,8 +39,8 @@
 			<view class="number-flex">
 <!-- 				<text v-if="OrderNumber.length == 0" class="tosettext">无内容</text> -->
 				<view v-for="(item,index) in OrderNumber" v-if="OrderNumber.length != 0" class="number-box" :key="index">
+					<view :class="'numberstyle' + index">{{item.number}}</view>
 					<view>{{item.name}}</view>
-					<view>{{item.number}}</view>
 				</view>
 			</view>
 		</view>
@@ -54,7 +54,7 @@
 			</view>
 		</view>
 		<view class="qiun-columns">
-			<view class="title-content" >
+			<view class="title-content">
 				<view class="title">物流信息</view>
 			</view>
 			<view class="qiun-charts">
@@ -67,14 +67,11 @@
 
 <script>
 	import uCharts from '../../js_sdk/u-charts/u-charts/u-charts.js'; 
-	let canvaPie=null;
-	let canvaColumn = null;
+	let canvaPie=null;//饼图
+	let canvaColumn = null;//柱状图
 	export default {
-		components: {
-			
-		},
 		data() {
-			const currentDate = this.getDate({
+			const currentDate = this.getDate({//默认时间
 				format: true
 			})
 			return {
@@ -83,7 +80,7 @@
 				date: currentDate, //时间选择列表时间选项
 				canvasStyle: true, //控制饼图是否显示
 				OrderNumber: [],        //订单数据
-				chartData: {       //饼图数据
+				chartData: {       //图数据
 					"series": [],
 					"categories": ["分拣", "揽收", "运输", "签收", "问题", "取消"],
 					"seriesline": [
@@ -93,43 +90,43 @@
 						}
 					]
 				},
-				cWidth:'',         //饼图宽度
-				cHeight:'',        //饼图高度
+				cWidth:'',         //图宽度
+				cHeight:'',        //图高度
 				pixelRatio:1,
 				maskClick: false,  //控制点击弹出层灰色部分是否关闭弹出层
-				OrderParameter: {
+				OrderParameter: {//请求首页数据条件对象
 					"cus_id":'',
 					"date":"",
 					"simplified":"",
 				},
-				getDealerParameter: {
+				getDealerParameter: {//请求筛选渠道数据条件对象
 					'cusId':''
 				}
 			}
 		},
 		onShow() {
 			this.RequestData(this.OrderParameter);     //请求数据
-			this.RequestDataOnce(this.getDealerParameter);
+			this.RequestDataOnce(this.getDealerParameter);//请求一次数据
 		},
 		methods: {
 			RequestData(OrderParameter){
-				this.$public_.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat,this.Orderlosed);//请求首页订单数据
-				this.$public_.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat,this.iconlosed);//请求首页图表数据
-				this.$public_.RequestHttp("order/allOrderLogistics","Post",OrderParameter,this.iconLineCallBack,this.defeat,this.iconLinelosed)//请求首页圆柱图数据
+				this.$public_.RequestHttp('order/allOrder',"Post",OrderParameter,this.OrderCallBack,this.defeat);//请求首页订单数据
+				this.$public_.RequestHttp('order/allOrderBox',"Post",OrderParameter,this.iconCallBack,this.defeat);//请求首页图表数据
+				this.$public_.RequestHttp("order/allOrderLogistics","Post",OrderParameter,this.iconLineCallBack,this.defeat)//请求首页圆柱图数据
 			},
 			RequestDataOnce(getDealerParameter){
-				this.$public_.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat,this.getDealerlosed);//请求筛选渠道数据
+				this.$public_.RequestHttp("dealer/getDealer","Get",getDealerParameter,this.apply,this.defeat);//请求筛选渠道数据
 			},
-			apply(e){//回调
+			//请求筛选渠道数据回调
+			apply(e){
 				let order = e.data.data;
+				this.ChannelList = ['全部']
 				order.forEach( item => {
 					this.ChannelList.push(item);
 				})
-				let newArray = new Set(this.ChannelList);
-				this.$store.commit("channel",Array.from(newArray));
-				this.ChannelList = this.$store.state.ChannelList;
 			},
-			OrderCallBack(e){//回调
+			//请求首页订单数据回调
+			OrderCallBack(e){
 				let data = e.data.data[0];
 				if(data == null){
 					this.$public_.showToast("没有订单信息数据","none",2000,null)
@@ -159,6 +156,7 @@
 					}
 				]
 			},
+			//请求首页饼图数据回调
 			iconCallBack(e){
 				let data = e.data.data[0];
 				if(data == null){
@@ -185,6 +183,7 @@
 				this.showPie("canvasPie",this.chartData);
 				
 			},
+			//请求首页柱状图数据回调
 			iconLineCallBack(e) {
 				let data = e.data.data[0];
 				if(data == null){
@@ -202,9 +201,11 @@
 				this.cHeight=uni.upx2px(600);
 				this.showLine("canvasline",this.chartData)
 			},
+			//失败会掉
 			defeat(e){
 				console.log(e)
 			},
+			//如果没有有数据执行事件
 			Orderlosed(e){
 				this.OrderNumber = [
 					{
@@ -229,6 +230,7 @@
 					}
 				];
 			},
+			//如果没有有数据执行事件
 			iconlosed(e){
 				this.chartData.series = [
 					{
@@ -248,6 +250,7 @@
 				this.cHeight=uni.upx2px(500);
 				this.showPie("canvasPie",this.chartData);
 			},
+			//如果没有有数据执行事件
 			iconLinelosed(e){
 				this.chartData.seriesline = [
 					{
@@ -258,9 +261,6 @@
 				this.cWidth=uni.upx2px(750);
 				this.cHeight=uni.upx2px(600);
 				this.showLine("canvasline",this.chartData)
-			},
-			getDealerlosed(e){
-				this.ChannelList = ['全部']
 			},
 			bindPickerChange(e){//选择器选择后的回调函数
 				this.ChannelIndex = e.target.value;
@@ -302,7 +302,7 @@
 					},
 				});
 			},
-			showLine(canvasId,chartData) {
+			showLine(canvasId,chartData) {//柱状图实例
 				canvaColumn = new uCharts({
 					$this:this,
 					canvasId:canvasId,
@@ -442,13 +442,16 @@
 	}
 	.number{
 		width: 100%;
-		height: 550rpx;
+		height: 250rpx;
 		margin-top: 20rpx;
 		background-color: #FFFFFF;
 		box-sizing: border-box;
 		position: relative;
 	}
 	.number-flex{
+		width: 100%;
+		padding-top: 20rpx;
+		box-sizing: border-box;
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: space-evenly;
@@ -461,10 +464,9 @@
 		transform: translateX(-50%);
 	}
 	.number-box{
-		width: 200rpx;
-		height: 200rpx;
-		border-radius: 25rpx;
-		border: 1rpx solid black;
+		width: 33.3%;
+		font-size: 25rpx;
+		text-align: center;
 		margin-top: 20rpx;
 	}
 
@@ -487,5 +489,20 @@
 	.charts{
 		width: 100%; 
 		height:100%;
+	}
+	.numberstyle0{
+		color: orange;
+	}
+	.numberstyle1{
+		color: lightblue;
+	}
+	.numberstyle2{
+		color: red;
+	}
+	.numberstyle3{
+		color: lightgreen;
+	}
+	.numberstyle4{
+		color: blue;
 	}
 </style>

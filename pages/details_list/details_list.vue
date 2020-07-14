@@ -7,19 +7,19 @@
 		<view class="uni-list">
 			<view class="uni-list-all">
 				<checkbox-group @change="allChoose">
-					<label>
-						<button type="primary" @click="">售后</button>
+					<!-- <label> -->
+						<button type="primary" @click="afterSchedule()">售后</button>
 						<checkbox value="all" :disabled="DJZT?true:false" :class="{'checked':allChecked}" :checked="allChecked?true:false"></checkbox> 全选
-					</label>
+					<!-- </label> -->
 				</checkbox-group>
 			</view>
 			<view class="uni-list-cell">
-				<checkbox-group @change="checkboxChange">
+				<checkbox-group @change="checkboxChange" class="check-box">
 					<scroll-view class="check-list"  :scroll-top="scrollTop" :scroll-y="true">
 						<label class="uni-list-cell-pd" v-for="(item,index) in list" :key="index">
 							<view class="my-order">
 								<view>
-									<checkbox :value="String(item.lineNo)" :checked="checkedAll.includes(String(item.lineNo))" :disabled="DJZT?true:false"></checkbox>
+									<checkbox :value="String(item.lineNo)" :checked="checkedAll.includes(String(item.lineNo))" :disabled="item.lineStatus == 1 ?true:false"></checkbox>
 								</view>
 								<view class="left-content">{{String(item.lineNo)}}</view>
 								<view class="right-content">
@@ -33,6 +33,21 @@
 					</scroll-view>
 				</checkbox-group>
 			</view>
+			<view class="uni-list-cell">
+				<scroll-view class="check-list" :scroll-top="scrollTop" :scroll-y="true">
+					<view class="after-sales" v-for="(item,index) in after_list" :key="index">
+						<view>{{item.myDate}}</view>
+						<view>{{item.lineNo}}</view>
+						<view>{{item.savType}}</view>
+						<view>{{item.savReason}}</view>
+						<view>{{item.savLogistics}}</view>
+						<view>{{item.savRefund}}</view>
+						<view>{{item.comment}}</view>
+						<view>{{item.feedback}}</view>
+						<view>{{item.savStatus}}</view>
+					</view>
+				</scroll-view>
+			</view>
 			<uni-popup ref="details_popup" type="center" class="popup-content">
 				<view class="popup-center">
 					<view class="popup-block">
@@ -45,7 +60,7 @@
 					</view>
 					<scroll-view class="logistics" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll">
 					<!-- <view class="logistics"> -->
-					<logistics :wlInfo="wlInfo"></logistics>
+					<logistics :wlInfo="index"></logistics>
 					<!-- </view> -->
 					</scroll-view>
 				</view>
@@ -65,40 +80,36 @@
 			return {
 				allChecked:false,//是否被选中
 				checkedAll:[], //复选框选中的值
-				"DJZT": false,
-				details_list: [],
-				scrollTop: 0,
+				"DJZT": "",
+				details_list: [],//订单详情数据
+				after_list:[],
+				scrollTop: 0,//滚动条距离上方的距离
 				old: {
 					scrollTop: 0
 				},
-				list:[],
-				wlInfo: {
-				    delivery_status: "", //快递状态 1已签收 2配送中
-				    post_name: '', //快递名称
-				    // logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
-				    // exp_phone: '95546', //快递电话
-				    post_no: '', //快递单号
-				    addr: '', //收货地址
-				    //物流信息
-				    list: []
-				},
-				Parameter: {
+				list:[],//包装数据
+				Order:[],//物流数据
+				index: {},//单个物流数据
+				addr:"",//收货地址
+				Parameter: {//请求条件对象
 					"salesOrderNo": ""
 				}
 			}
 		},
 		onShow() {
-			this.Parameter.salesOrderNo = this.OrderNumbers
-			this.RequestData(this.Parameter)
+			this.Parameter.salesOrderNo = this.OrderNumbers//请求条件的订单号
+			this.RequestData(this.Parameter)//请求数据
 		},
 		methods: {
 			RequestData(Parameter){
-				this.$public_.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat,this.dealerlosed);//请求订单列表订单天数数据
-				this.$public_.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat,this.OrderListlosed);//请求订单列表订单天数数据
+				this.$public_.RequestHttp('order/dealerOrderInfo',"Get",Parameter,this.DealerInfoCallBack,this.defeat);//请求订单详情数据
+				this.$public_.RequestHttp('order/orderListDetails',"Get",Parameter,this.OrderListDetailsCallBack,this.defeat);//请求包装数据
+				this.$public_.RequestHttp('afterSales/afterSchedule',"Get",Parameter,this.afterScheduleCallBack,this.defeat);//请求售后状态数据
 			},
+			//订单详情回调
 			DealerInfoCallBack(e){
 				let data = e.data.data[0];
-				this.wlInfo.addr = data.Add_Full;
+				this.addr = data.Add_Full;
 				this.details_list = [
 					{
 						name: "单证号",
@@ -130,23 +141,32 @@
 					},
 					{
 						name: "地址",
-						ZD: data.Add_Full
+						ZD: data.Provinces
 					}
 				]
 			},
+			//包装数据回调
 			OrderListDetailsCallBack(e) {
 				let data = e.data.data
+				let forwarderName
+				let wlInfo
 				this.list = data;
 				data.forEach((item,index) => {
-					let forwarderName
 					if(data[index].forwarderName){
 						forwarderName = data[index].forwarderName.splice('-')
 					}else{
 						forwarderName = '无物流公司'
 					}
-					this.wlInfo.post_name = forwarderName
-					this.wlInfo.post_no = data[index].parcelNo
-					this.wlInfo.delivery_status = data[index].parcelStatus;
+					wlInfo = {
+						delivery_status: data[index].parcelStatus, //快递状态 1已签收 2配送中
+						post_name: forwarderName, //快递名称
+						// logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
+						// exp_phone: '95546', //快递电话
+						post_no: data[index].parcelNo, //快递单号
+						addr: '', //收货地址
+						//物流信息
+						list: []
+					}
 					if(item.parcelInfo){
 						let  parcelInfoes = JSON.parse(item.parcelInfo).reverse();
 						parcelInfoes.forEach((item1,index1) => {
@@ -157,53 +177,30 @@
 						            "context": item1.AcceptStation,
 						            "location": ""
 						        }
-							this.wlInfo.list.push(list)
+							wlInfo.list.push(list)
 						})
 					}
+					this.Order.push(wlInfo)
 				})
 			},
-			dealerlosed(e){
-				this.details_list = this.details_list = [
-					{
-						name: "单证号",
-						ZD: ""
-					},
-					{
-						name: "单据类型",
-						ZD: ""
-					},
-					{
-						name: "单据状态",
-						ZD: ""
-					},
-					{
-						name: "涉及包裹数",
-						ZD: ""
-					},
-					{
-						name: "渠道商",
-						ZD: ""
-					},
-					{
-						name: "收件人",
-						ZD: ""
-					},
-					{
-						name: "省市区",
-						ZD: ""
-					},
-					{
-						name: "地址",
-						ZD: ""
-					}
-				]
+			//售后回调
+			afterScheduleCallBack(e){
+				let data = e.data.data
+				let array = []
+				data.forEach( (item,index) => {
+					this.$public_.RequestHttp('order/lineStatus',"Get",{"lineStatus": item.savType},(e) => {
+						item.savType = e.data.data[0].lineStatusDesc
+					},this.defeat)
+					array.push(item)
+				} )
+				console.log(array)
+				this.after_list = array
 			},
-			OrderListlosed(e){
-				this.list = []
-			},
+			//异常回调
 			defeat(e){
 				console.log(e)
 			},
+			//多选选择执行事件
 			checkboxChange (e) {
 				let values = e.detail.value;
 				this.checkedAll = values;
@@ -213,14 +210,17 @@
 					this.allChecked =false
 				}
 			},
+			//全选执行事件
 			allChoose(e){
 				let chooseItem = e.detail.value;
 				if(chooseItem[0] == 'all'){
 					this.allChecked = true;
 					for(let item of this.list){
-						let itemVal = String(item.lineNo);
-						if(!this.checkedAll.includes(itemVal)){
-							this.checkedAll.push(itemVal) 
+						if(item.lineStatus != 1){
+							let itemVal = String(item.lineNo);
+							if(!this.checkedAll.includes(itemVal)){
+								this.checkedAll.push(itemVal) 
+							}
 						}
 					}
 				}else{
@@ -228,12 +228,26 @@
 					this.checkedAll=[];
 				}
 			},
-			afterSale(){
+			//售后按钮执行事件
+			afterSchedule(){
 				//售后口子
+				if(this.checkedAll.length != 0){
+					this.$store.commit("checkedAllnew",this.checkedAll,"checkedAll")
+					this.$store.commit("checkedAllnew",this.details_list,"details_list")
+					uni.navigateTo({
+						url: "/pages/afterSchedule/afterSchedule"
+					})
+				}else{
+					this.$public_.showToast('请选择需提交的订单','none',2000,null)
+				}
 			},
+			//开启弹出窗
 			open(i){
+				this.index = this.Order[i]
+				this.index.addr = this.addr
 				this.$refs.details_popup.open()
 			},
+			//关闭弹出窗
 			close() {
 				this.$refs.details_popup.close()
 			},
@@ -258,18 +272,28 @@
 		padding: 20rpx;
 		box-sizing: border-box;
 	}
-	.title-content{
-		width:96%; 
-		padding:10rpx 2%; 
-		flex-wrap:nowrap;
-		background-color: #FFFFFF;
-		margin-top: 10rpx;
+	.uni-list{
+		width: 100%;
+		height: 100%;
 	}
-	.title{
-		border-left: 10rpx solid #0ea391; 
-		padding-left: 10rpx; 
-		font-size: 32rpx;
-		color: #000000
+	.uni-list-all {
+	    width: 100%;
+	    height: 150rpx;
+	    line-height: 75rpx;
+	}
+	.uni-list-cell {
+		width: 100%;
+		min-height: 80rpx;
+		padding-top: 50rpx;
+		box-sizing: border-box;
+	}
+	.check-box{
+		width: 100%;
+		height: 100%;
+	}
+	.check-list{
+		width: 100%;
+		height: 100%;
 	}
 	.my-order{
 		display: flex;
@@ -300,26 +324,8 @@
 		bottom: 20rpx;
 		right: 0;
 	}
-	.btn{
-		width: 100rpx;
-		height: 50rpx;
-	}
-	.check-list{
+	.after-sales{
 		width: 100%;
-		height: 700rpx;
-	}
-	.uni-list{
-	}
-	.uni-list-all {
-	    width: 100%;
-	    height: 150rpx;
-	    line-height: 75rpx;
-	}
-	.uni-list-cell {
-		width: 100%;
-		height: 200rpx;
-		padding-top: 50rpx;
-		box-sizing: border-box;
 	}
 	.popup-center{
 		width: 600rpx;

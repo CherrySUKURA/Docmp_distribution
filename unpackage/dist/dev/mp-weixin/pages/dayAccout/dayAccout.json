@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "流水",
-  "navigationBarBackgroundColor": "#007AFF",
+  "navigationBarBackgroundColor": "#ff8082",
+  "navigationBarTextStyle": "black",
   "usingComponents": {}
 }

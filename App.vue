@@ -4,15 +4,10 @@ export default {
 
 	},
 	onShow: function() {
-		// this.$public_.token1("")
+
 	},
 	onHide: function() {
-		// uni.removeStorage({
-		// 	key:"storage_key",
-		// 	success:() => {
-		// 		this.$public_.token1("")
-		// 	}
-		// })
+
 	}
 };
 </script>
@@ -26,6 +21,6 @@ export default {
 }
 /* #endif */
 *{
-	font-size: 25rpx;
+	font-size: 20rpx;
 }
 </style>

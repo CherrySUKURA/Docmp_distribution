@@ -7,13 +7,16 @@
     "pages/me/me",
     "pages/list/list",
     "pages/details_list/details_list",
-    "pages/dayAccout/dayAccout"
+    "pages/dayAccout/dayAccout",
+    "pages/login/login",
+    "pages/bindPhone/bindPhone",
+    "pages/afterSchedule/afterSchedule"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#007AFF",
+    "navigationBarBackgroundColor": "#ff8082",
     "backgroundColor": "#FFFFFF"
   },
   "tabBar": {
@@ -54,5 +57,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap68.json"
 }

@@ -94,16 +94,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
   },
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 90))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 112))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 97))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 119))
   },
   uniBadge: function() {
-    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 104))
+    return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 126))
   }
 }
 var render = function() {
@@ -246,30 +246,27 @@ var _search = _interopRequireDefault(__webpack_require__(/*! ../../store/search.
 //
 //
 //
-var _default = { data: function data() {var currentDate = this.getDate({ format: true });return { startData: currentDate, endData: currentDate, maskClick: false, OrderAllDay: [], OrderAllAmount: [{}], OrderAllAfter: [{}], Parameter: { "cus_id": "", "start_date": "", "end_date": "" } };}, onShow: function onShow() {this.RequestData(this.Parameter); //请求数据
-  }, methods: { RequestData: function RequestData(Parameter) {this.$public_.RequestHttp('order/orderAllDay', "Post", Parameter, this.DayCallBack, this.defeat, this.Daylosed); //请求订单列表订单天数数据
-      this.$public_.RequestHttp('order/orderAllAmount', "Post", Parameter, this.AmoutCallBack, this.defeat, this.Amoutlosed); //请求订单列表订数数据
-      this.$public_.RequestHttp('order/orderAllAfter', "Post", Parameter, this.AfterCallBack, this.defeat, this.Afterlosed); //请求订单列表售后订单数数据
-    }, DayCallBack: function DayCallBack(e) {if (e.data.data.length == 0) {this.$public_.showToast("没有订单列表数据", "none", 2000, null);}this.OrderAllDay = e.data.data;}, AmoutCallBack: function AmoutCallBack(e) {this.OrderAllAmount = e.data.data;}, AfterCallBack: function AfterCallBack(e) {this.OrderAllAfter = e.data.data;}, Daylosed: function Daylosed(e) {this.OrderAllDay = [];}, Amoutlosed: function Amoutlosed(e) {this.OrderAllAmount = [{}];}, Afterlosed: function Afterlosed(e) {this.OrderAllAfter = [{}];}, defeat: function defeat(e) {console.log(e);}, StartDataTime: function StartDataTime(e) {//选择器选择后的回调函数
+var _default = { data: function data() {//默认时间
+    var currentDate = this.getDate({ format: true });return { startData: currentDate, //筛选开始时间
+      endData: currentDate, //筛选结束时间
+      maskClick: false, //弹出窗点击空白处是否可以关闭弹出
+      OrderAllDay: [], //列表时间
+      OrderAllAmount: [{}], //订单数量
+      OrderAllAfter: [{}], //售后数量
+      Parameter: { //请求订单列表参数
+        "cus_id": "", "start_date": "", "end_date": "" } };}, onShow: function onShow() {this.RequestData(this.Parameter); //请求数据
+  }, methods: { RequestData: function RequestData(Parameter) {this.$public_.RequestHttp('order/orderAllDay', "Post", Parameter, this.DayCallBack, this.defeat); //请求订单列表订单天数数据
+      this.$public_.RequestHttp('order/orderAllAmount', "Post", Parameter, this.AmoutCallBack, this.defeat); //请求订单列表订单数数据
+      this.$public_.RequestHttp('order/orderAllAfter', "Post", Parameter, this.AfterCallBack, this.defeat); //请求订单列表售后订单数数据
+    }, //请求订单列表订单天数数据回调
+    DayCallBack: function DayCallBack(e) {if (e.data.data.length == 0) {this.$public_.showToast("没有订单列表数据", "none", 2000, null);}this.OrderAllDay = e.data.data;}, //请求订单列表订单数数据回调
+    AmoutCallBack: function AmoutCallBack(e) {this.OrderAllAmount = e.data.data;}, //请求订单列表售后订单数数据会地哦啊
+    AfterCallBack: function AfterCallBack(e) {this.OrderAllAfter = e.data.data;}, //失败回调
+    defeat: function defeat(e) {console.log(e);}, StartDataTime: function StartDataTime(e) {//选择器选择后的回调函数
       this.startData = e.detail.value;}, endDataTime: function endDataTime(e) {//选择器选择后回调
-      this.endData = e.detail.value;
-    },
-    condition_click: function condition_click(type) {
-      if (type == 'all') {
-        this.startData = this.getDate();
-        this.endData = this.getDate();
-        this.Parameter.start_date = "";
-        this.Parameter.end_date = "";
-      } else if (type == "time") {
-        this.Parameter.start_date = this.startData;
-        this.Parameter.end_date = this.endData;
-      }
-      this.RequestData(this.Parameter);
-      this.$refs.popup.close();
-    },
-    getDate: function getDate(type) {//时间
-      var date = new Date();
-      var year = date.getFullYear();
+      this.endData = e.detail.value;}, //单价筛选的搜索按钮调用函数
+    condition_click: function condition_click(type) {if (type == 'all') {this.startData = this.getDate();this.endData = this.getDate();this.Parameter.start_date = "";this.Parameter.end_date = "";} else if (type == "time") {this.Parameter.start_date = this.startData;this.Parameter.end_date = this.endData;}this.RequestData(this.Parameter);this.$refs.popup.close();}, getDate: function getDate(type) {//时间
+      var date = new Date();var year = date.getFullYear();
       var month = date.getMonth() + 1;
       var day = date.getDay();
       month = month > 9 ? month : '0' + month;
@@ -282,6 +279,7 @@ var _default = { data: function data() {var currentDate = this.getDate({ format:
     close: function close() {//关闭弹出层
       this.$refs.popup.close();
     },
+    //存储状态并跳转页面
     skip: function skip(i) {
       this.$store.commit("Orderstatu", i);
       this.$store.commit("publicstatu", 0);

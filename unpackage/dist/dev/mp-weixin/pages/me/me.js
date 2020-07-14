@@ -92,11 +92,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
-  }
-}
+var components
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -154,143 +150,112 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      nickName: "用户名",
-      avatarUrl: "../../static/userimg.png",
-      maskClick: true,
-      ifsee: true,
-      bindPhone: false };
-
+      username: "用户名", //用户名
+      status: "普通用户", //用户等级
+      adminImg: "../../static/logo.jpg" //用户头像
+    };
   },
-  onShow: function onShow() {var _this = this;
-    uni.getStorage({
-      key: "storage_key",
-      success: function success(res) {
-        _this.avatarUrl = res.data.face;
-        _this.nickName = res.data.name;
-        _this.ifsee = false;
-        _this.bindPhone = true;
-      },
-      fail: function fail(err) {
-        _this.nickName = "用户名";
-        _this.avatarUrl = "../../static/userimg.png";
-        _this.ifsee = true;
-        _this.bindPhone = false;
-      } });
-
+  onShow: function onShow() {
+    this.RequestHttpData(); //请求用户数据
   },
   methods: {
-    RequestUserData: function RequestUserData(param) {
-      this.$public_.loginRequestHttp('role/auto_login', 'Get', param, this.loginCallBack, this.defeat);
+    RequestHttpData: function RequestHttpData() {
+      this.$public_.RequestHttp('role/userInfo', 'Post', {}, this.userCallBack, this.defeat); //请求用户数据
     },
-    loginCallBack: function loginCallBack(e) {var _this2 = this;
-      uni.setStorage({
-        key: 'storage_key',
-        data: e.data,
+    //退出登录事件
+    logOut: function logOut() {
+      this.$public_.RequestHttp('role/loginOut', 'Post', {}, this.removeCallBack, this.defeat);
+    },
+    //请求用户数据回调
+    userCallBack: function userCallBack(e) {
+      this.username = e.data.data.name;
+      this.status = e.data.data.responsibilityDesc;
+      if (e.data.data.face) {
+        this.adminImg = e.data.data.face;
+      }
+    },
+    //退出登录回调
+    removeCallBack: function removeCallBack(e) {
+      uni.removeStorage({
+        key: 'token',
         success: function success(res) {
-          if (res.errMsg == "setStorage:ok") {
-            _this2.ifsee = false;
-            uni.getStorage({
-              key: "storage_key",
-              success: function success(ress) {
-                if (ress.errMsg == "getStorage:ok") {
-                  _this2.nickName = ress.data.name;
-                  _this2.avatarUrl = ress.data.face;
-                  _this2.$public_.storagedata(ress.data);
-                  _this2.bindPhone = true;
-                  if (e.data.first_register) {
-                    _this2.$public_.showToast("登陆成功", "success", 2000, _this2.open);
-                  } else {
-                    _this2.$public_.showToast("登陆成功", "success", 2000, null);
-                  }
-                } else {
-                  _this2.$public_.showToast("登陆失败", "none", 2000, null);
-                }
-              },
-              fail: function fail() {
-                _this2.$public_.showToast("登陆失败", "none", 2000, null);
-              } });
+          uni.redirectTo({
+            url: "../login/login" });
 
-          } else {
-            _this2.$public_.showToast("登陆失败", "none", 2000, null);
-          }
-        },
-        fail: function fail() {
-          _this2.$public_.showToast("登陆失败", "none", 2000, null);
         } });
 
     },
-    callback: function callback(e) {
-      if (e.data.data.checkOut) {
-        this.login();
-      }
-      this.close();
-      this.$public_.showToast(e.data.msg, "none", 2000, null);
-    },
+    //失败回调
     defeat: function defeat(e) {
-      this.$public_.showToast("登陆失败", "none", 2000, null);
+      console.log(e);
     },
-    defeated: function defeated(e) {
-      this.$public_.showToast("绑定失败", "none", 2000, null);
-    },
-    open: function open() {
-      this.$refs.phone.open();
-    },
-    close: function close() {
-      this.$refs.phone.close();
-    },
-    login: function login() {var _this3 = this;
-      uni.login({
-        provider: 'weixin',
-        success: function success(res) {
-          if (res.errMsg == "login:ok") {
-            var code = res.code;
-            var param;
-            uni.getUserInfo({
-              provider: 'weixin',
-              success: function success(res) {
-                if (res.errMsg == "getUserInfo:ok") {
-                  param = {
-                    code: code,
-                    userInfo: res.userInfo };
+    //跳转页面
+    jump: function jump() {
+      uni.navigateTo({
+        url: "../bindPhone/bindPhone" });
 
-                  _this3.RequestUserData(param);
-                } else {
-                  _this3.$public_.showToast("登陆失败", "none", 2000, null);
-                }
-              } });
-
-          } else {
-            _this3.$public_.showToast("登陆失败", "none", 2000, null);
-          }
-        },
-        fail: function fail(res) {
-          _this3.$public_.showToast("用户取消授权，登陆失败", "none", 2000, null);
-        } });
-
-    },
-    decryptPhoneNumber: function decryptPhoneNumber(e) {var _this4 = this; //获取电话号码
-      if (e.detail.errMsg === 'getPhoneNumber:ok') {
-        uni.getStorage({
-          key: 'storage_key',
-          success: function success(res) {
-            var param = {
-              uuid: res.data.uuid,
-              endata: e.detail.encryptedData,
-              iv: e.detail.iv };
-
-            _this4.$public_.RequestHttp('role/security/mini_program/bind', 'Post', param, _this4.callback, _this4.defeated);
-          } });
-
-      } else {
-        this.$public_.showToast("用户取消授权，绑定失败", "none", 2000, this.close);
-      }
-    },
-    a: function a() {
-      this.open();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

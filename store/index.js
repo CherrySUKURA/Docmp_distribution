@@ -13,6 +13,8 @@ const store = new Vuex.Store({
 		"publicstate": "",
 		"ChannelList": "",
 		"OrderNumber": "",
+		"checkedAll": [],
+		"details_list": []
 	}, 
 	mutations: {
 		Orderstatu: function (state,newVal){
@@ -29,6 +31,9 @@ const store = new Vuex.Store({
 		},
 		OrderCode: function (state,newVal){
 			state.OrderNumber = newVal
+		},
+		checkedAllnew: function (state,newVal,name){
+			state.name = newVal
 		}
 	},
 	actions: {

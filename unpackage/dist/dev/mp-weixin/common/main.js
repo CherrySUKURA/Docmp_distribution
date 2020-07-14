@@ -98,15 +98,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   },
   onShow: function onShow() {
-    // this.$public_.token1("")
+
   },
   onHide: function onHide() {
-    // uni.removeStorage({
-    // 	key:"storage_key",
-    // 	success:() => {
-    // 		this.$public_.token1("")
-    // 	}
-    // })
+
   } };exports.default = _default;
 
 /***/ }),

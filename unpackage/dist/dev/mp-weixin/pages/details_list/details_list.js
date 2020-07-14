@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 90))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 112))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 97))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 119))
   },
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
   }
 }
 var render = function() {
@@ -160,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -217,7 +217,22 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 132));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 154));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
   components: {
@@ -227,40 +242,36 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     return {
       allChecked: false, //是否被选中
       checkedAll: [], //复选框选中的值
-      "DJZT": false,
-      details_list: [],
-      scrollTop: 0,
+      "DJZT": "",
+      details_list: [], //订单详情数据
+      after_list: [],
+      scrollTop: 0, //滚动条距离上方的距离
       old: {
         scrollTop: 0 },
 
-      list: [],
-      wlInfo: {
-        delivery_status: "", //快递状态 1已签收 2配送中
-        post_name: '', //快递名称
-        // logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
-        // exp_phone: '95546', //快递电话
-        post_no: '', //快递单号
-        addr: '', //收货地址
-        //物流信息
-        list: [] },
-
-      Parameter: {
+      list: [], //包装数据
+      Order: [], //物流数据
+      index: {}, //单个物流数据
+      addr: "", //收货地址
+      Parameter: { //请求条件对象
         "salesOrderNo": "" } };
 
 
   },
   onShow: function onShow() {
-    this.Parameter.salesOrderNo = this.OrderNumbers;
-    this.RequestData(this.Parameter);
+    this.Parameter.salesOrderNo = this.OrderNumbers; //请求条件的订单号
+    this.RequestData(this.Parameter); //请求数据
   },
   methods: {
     RequestData: function RequestData(Parameter) {
-      this.$public_.RequestHttp('order/dealerOrderInfo', "Get", Parameter, this.DealerInfoCallBack, this.defeat, this.dealerlosed); //请求订单列表订单天数数据
-      this.$public_.RequestHttp('order/orderListDetails', "Get", Parameter, this.OrderListDetailsCallBack, this.defeat, this.OrderListlosed); //请求订单列表订单天数数据
+      this.$public_.RequestHttp('order/dealerOrderInfo', "Get", Parameter, this.DealerInfoCallBack, this.defeat); //请求订单详情数据
+      this.$public_.RequestHttp('order/orderListDetails', "Get", Parameter, this.OrderListDetailsCallBack, this.defeat); //请求包装数据
+      this.$public_.RequestHttp('afterSales/afterSchedule', "Get", Parameter, this.afterScheduleCallBack, this.defeat); //请求售后状态数据
     },
+    //订单详情回调
     DealerInfoCallBack: function DealerInfoCallBack(e) {
       var data = e.data.data[0];
-      this.wlInfo.addr = data.Add_Full;
+      this.addr = data.Add_Full;
       this.details_list = [
       {
         name: "单证号",
@@ -292,23 +303,32 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
 
       {
         name: "地址",
-        ZD: data.Add_Full }];
+        ZD: data.Provinces }];
 
 
     },
+    //包装数据回调
     OrderListDetailsCallBack: function OrderListDetailsCallBack(e) {var _this = this;
       var data = e.data.data;
+      var forwarderName;
+      var wlInfo;
       this.list = data;
       data.forEach(function (item, index) {
-        var forwarderName;
         if (data[index].forwarderName) {
           forwarderName = data[index].forwarderName.splice('-');
         } else {
           forwarderName = '无物流公司';
         }
-        _this.wlInfo.post_name = forwarderName;
-        _this.wlInfo.post_no = data[index].parcelNo;
-        _this.wlInfo.delivery_status = data[index].parcelStatus;
+        wlInfo = {
+          delivery_status: data[index].parcelStatus, //快递状态 1已签收 2配送中
+          post_name: forwarderName, //快递名称
+          // logo: 'https://cdn.kuaidi100.com/images/all/56/yunda.png', //快递logo
+          // exp_phone: '95546', //快递电话
+          post_no: data[index].parcelNo, //快递单号
+          addr: '', //收货地址
+          //物流信息
+          list: [] };
+
         if (item.parcelInfo) {
           var parcelInfoes = JSON.parse(item.parcelInfo).reverse();
           parcelInfoes.forEach(function (item1, index1) {
@@ -319,53 +339,30 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
               "context": item1.AcceptStation,
               "location": "" };
 
-            _this.wlInfo.list.push(list);
+            wlInfo.list.push(list);
           });
         }
+        _this.Order.push(wlInfo);
       });
     },
-    dealerlosed: function dealerlosed(e) {
-      this.details_list = this.details_list = [
-      {
-        name: "单证号",
-        ZD: "" },
-
-      {
-        name: "单据类型",
-        ZD: "" },
-
-      {
-        name: "单据状态",
-        ZD: "" },
-
-      {
-        name: "涉及包裹数",
-        ZD: "" },
-
-      {
-        name: "渠道商",
-        ZD: "" },
-
-      {
-        name: "收件人",
-        ZD: "" },
-
-      {
-        name: "省市区",
-        ZD: "" },
-
-      {
-        name: "地址",
-        ZD: "" }];
-
-
+    //售后回调
+    afterScheduleCallBack: function afterScheduleCallBack(e) {var _this2 = this;
+      var data = e.data.data;
+      var array = [];
+      data.forEach(function (item, index) {
+        _this2.$public_.RequestHttp('order/lineStatus', "Get", { "lineStatus": item.savType }, function (e) {
+          item.savType = e.data.data[0].lineStatusDesc;
+        }, _this2.defeat);
+        array.push(item);
+      });
+      console.log(array);
+      this.after_list = array;
     },
-    OrderListlosed: function OrderListlosed(e) {
-      this.list = [];
-    },
+    //异常回调
     defeat: function defeat(e) {
       console.log(e);
     },
+    //多选选择执行事件
     checkboxChange: function checkboxChange(e) {
       var values = e.detail.value;
       this.checkedAll = values;
@@ -375,14 +372,17 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
         this.allChecked = false;
       }
     },
+    //全选执行事件
     allChoose: function allChoose(e) {
       var chooseItem = e.detail.value;
       if (chooseItem[0] == 'all') {
         this.allChecked = true;var _iterator = _createForOfIteratorHelper(
         this.list),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
-            var itemVal = String(item.lineNo);
-            if (!this.checkedAll.includes(itemVal)) {
-              this.checkedAll.push(itemVal);
+            if (item.lineStatus != 1) {
+              var itemVal = String(item.lineNo);
+              if (!this.checkedAll.includes(itemVal)) {
+                this.checkedAll.push(itemVal);
+              }
             }
           }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
       } else {
@@ -390,12 +390,26 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
         this.checkedAll = [];
       }
     },
-    afterSale: function afterSale() {
+    //售后按钮执行事件
+    afterSchedule: function afterSchedule() {
       //售后口子
+      if (this.checkedAll.length != 0) {
+        this.$store.commit("checkedAllnew", this.checkedAll, "checkedAll");
+        this.$store.commit("checkedAllnew", this.details_list, "details_list");
+        uni.navigateTo({
+          url: "/pages/afterSchedule/afterSchedule" });
+
+      } else {
+        this.$public_.showToast('请选择需提交的订单', 'none', 2000, null);
+      }
     },
+    //开启弹出窗
     open: function open(i) {
+      this.index = this.Order[i];
+      this.index.addr = this.addr;
       this.$refs.details_popup.open();
     },
+    //关闭弹出窗
     close: function close() {
       this.$refs.details_popup.close();
     },
@@ -410,6 +424,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     OrderNumbers: function OrderNumbers() {
       return this.OrderNumber;
     } }) };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

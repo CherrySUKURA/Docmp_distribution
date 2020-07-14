@@ -24,28 +24,27 @@
 	export default {
 		data() {
 			return {
-				items: [],
-				DayAccoutParam: {
+				items: [],//流水列表
+				DayAccoutParam: {//请求流水条件对象
 					"cusId": ""
 				}
 			}
 		},
 		onShow() {
-			this.RequestData(this.DayAccoutParam)
+			this.RequestData(this.DayAccoutParam)//请求流水
 		},
 		methods: {
 			RequestData(DayAccoutParam){
-				this.$public_.RequestHttp("account/accountRunning","Get",DayAccoutParam,this.DayAccoutCallBack,this.defeat,this.DayAccoutlose)
+				this.$public_.RequestHttp("account/accountRunning","Get",DayAccoutParam,this.DayAccoutCallBack,this.defeat)//请求流水
 			},
+			//请求流水回调
 			DayAccoutCallBack(e){
 				if(e.data.data.length == 0){
 					this.$public_.showToast("没有流水数据","none",2000,null)
 				}
 				this.items = e.data.data
 			},
-			DayAccoutlose(e){
-				this.items = []
-			},
+			//失败回调
 			defeat(e){
 				console.log(e)
 			}

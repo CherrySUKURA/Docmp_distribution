@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 81))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
   },
   zzxTabs: function() {
-    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 111))
+    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 133))
   }
 }
 var render = function() {
@@ -268,14 +268,14 @@ var _default =
       format: true });
 
     return {
-      maskClick: false,
-      startDate: currentDate,
-      endDate: currentDate,
-      items: ['全部'],
-      current: 0,
-      lists: [],
-      sum: [],
-      accoutParam: {
+      maskClick: false, //弹出窗点击空白处是否可以关闭弹出
+      startDate: currentDate, //筛选时间开始时间
+      endDate: currentDate, //筛选时间结束时间
+      items: ['全部'], //筛选渠道
+      current: 0, //tab显示的窗口索引
+      lists: [], //对账列表
+      sum: [], //金额
+      accoutParam: { //对账列表请求条件
         "cus_id": "",
         "simplified": "",
         "start_date": "",
@@ -283,10 +283,10 @@ var _default =
         "page_size": "10",
         "page_no": "1" },
 
-      channelParam: {
+      channelParam: { //筛选渠道请求条件
         "cusId": "" },
 
-      exportParam: {
+      exportParam: { //下载文件请求条件
         "cus_id": "",
         "date": "",
         "simplified": "" } };
@@ -294,24 +294,26 @@ var _default =
 
   },
   onShow: function onShow() {
-    this.RequestData(this.accoutParam);
-    this.RequestDataOnce(this.channelParam);
+    this.RequestData(this.accoutParam); //请求对账数据，多次执行
+    this.RequestDataOnce(this.channelParam); //请求渠道列表，只执行一次
   },
   methods: {
     RequestData: function RequestData(accoutParam) {
-      this.$public_.RequestHttp("account/accountCheckListNew", "Post", accoutParam, this.accoutCallBack, this.defeat, this.accoutlosed);
-      this.$public_.RequestHttp("account/accountCheckAllAmount", "Post", accoutParam, this.accountAmountCallBack, this.defeat, this.accoutAmoutlosed);
+      this.$public_.RequestHttp("account/accountCheckListNew", "Post", accoutParam, this.accoutCallBack, this.defeat); //请求对账列表
+      this.$public_.RequestHttp("account/accountCheckAllAmount", "Post", accoutParam, this.accountAmountCallBack, this.defeat); //请求总金额
     },
     RequestDataOnce: function RequestDataOnce(channelParam) {
-      this.$public_.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat, this.channellosed);
+      this.$public_.RequestHttp("dealer/getDealer", "Get", channelParam, this.channelCallBack, this.defeat); //请求渠道列表
     },
     RequestExportOrderData: function RequestExportOrderData(exportParam, url) {
-      this.$public_.RequestHttp(url, "Post", exportParam, this.urlCallBack, this.defeat);
+      this.$public_.RequestHttp(url, "Post", exportParam, this.urlCallBack, this.defeat); //请求下载文件的url
     },
+    //请求下载文件的url的回调
     urlCallBack: function urlCallBack(e) {
       var url = e.data.data[0];
-      this.$public_.RequestDownload(url, this.success, this.defeat);
+      this.$public_.RequestDownload(url, this.success, this.defeat); //下载文件
     },
+    //下载文件回调
     success: function success(e) {
       if (e.statusCode === 200) {
         var tempFIlePath = e.tempFilePath;
@@ -329,6 +331,7 @@ var _default =
 
       }
     },
+    //请求对账列表回调
     accoutCallBack: function accoutCallBack(e) {
       if (e.data.data.length == 0) {
         this.$public_.showToast("没有订单数据", "none", 2000, null);
@@ -336,6 +339,7 @@ var _default =
       }
       this.lists = e.data.data;
     },
+    //请求对账金额回调
     accountAmountCallBack: function accountAmountCallBack(e) {
       var data = e.data.data;
       this.sum = [
@@ -353,6 +357,7 @@ var _default =
 
 
     },
+    //请求筛选列表回调
     channelCallBack: function channelCallBack(e) {var _this = this;
       var data = e.data.data;
       this.items = ['全部'];
@@ -360,39 +365,20 @@ var _default =
         _this.items.push(item);
       });
     },
-    accoutlosed: function accoutlosed(e) {
-      this.lists = [];
-
-    },
-    accoutAmoutlosed: function accoutAmoutlosed(e) {
-      this.sum = [
-      {
-        "money_name": '总金额',
-        "money": this.$public_.formatNumber(0) },
-
-      {
-        "money_name": '总付款',
-        "money": this.$public_.formatNumber(0) },
-
-      {
-        "money_name": '余额',
-        "money": this.$public_.formatNumber(0) }];
-
-
-    },
-    channellosed: function channellosed(e) {
-      this.items = ['全部'];
-    },
+    //失败回调
     defeat: function defeat(e) {
       console.log(e);
     },
-    startDateChange: function startDateChange(e) {//选择器选择后的回调函数
+    //选择器选择后的回调函数
+    startDateChange: function startDateChange(e) {
       this.startDate = e.detail.value;
     },
+    //选择器选择后的回调函数
     endDateChange: function endDateChange(e) {
       this.endDate = e.detail.value;
     },
-    condition_click: function condition_click(type) {//搜索button点击事件
+    //搜索button点击事件
+    condition_click: function condition_click(type) {
       if (type == "all") {
         this.startDate = this.getDate();
         this.endDate = this.getDate();
@@ -405,6 +391,7 @@ var _default =
       this.RequestData(this.accoutParam);
       this.$refs.popup.close();
     },
+    //变换筛选渠道的回调
     onClickItem: function onClickItem(e) {
       if (this.current !== e.currentIndex) {
         this.current = e.currentIndex;
@@ -416,6 +403,7 @@ var _default =
       }
       this.RequestData(this.accoutParam);
     },
+    //点击下载文件按钮的时间
     derive: function derive(type, index) {
       var url;
       if (type == 'Order') {

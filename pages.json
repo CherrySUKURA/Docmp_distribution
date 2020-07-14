@@ -3,57 +3,83 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
 		}
 		,{
             "path" : "pages/search/search",
             "style" : {
 				"navigationBarTitleText": "订单列表",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/rankingList/rankingList",
             "style" : {
 				"navigationBarTitleText": "售后列表",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/StatementOfAccount/StatementOfAccount",
             "style" : {
 				"navigationBarTitleText": "对账管理",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/me/me",
             "style" : {
 				"navigationBarTitleText": "我的账户",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/list/list",
             "style" : {
 				"navigationBarTitleText": "订单列表",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/details_list/details_list",
             "style" : {
 				"navigationBarTitleText": "订单列表详情",
-				"navigationBarBackgroundColor":"#007AFF"
+				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/dayAccout/dayAccout",
             "style" : {
             	"navigationBarTitleText": "流水",
-            	"navigationBarBackgroundColor":"#007AFF"
+            	"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarTextStyle":"black"
             }
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor":"#ff8082"
+			}
+        }
+        ,{
+            "path" : "pages/bindPhone/bindPhone",
+            "style" : {
+				"navigationBarTitleText":"绑定手机号",
+				"navigationBarBackgroundColor":"#ff8082"
+			}
+        }
+        ,{
+            "path" : "pages/afterSchedule/afterSchedule",
+            "style" : {}
         }
     ],
 	"tabBar": {
@@ -97,7 +123,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#007AFF",
+		"navigationBarBackgroundColor": "#ff8082",
 		"backgroundColor": "#FFFFFF"
 	}
 }
