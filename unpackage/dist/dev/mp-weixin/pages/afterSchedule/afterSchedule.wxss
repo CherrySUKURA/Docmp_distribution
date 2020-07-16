@@ -4,8 +4,21 @@
 	padding: 40rpx;
 	box-sizing: border-box;
 }
+.uni-list-item{
+	font-size: 20rpx !important;
+}
 .form-content{
 	width: 100%;
+}
+.RM{
+	width: 100%;
+	height: 80rpx;
+	background-color: gray;
+	color: #FFFFFF;
+	font-size: 32rpx;
+	padding-left: 30rpx;
+	box-sizing: border-box;
+	line-height: 80rpx;
 }
 .form-item{
 	width: 100%;
@@ -36,6 +49,8 @@
 	width: 100%;
 	height: 100%;
 	line-height: 80rpx;
+	padding: 10rpx; 
+	box-sizing: border-box;
 }
 .uni-textarea{
 	width: 80%;

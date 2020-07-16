@@ -10,7 +10,8 @@
     "pages/dayAccout/dayAccout",
     "pages/login/login",
     "pages/bindPhone/bindPhone",
-    "pages/afterSchedule/afterSchedule"
+    "pages/afterSchedule/afterSchedule",
+    "pages/aftersales/aftersales"
   ],
   "subPackages": [],
   "window": {
@@ -57,6 +58,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap68.json"
+  "usingComponents": {}
 }

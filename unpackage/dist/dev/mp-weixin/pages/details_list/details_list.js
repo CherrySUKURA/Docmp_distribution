@@ -94,13 +94,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniList: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 112))
+    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 122))
   },
   uniListItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 119))
+    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 129))
+  },
+  uniTag: function() {
+    return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 150))
   },
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 113))
   }
 }
 var render = function() {
@@ -119,11 +122,20 @@ var render = function() {
     }
   })
 
+  var l1 = _vm.__map(_vm.after_list, function(item, index) {
+    var g1 = _vm.$public_.formatNumber(item.savRefund)
+    return {
+      $orig: _vm.__get_orig(item),
+      g1: g1
+    }
+  })
+
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
-        l0: l0
+        l0: l0,
+        l1: l1
       }
     }
   )
@@ -232,7 +244,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 154));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var logistics = function logistics() {__webpack_require__.e(/*! require.ensure | components/xinyu-logistics/xinyu-logistics */ "components/xinyu-logistics/xinyu-logistics").then((function () {return resolve(__webpack_require__(/*! ../../components/xinyu-logistics/xinyu-logistics.vue */ 164));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
   components: {
@@ -312,7 +350,14 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
       var data = e.data.data;
       var forwarderName;
       var wlInfo;
-      this.list = data;
+      var array = [];
+      data.forEach(function (item, index) {
+        _this.$public_.RequestHttp('order/lineStatus', "Get", { "lineStatus": item.lineStatus }, function (e) {
+          item.linepage = e.data.data[0].lineStatusDesc;
+        }, _this.defeat);
+        array.push(item);
+      });
+      this.list = array;
       data.forEach(function (item, index) {
         if (data[index].forwarderName) {
           forwarderName = data[index].forwarderName.splice('-');
@@ -346,17 +391,9 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
       });
     },
     //售后回调
-    afterScheduleCallBack: function afterScheduleCallBack(e) {var _this2 = this;
+    afterScheduleCallBack: function afterScheduleCallBack(e) {
       var data = e.data.data;
-      var array = [];
-      data.forEach(function (item, index) {
-        _this2.$public_.RequestHttp('order/lineStatus', "Get", { "lineStatus": item.savType }, function (e) {
-          item.savType = e.data.data[0].lineStatusDesc;
-        }, _this2.defeat);
-        array.push(item);
-      });
-      console.log(array);
-      this.after_list = array;
+      this.after_list = data;
     },
     //异常回调
     defeat: function defeat(e) {
@@ -394,14 +431,21 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     afterSchedule: function afterSchedule() {
       //售后口子
       if (this.checkedAll.length != 0) {
-        this.$store.commit("checkedAllnew", this.checkedAll, "checkedAll");
-        this.$store.commit("checkedAllnew", this.details_list, "details_list");
+        this.$store.commit("checkedAllnew", this.checkedAll);
+        this.$store.commit("detailsList", this.details_list);
         uni.navigateTo({
           url: "/pages/afterSchedule/afterSchedule" });
 
       } else {
         this.$public_.showToast('请选择需提交的订单', 'none', 2000, null);
       }
+    },
+    //售后反馈按钮执行事件
+    afterFeedbBack: function afterFeedbBack(e) {
+      this.$store.commit('afterList', e);
+      uni.navigateTo({
+        url: "/pages/aftersales/aftersales" });
+
     },
     //开启弹出窗
     open: function open(i) {

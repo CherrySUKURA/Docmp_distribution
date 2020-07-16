@@ -15,7 +15,7 @@
 			</view>
 			<view class="uni-list-cell">
 				<checkbox-group @change="checkboxChange" class="check-box">
-					<scroll-view class="check-list"  :scroll-top="scrollTop" :scroll-y="true">
+					<!-- <scroll-view class="check-list"  :scroll-top="scrollTop" :scroll-y="true"> -->
 						<label class="uni-list-cell-pd" v-for="(item,index) in list" :key="index">
 							<view class="my-order">
 								<view>
@@ -26,25 +26,51 @@
 									<view>{{item.brand}} | {{item.brandName}}</view>
 									<view>{{item.sellSku}}</view>
 									<view>{{item.ForwarderName == null ? '无物流信息' : item.ForwarderName }}</view>
+									<uni-tag :text="item.linepage" :type="item.lineStatus == 0 ? 'default' : item.lineStatus == 1 ? 'primary' : 'error'" class="list-tag" :circle="true" size="small"></uni-tag>
 									<button @click="open(index)" :hover-stop-propagation="true" class="WLXX_BTN"></button>
 								</view>
 							</view>
 						</label>
-					</scroll-view>
+					<!-- </scroll-view> -->
 				</checkbox-group>
 			</view>
 			<view class="uni-list-cell">
 				<scroll-view class="check-list" :scroll-top="scrollTop" :scroll-y="true">
 					<view class="after-sales" v-for="(item,index) in after_list" :key="index">
-						<view>{{item.myDate}}</view>
-						<view>{{item.lineNo}}</view>
-						<view>{{item.savType}}</view>
-						<view>{{item.savReason}}</view>
-						<view>{{item.savLogistics}}</view>
-						<view>{{item.savRefund}}</view>
-						<view>{{item.comment}}</view>
-						<view>{{item.feedback}}</view>
-						<view>{{item.savStatus}}</view>
+						<view class="flex">
+							<view class="title">售后时间：</view>
+							<view class="content" v-html="item.dateInfo"></view>
+						</view>
+						<view class="flex">
+							<view class="title">行号：</view>
+							<view class="content" v-text="item.lineNo"></view>
+						</view>
+						<view class="flex">
+							<view class="title">赔付金额：</view>
+							<view class="content" v-html="$public_.formatNumber(item.savRefund)"></view>
+						</view>
+						<view class="flex">
+							<view class="title">售后附言：</view>
+							<view class="content" v-html="item.comment"></view>
+						</view>
+						<view class="flex">
+							<view class="title">品牌反馈：</view>
+							<view class="content" v-html="item.feedback"></view>
+						</view>
+						<view class="flex">
+							<view class="title">售后物流：</view>
+							<view class="content" v-html="item.savLogisticsDesc"></view>
+						</view>
+						<view class="flex">
+							<view class="title">售后理由：</view>
+							<view class="content" v-html="item.savReasonDesc"></view>
+						</view>
+						<view class="flex">
+							<view class="title">售后类型：</view>
+							<view class="content" v-html="item.savTypeDesc"></view>
+						</view>
+						<uni-tag :text="item.savStatus == 9 ? '已完结' : '进行中'" :type="item.savStatus == 9 ? 'success' : 'warning'" class="list-tag" :circle="true" size="mini"></uni-tag>
+						<button :disabled="item.savStatus == 9" @click="afterFeedbBack(item)">添加反馈</button>
 					</view>
 				</scroll-view>
 			</view>
@@ -150,7 +176,14 @@
 				let data = e.data.data
 				let forwarderName
 				let wlInfo
-				this.list = data;
+				let array = []
+				data.forEach((item,index) => {
+					this.$public_.RequestHttp('order/lineStatus',"Get",{"lineStatus": item.lineStatus},(e) => {
+						item.linepage = e.data.data[0].lineStatusDesc
+					},this.defeat)
+					array.push(item)
+				})
+				this.list = array;
 				data.forEach((item,index) => {
 					if(data[index].forwarderName){
 						forwarderName = data[index].forwarderName.splice('-')
@@ -186,15 +219,7 @@
 			//售后回调
 			afterScheduleCallBack(e){
 				let data = e.data.data
-				let array = []
-				data.forEach( (item,index) => {
-					this.$public_.RequestHttp('order/lineStatus',"Get",{"lineStatus": item.savType},(e) => {
-						item.savType = e.data.data[0].lineStatusDesc
-					},this.defeat)
-					array.push(item)
-				} )
-				console.log(array)
-				this.after_list = array
+				this.after_list = data
 			},
 			//异常回调
 			defeat(e){
@@ -232,14 +257,21 @@
 			afterSchedule(){
 				//售后口子
 				if(this.checkedAll.length != 0){
-					this.$store.commit("checkedAllnew",this.checkedAll,"checkedAll")
-					this.$store.commit("checkedAllnew",this.details_list,"details_list")
+					this.$store.commit("checkedAllnew",this.checkedAll)
+					this.$store.commit("detailsList",this.details_list)
 					uni.navigateTo({
 						url: "/pages/afterSchedule/afterSchedule"
 					})
 				}else{
 					this.$public_.showToast('请选择需提交的订单','none',2000,null)
 				}
+			},
+			//售后反馈按钮执行事件
+			afterFeedbBack(e){
+				this.$store.commit('afterList',e)
+				uni.navigateTo({
+					url: "/pages/aftersales/aftersales"
+				})
 			},
 			//开启弹出窗
 			open(i){
@@ -326,6 +358,22 @@
 	}
 	.after-sales{
 		width: 100%;
+		margin-top: 20rpx;
+		border: 1rpx solid rgba(0,0,0,0.1);
+		padding: 20rpx;
+		box-sizing: border-box;
+	}
+	.flex{
+		display: flex;
+		font-size: 20rpx;
+	}
+	.title{
+		/* width: 25%; */
+		width: 100rpx;
+		text-align: right;
+	}
+	.content{
+		width: calc(100%-100rpx);
 	}
 	.popup-center{
 		width: 600rpx;

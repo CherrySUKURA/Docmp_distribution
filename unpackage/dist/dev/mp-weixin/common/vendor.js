@@ -1696,7 +1696,75 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 108:
+/***/ 11:
+/*!***********************************************************************!*\
+  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/store/index.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _search = _interopRequireDefault(__webpack_require__(/*! ./search.js */ 13));
+var _rankingList = _interopRequireDefault(__webpack_require__(/*! ./rankingList.js */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+
+  state: {
+    "Orderstate": "",
+    "Afterstate": "",
+    "publicstate": "",
+    "ChannelList": "",
+    "OrderNumber": "",
+    "checkedAll": "",
+    "details_list": "",
+    "after_list": "" },
+
+  mutations: {
+    Orderstatu: function Orderstatu(state, newVal) {
+      state.Orderstate = newVal;
+    },
+    Afterstatu: function Afterstatu(state, newVal) {
+      state.Afterstate = newVal;
+    },
+    publicstatu: function publicstatu(state, newVal) {
+      state.publicstate = newVal;
+    },
+    channel: function channel(state, newVal) {
+      state.ChannelList = newVal;
+    },
+    OrderCode: function OrderCode(state, newVal) {
+      state.OrderNumber = newVal;
+    },
+    checkedAllnew: function checkedAllnew(state, newVal) {
+      state.checkedAll = newVal;
+    },
+    detailsList: function detailsList(state, newVal) {
+      state.details_list = newVal;
+    },
+    afterList: function afterList(state, newVal) {
+      state.after_list = newVal;
+    } },
+
+  actions: {},
+
+
+  getters: {},
+
+
+  modules: {
+    search: _search.default,
+    rankingList: _rankingList.default } });var _default =
+
+
+store;exports.default = _default;
+
+/***/ }),
+
+/***/ 118:
 /*!**************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/popup.js ***!
   \**************************************************************************************/
@@ -1704,7 +1772,7 @@ function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 109));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 119));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -1731,7 +1799,7 @@ var config = {
 
 /***/ }),
 
-/***/ 109:
+/***/ 119:
 /*!****************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-popup/message.js ***!
   \****************************************************************************************/
@@ -1759,67 +1827,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         this.childrenMsg.close();
       }
     } } };exports.default = _default;
-
-/***/ }),
-
-/***/ 11:
-/*!***********************************************************************!*\
-  !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/store/index.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
-var _search = _interopRequireDefault(__webpack_require__(/*! ./search.js */ 13));
-var _rankingList = _interopRequireDefault(__webpack_require__(/*! ./rankingList.js */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-
-  state: {
-    "Orderstate": "",
-    "Afterstate": "",
-    "publicstate": "",
-    "ChannelList": "",
-    "OrderNumber": "",
-    "checkedAll": [],
-    "details_list": [] },
-
-  mutations: {
-    Orderstatu: function Orderstatu(state, newVal) {
-      state.Orderstate = newVal;
-    },
-    Afterstatu: function Afterstatu(state, newVal) {
-      state.Afterstate = newVal;
-    },
-    publicstatu: function publicstatu(state, newVal) {
-      state.publicstate = newVal;
-    },
-    channel: function channel(state, newVal) {
-      state.ChannelList = newVal;
-    },
-    OrderCode: function OrderCode(state, newVal) {
-      state.OrderNumber = newVal;
-    },
-    checkedAllnew: function checkedAllnew(state, newVal, name) {
-      state.name = newVal;
-    } },
-
-  actions: {},
-
-
-  getters: {},
-
-
-  modules: {
-    search: _search.default,
-    rankingList: _rankingList.default } });var _default =
-
-
-store;exports.default = _default;
 
 /***/ }),
 
@@ -2850,7 +2857,7 @@ store;exports.default = _default;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // let url = "https://www.hotmine.cn/api/"  
 // let url = "http://114.55.171.119:8823/api/"
-var url = "http://192.168.2.100:8787/api/";
+var url = "http://192.168.2.102:8787/api/";
 var token;
 
 
@@ -2998,7 +3005,7 @@ function addZero(v) {
 
 /***/ }),
 
-/***/ 173:
+/***/ 190:
 /*!**************************************************************************************!*\
   !*** D:/Documents/HBuilderProjects/DOCMP_Distribution/components/uni-icons/icons.js ***!
   \**************************************************************************************/

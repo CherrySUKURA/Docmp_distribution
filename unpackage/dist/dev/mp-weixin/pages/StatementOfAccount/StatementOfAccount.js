@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 103))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 113))
   },
   zzxTabs: function() {
-    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 133))
+    return __webpack_require__.e(/*! import() | components/zzx-tabs/zzx-tabs */ "components/zzx-tabs/zzx-tabs").then(__webpack_require__.bind(null, /*! @/components/zzx-tabs/zzx-tabs.vue */ 143))
   }
 }
 var render = function() {

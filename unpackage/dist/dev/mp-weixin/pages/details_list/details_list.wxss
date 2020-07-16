@@ -62,6 +62,24 @@
 }
 .after-sales{
 		width: 100%;
+		margin-top: 20rpx;
+		border: 1rpx solid rgba(0,0,0,0.1);
+		padding: 20rpx;
+		box-sizing: border-box;
+}
+.flex{
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		font-size: 20rpx;
+}
+.title{
+		/* width: 25%; */
+		width: 100rpx;
+		text-align: right;
+}
+.content{
+		width: calc(100%-100rpx);
 }
 .popup-center{
 		width: 600rpx;

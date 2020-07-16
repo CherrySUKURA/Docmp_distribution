@@ -13,8 +13,9 @@ const store = new Vuex.Store({
 		"publicstate": "",
 		"ChannelList": "",
 		"OrderNumber": "",
-		"checkedAll": [],
-		"details_list": []
+		"checkedAll": "",
+		"details_list": "",
+		"after_list": ""
 	}, 
 	mutations: {
 		Orderstatu: function (state,newVal){
@@ -32,8 +33,14 @@ const store = new Vuex.Store({
 		OrderCode: function (state,newVal){
 			state.OrderNumber = newVal
 		},
-		checkedAllnew: function (state,newVal,name){
-			state.name = newVal
+		checkedAllnew: function (state,newVal){
+			state.checkedAll = newVal
+		},
+		detailsList: function (state,newVal){
+			state.details_list = newVal
+		},
+		afterList: function (state,newVal){
+			state.after_list = newVal
 		}
 	},
 	actions: {

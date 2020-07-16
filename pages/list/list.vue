@@ -42,7 +42,7 @@
 						<view class="item-body">{{publicstates == 0 ? item.provinces : item.add_Loc_1 + item.add_Loc_2 + item.add_Loc_3}}</view>
 					</view>
 			</view>
-			<uni-tag :text="item.order_Status_Desc" :type="publicstates == 0 ? no(item.aftersales_Status) : 'primary'" class="list-tag" :circle="true" size="small"></uni-tag>
+			<uni-tag :text="item.order_Status_Desc" :type="publicstates == 0 ? no(item.aftersales_Status) : 'error'" class="list-tag" :circle="true" size="small"></uni-tag>
 		</view>
 		<view class="fixed">
 			<uni-pagination show_icon="true" :total="total" :current="current" @change="pagination"></uni-pagination>

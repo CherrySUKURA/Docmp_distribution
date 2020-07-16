@@ -81,6 +81,10 @@
             "path" : "pages/afterSchedule/afterSchedule",
             "style" : {}
         }
+        ,{
+            "path" : "pages/aftersales/aftersales",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color":"#8a8a8a",

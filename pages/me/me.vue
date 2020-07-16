@@ -23,51 +23,6 @@
 						<image src="../../static/jump.png" class="jump"></image>
 					</view>
 				</view>
-				<view class="list-item">
-					<view class="list-item-text">
-						<image class="icon" src="../../static/kids.png"></image>
-						<view class="title">1111111</view>
-					</view>
-					<view class="list-item-CZ">
-						<image src="../../static/jump.png" class="jump"></image>
-					</view>
-				</view>
-				<view class="list-item">
-					<view class="list-item-text">
-						<image class="icon" src="../../static/kids.png"></image>
-						<view class="title">1111111</view>
-					</view>
-					<view class="list-item-CZ">
-						<image src="../../static/jump.png" class="jump"></image>
-					</view>
-				</view>
-				<view class="list-item">
-					<view class="list-item-text">
-						<image class="icon" src="../../static/kids.png"></image>
-						<view class="title">1111111</view>
-					</view>
-					<view class="list-item-CZ">
-						<image src="../../static/jump.png" class="jump"></image>
-					</view>
-				</view>
-				<view class="list-item">
-					<view class="list-item-text">
-						<image class="icon" src="../../static/kids.png"></image>
-						<view class="title">1111111</view>
-					</view>
-					<view class="list-item-CZ">
-						<image src="../../static/jump.png" class="jump"></image>
-					</view>
-				</view>
-				<view class="list-item">
-					<view class="list-item-text">
-						<image class="icon" src="../../static/kids.png"></image>
-						<view class="title">1111111</view>
-					</view>
-					<view class="list-item-CZ">
-						<image src="../../static/jump.png" class="jump"></image>
-					</view>
-				</view>
 			</view>
 		</view>
 		<view class="logOut">
