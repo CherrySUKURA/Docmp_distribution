@@ -3,7 +3,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
 		}
@@ -11,7 +11,7 @@
             "path" : "pages/search/search",
             "style" : {
 				"navigationBarTitleText": "订单列表",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -19,7 +19,7 @@
             "path" : "pages/rankingList/rankingList",
             "style" : {
 				"navigationBarTitleText": "售后列表",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -27,7 +27,7 @@
             "path" : "pages/StatementOfAccount/StatementOfAccount",
             "style" : {
 				"navigationBarTitleText": "对账管理",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -35,7 +35,7 @@
             "path" : "pages/me/me",
             "style" : {
 				"navigationBarTitleText": "我的账户",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -43,7 +43,7 @@
             "path" : "pages/list/list",
             "style" : {
 				"navigationBarTitleText": "订单列表",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -51,7 +51,7 @@
             "path" : "pages/details_list/details_list",
             "style" : {
 				"navigationBarTitleText": "订单列表详情",
-				"navigationBarBackgroundColor":"#ff8082",
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
 			}
         }
@@ -59,7 +59,7 @@
             "path" : "pages/dayAccout/dayAccout",
             "style" : {
             	"navigationBarTitleText": "流水",
-            	"navigationBarBackgroundColor":"#ff8082",
+            	"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black"
             }
         }
@@ -67,14 +67,15 @@
             "path" : "pages/login/login",
             "style" : {
 				"navigationBarTitleText": "登录",
-				"navigationBarBackgroundColor":"#ff8082"
+				"navigationBarBackgroundColor":"#CC6729"
 			}
         }
         ,{
             "path" : "pages/bindPhone/bindPhone",
             "style" : {
 				"navigationBarTitleText":"绑定手机号",
-				"navigationBarBackgroundColor":"#ff8082"
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{

@@ -16,7 +16,7 @@
 			<view class="mineList">
 				<view class="list-item" @click="jump()">
 					<view class="list-item-text">
-						<image class="icon" src="../../static/Phone.png"></image>
+						<image class="icon" src="../../static/ .png"></image>
 						<view class="title">绑定手机号</view>
 					</view>
 					<view class="list-item-CZ">
@@ -95,7 +95,7 @@
 	.usermine{
 		width: 100%;
 		height: 230rpx;
-		background: #ff0e2e;
+		background: #CC6729;
 		position: relative;
 		color: #FFFFFF;
 		border-radius: 15rpx;

@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "对账管理",
-  "navigationBarBackgroundColor": "#ff8082",
+  "navigationBarBackgroundColor": "#FFFFFF",
   "navigationBarTextStyle": "black",
   "usingComponents": {
     "uni-popup": "/components/uni-popup/uni-popup",

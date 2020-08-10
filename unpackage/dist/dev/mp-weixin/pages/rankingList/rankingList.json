@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "售后列表",
-  "navigationBarBackgroundColor": "#ff8082",
+  "navigationBarBackgroundColor": "#FFFFFF",
   "navigationBarTextStyle": "black",
   "usingComponents": {
     "uni-list": "/components/uni-list/uni-list",

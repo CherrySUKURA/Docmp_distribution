@@ -9,7 +9,7 @@
 .usermine{
 	width: 100%;
 	height: 230rpx;
-	background: #ff0e2e;
+	background: #CC6729;
 	position: relative;
 	color: #FFFFFF;
 	border-radius: 15rpx;
